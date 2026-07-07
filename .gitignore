@@ -1,3 +1,6 @@
 progettoFed/
 node_modules/
 *.log
+
+zParadiseResort/include/config.inc.php
+
