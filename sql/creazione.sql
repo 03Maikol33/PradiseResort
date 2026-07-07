@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS ParadiseResort;
+CREATE DATABASE ParadiseResort;
+USE ParadiseResort;
+
 -- Tabelle indipendenti
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -8,7 +12,7 @@ CREATE TABLE users (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE groups (
+CREATE TABLE gruppi (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     description TEXT
@@ -21,19 +25,19 @@ CREATE TABLE services (
 );
 
 -- Tabelle di giunzione (Normalizzazione)
-CREATE TABLE user_groups (
+CREATE TABLE user_gruppi (
     user_id INT,
     group_id INT,
     PRIMARY KEY (user_id, group_id),
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE
+    FOREIGN KEY (group_id) REFERENCES gruppi(id) ON DELETE CASCADE
 );
 
 CREATE TABLE group_services (
     group_id INT,
     service_id INT,
     PRIMARY KEY (group_id, service_id),
-    FOREIGN KEY (group_id) REFERENCES groups(id) ON DELETE CASCADE,
+    FOREIGN KEY (group_id) REFERENCES gruppi(id) ON DELETE CASCADE,
     FOREIGN KEY (service_id) REFERENCES services(id) ON DELETE CASCADE
 );
 CREATE TABLE room_categories (
