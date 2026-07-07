@@ -1,0 +1,61 @@
+<section class="contact-section" style="padding: 80px 0; background-color: #f8f9fa;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card shadow-lg border-0 rounded-lg">
+                    <div class="card-header text-center" style="background-color: #1f2b37; color: #fff; padding: 30px;">
+                        <h3 class="mb-0" style="color: #fff; font-family: 'Source Serif Pro', serif;">Unisciti a Paradise Resort</h3>
+                        <p class="mb-0 mt-2" style="color: #a0aec0; font-size: 14px;">Crea il tuo account Guest per prenotare vacanze indimenticabili</p>
+                    </div>
+                    <div class="card-body p-5" style="background-color: #ffffff;">
+                        <[if!empty error]>
+                            <div class="alert alert-danger" role="alert" style="border-left: 4px solid #dc3545;">
+                                <i class="fas fa-exclamation-circle mr-2"></i> <b><[error]></b>
+                            </div>
+                        <[/if!empty]>
+                        
+                        <[if!empty success]>
+                            <div class="alert alert-success" role="alert" style="border-left: 4px solid #28a745;">
+                                <i class="fas fa-check-circle mr-2"></i> <b><[success]></b>
+                                <div class="mt-3">
+                                    <a href="<[base]>/login.php" class="btn btn-sm btn-success">Vai al Login &rarr;</a>
+                                </div>
+                            </div>
+                        <[/if!empty]>
+
+                        <form class="form-contact contact_form" method="POST" action="<[base]>/register.php">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="first_name" style="font-weight: 600; color: #4a5568;">Nome <span class="text-danger">*</span></label>
+                                        <input class="form-control" name="first_name" id="first_name" type="text" placeholder="Il tuo nome" required style="border-radius: 6px; padding: 12px;">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="last_name" style="font-weight: 600; color: #4a5568;">Cognome <span class="text-danger">*</span></label>
+                                        <input class="form-control" name="last_name" id="last_name" type="text" placeholder="Il tuo cognome" required style="border-radius: 6px; padding: 12px;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="email" style="font-weight: 600; color: #4a5568;">Indirizzo Email <span class="text-danger">*</span></label>
+                                <input class="form-control" name="email" id="email" type="email" placeholder="esempio@email.com" required style="border-radius: 6px; padding: 12px;">
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="password" style="font-weight: 600; color: #4a5568;">Password <span class="text-danger">*</span></label>
+                                <input class="form-control" name="password" id="password" type="password" placeholder="Scegli una password sicura" required style="border-radius: 6px; padding: 12px;">
+                            </div>
+                            <div class="form-group mt-4 text-center">
+                                <button type="submit" class="btn btn1 w-100" style="padding: 15px; font-size: 16px; font-weight: bold; border-radius: 6px;">Crea Account Guest</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center py-3" style="background-color: #f8f9fa; border-top: 1px solid #e2e8f0;">
+                        <p class="mb-0" style="font-size: 14px; color: #718096;">Hai già un account? <a href="<[base]>/login.php" style="color: #d87040; font-weight: 600;">Accedi qui</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
