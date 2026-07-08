@@ -6,7 +6,7 @@
 <style>
     .cart-wrapper-premium {
         padding: 60px 0;
-        background: radial-gradient(circle at 50% 0%, #fcfdfe 0%, #ebf1f6 100%);
+        background: radial-gradient(circle at 50% 0%, #fcfdfe 0%, #e6f6f5 100%);
         min-height: 90vh;
         position: relative;
         overflow: hidden;
@@ -19,13 +19,13 @@
         border-radius: 50%;
         filter: blur(100px);
         z-index: 0;
-        opacity: 0.4;
+        opacity: 0.35;
         pointer-events: none;
     }
     .blur-1 {
         width: 350px;
         height: 350px;
-        background: #e28743;
+        background: #0abab5;
         top: -100px;
         left: -100px;
     }
@@ -68,7 +68,7 @@
         display: none;
     }
     .step-item.completed::after {
-        background: #d87040;
+        background: #0abab5;
     }
     .step-icon {
         width: 36px;
@@ -86,13 +86,13 @@
         z-index: 2;
     }
     .step-item.active .step-icon {
-        border-color: #d87040;
-        color: #d87040;
-        box-shadow: 0 0 15px rgba(216, 112, 64, 0.25);
+        border-color: #0abab5;
+        color: #0abab5;
+        box-shadow: 0 0 15px rgba(10, 186, 181, 0.25);
     }
     .step-item.completed .step-icon {
-        background: #d87040;
-        border-color: #d87040;
+        background: #0abab5;
+        border-color: #0abab5;
         color: #ffffff;
     }
     .step-text {
@@ -104,7 +104,7 @@
         letter-spacing: 1px;
     }
     .step-item.active .step-text {
-        color: #d87040;
+        color: #0abab5;
     }
     .step-item.completed .step-text {
         color: #1f2b37;
@@ -125,7 +125,7 @@
     
     .card-head-decor {
         background: linear-gradient(135deg, #1f2b37 0%, #0c1117 100%);
-        padding: 30px;
+        padding: 25px 30px;
         text-align: center;
         position: relative;
     }
@@ -137,52 +137,52 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #d87040 0%, #f39c12 100%);
+        background: linear-gradient(90deg, #0abab5 0%, #81d8d0 100%);
     }
 
     .card-head-decor h3 {
         font-family: 'Playfair Display', serif;
         font-weight: 800;
-        font-size: 2rem;
+        font-size: 1.8rem;
         color: #ffffff;
         margin-bottom: 5px;
     }
     
     .card-head-decor p {
         color: #a0aec0;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         margin-bottom: 0;
     }
 
-    /* Righe Dettaglio */
-    .premium-detail-row {
+    /* Servizi Extra */
+    .amenity-card-item {
         display: flex;
+        align-items: center;
         justify-content: space-between;
-        align-items: center;
-        padding: 16px 0;
-        border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+        padding: 12px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        background-color: #ffffff;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        cursor: pointer;
+        width: 100%;
     }
-    .premium-detail-row:last-child {
-        border-bottom: none;
+    .amenity-card-item:hover {
+        border-color: #81d8d0;
+        transform: translateY(-1px);
+        box-shadow: 0 3px 10px rgba(10, 186, 181, 0.05);
     }
-    .premium-label {
-        font-weight: 700;
-        color: #4a5568;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 0.95rem;
+    .amenity-card-item.selected {
+        border-color: #0abab5 !important;
+        background-color: #e6f7f6 !important;
+        box-shadow: 0 3px 15px rgba(10, 186, 181, 0.1);
     }
-    .premium-label i {
-        color: #d87040;
-        font-size: 1.1rem;
+    .tiffany-checkbox-wrapper input[type="checkbox"] {
         width: 20px;
-        text-align: center;
-    }
-    .premium-value {
-        font-weight: 800;
-        color: #1f2b37;
-        font-size: 1rem;
+        height: 20px;
+        accent-color: #0abab5;
+        cursor: pointer;
     }
 
     /* Box Prezzo Totale */
@@ -194,22 +194,10 @@
         margin-bottom: 20px;
     }
     
-    .price-detail-item {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-        color: #718096;
-        font-weight: 600;
-        font-size: 0.9rem;
-    }
-    
     .price-total-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 15px;
-        padding-top: 15px;
-        border-top: 2px dashed #cbd5e0;
     }
     
     .price-total-row strong {
@@ -220,14 +208,14 @@
     }
     
     .price-total-value {
-        font-size: 1.6rem;
-        color: #d87040;
+        font-size: 1.7rem;
+        color: #0abab5;
         font-weight: 900;
     }
 
     /* Pulsanti Elite */
     .btn-elite-confirm {
-        background: linear-gradient(135deg, #d87040 0%, #c65e2e 100%);
+        background: linear-gradient(135deg, #0abab5 0%, #089c97 100%);
         color: white !important;
         border: none;
         padding: 16px 20px;
@@ -236,7 +224,7 @@
         font-size: 1.05rem;
         letter-spacing: 0.5px;
         transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-        box-shadow: 0 10px 20px rgba(216, 112, 64, 0.2);
+        box-shadow: 0 10px 20px rgba(10, 186, 181, 0.2);
         cursor: pointer;
         display: inline-block;
         width: 100%;
@@ -246,28 +234,28 @@
     
     .btn-elite-confirm:hover {
         transform: translateY(-2px);
-        box-shadow: 0 15px 25px rgba(216, 112, 64, 0.3);
-        background: linear-gradient(135deg, #e58254 0%, #d87040 100%);
+        box-shadow: 0 15px 25px rgba(10, 186, 181, 0.35);
+        background: linear-gradient(135deg, #81d8d0 0%, #0abab5 100%);
     }
     
     .btn-elite-cancel {
         background: transparent;
         color: #e53e3e !important;
         border: 2px solid #e53e3e;
-        padding: 14px 20px;
-        border-radius: 12px;
+        padding: 8px 16px;
+        border-radius: 10px;
         font-weight: 800;
-        font-size: 1.05rem;
+        font-size: 0.85rem;
         transition: all 0.3s ease;
         cursor: pointer;
         display: inline-block;
-        width: 100%;
         text-align: center;
         text-decoration: none;
     }
     
     .btn-elite-cancel:hover {
         background: rgba(229, 62, 62, 0.05);
+        transform: translateY(-1px);
     }
 </style>
 
@@ -281,7 +269,7 @@
             
             <[if!empty error]>
                 <div class="row justify-content-center mb-4">
-                    <div class="col-lg-8">
+                    <div class="col-lg-12">
                         <div class="alert alert-danger shadow-sm" role="alert" style="border-left: 5px solid #dc3545; border-radius: 12px; font-weight: 600;">
                             <i class="fas fa-exclamation-circle mr-2 text-danger"></i> <[error]>
                         </div>
@@ -313,85 +301,99 @@
                             <span style="font-size: 4.5rem; color: #cbd5e0; margin-bottom: 20px; display: block;"><i class="fas fa-shopping-bag text-muted"></i></span>
                             <h3 style="font-family: 'Playfair Display', serif; color: #1f2b37; margin-bottom: 12px; font-weight: 700; font-size: 1.8rem;">Il carrello è vuoto</h3>
                             <p style="color: #718096; font-size: 1.05rem; margin-bottom: 30px; max-width: 450px; margin-left: auto; margin-right: auto; line-height: 1.6;">Esplora le nostre meravigliose camere e suite per trovare la sistemazione perfetta.</p>
-                            <a href="<[base]>/rooms.php" class="btn-elite-confirm" style="max-width: 250px; margin: 0 auto; text-decoration: none;">Esplora Camere</a>
+                            <a href="<[base]>/index.php" class="btn-elite-confirm" style="max-width: 250px; margin: 0 auto; text-decoration: none;">Esplora Camere</a>
                         </div>
                     </div>
                 </div>
             <[/if!empty]>
 
-            <!-- Stato Carrello con Elemento (Side-by-Side Layout) -->
+            <!-- Stato Carrello con Elementi (Layout a due colonne) -->
             <[ifempty is_cart_empty]>
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="premium-glass-card">
-                            <div class="card-head-decor">
-                                <h3>Il tuo Soggiorno</h3>
-                                <p>Rivedi i dettagli prima di completare la prenotazione al Resort</p>
-                            </div>
-                            
-                            <div class="row no-gutters">
-                                <!-- Colonna Sinistra: Dettagli Camera -->
-                                <div class="col-md-7 p-4 p-md-5" style="background-color: #ffffff; border-right: 1px solid #edf2f7;">
-                                    <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #1f2b37; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #d87040; padding-bottom: 8px; display: inline-block;">Sistemazione Scelta</h4>
-                                    
-                                    <div class="premium-details-list" style="margin-bottom: 25px;">
-                                        <div class="premium-detail-row">
-                                            <div class="premium-label"><i class="fas fa-bed"></i> Categoria Camera</div>
-                                            <div class="premium-value"><[category_name]></div>
-                                        </div>
-                                        <div class="premium-detail-row">
-                                            <div class="premium-label"><i class="fas fa-key"></i> Stanza Assegnata</div>
-                                            <div class="premium-value">Camera <[room_number]></div>
-                                        </div>
-                                        <div class="premium-detail-row">
-                                            <div class="premium-label"><i class="far fa-calendar-check"></i> Arrivo (Check-In)</div>
-                                            <div class="premium-value"><[check_in]></div>
-                                        </div>
-                                        <div class="premium-detail-row">
-                                            <div class="premium-label"><i class="far fa-calendar-times"></i> Partenza (Check-Out)</div>
-                                            <div class="premium-value"><[check_out]></div>
-                                        </div>
-                                        <div class="premium-detail-row">
-                                            <div class="premium-label"><i class="fas fa-moon"></i> Notti di Soggiorno</div>
-                                            <div class="premium-value"><[nights]> Notti</div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="p-3 rounded" style="background-color: #fffaf0; border: 1px solid #feebc8;">
-                                        <p style="color: #c05621; font-size: 0.88rem; line-height: 1.5; margin: 0;">
-                                            <i class="fas fa-lock mr-1 text-warning"></i> La camera è temporaneamente riservata in sessione. Clicca su "Conferma Prenotazione" per registrarla nel database.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <!-- Colonna Destra: Pricing & Actions -->
-                                <div class="col-md-5 p-4 p-md-5 d-flex flex-column justify-content-between" style="background-color: #fbfcfe;">
+                <div class="row">
+                    <!-- Colonna Sinistra: Elenco Prenotazioni Bloccate -->
+                    <div class="col-lg-8 mb-4">
+                        <div class="d-flex align-items-center justify-content-between mb-4">
+                            <h2 style="font-family: 'Playfair Display', serif; font-weight: 800; color: #1f2b37; margin: 0; font-size: 1.8rem;">Camere Bloccate nel Carrello</h2>
+                            <a href="<[base]>/index.php" class="btn btn-outline-secondary" style="border-radius: 10px; font-weight: 700; font-size: 0.85rem; padding: 10px 18px;"><i class="fas fa-plus mr-1"></i> Aggiungi un'altra camera</a>
+                        </div>
+                        
+                        <[foreach]>
+                        <div class="premium-glass-card mb-4">
+                            <div class="p-4 p-md-5" style="background-color: #ffffff;">
+                                
+                                <!-- Intestazione camera con badge -->
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid #edf2f7; padding-bottom: 18px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
                                     <div>
-                                        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #1f2b37; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #d87040; padding-bottom: 8px; display: inline-block;">Sommario Prezzo</h4>
-                                        
-                                        <div class="premium-price-box">
-                                            <div class="price-detail-item">
-                                                <span>Tariffa Giornaliera</span>
-                                                <span>&euro;<[base_price]></span>
-                                            </div>
-                                            <div class="price-detail-item">
-                                                <span>Pernottamenti</span>
-                                                <span>x <[nights]> Notti</span>
-                                            </div>
-                                            <div class="price-total-row">
-                                                <strong>Totale</strong>
-                                                <span class="price-total-value">&euro;<[total_price]></span>
-                                            </div>
-                                        </div>
+                                        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #1f2b37; font-weight: 800; margin: 0;">
+                                            <[booking_category_name]>
+                                        </h4>
+                                        <span style="font-size: 0.9rem; color: #718096; font-weight: 600; margin-top: 4px; display: block;">Assegnata: Camera <[booking_room_number]></span>
                                     </div>
-                                    
-                                    <div class="actions-container">
-                                        <a href="<[confirm_url]>" class="btn-elite-confirm mb-3" style="text-decoration: none;">Conferma Prenotazione</a>
-                                        <a href="<[remove_url]>" class="btn-elite-cancel">Rimuovi Camera</a>
+                                    <span class="badge-blocked" style="background-color: #e6f7f6; color: #089c97; border: 1px solid #81d8d0; padding: 6px 12px; font-weight: 700; font-size: 0.75rem; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-flex; align-items: center;">
+                                        <i class="fas fa-lock mr-1"></i> Bloccata (Non acquistata)
+                                    </span>
+                                </div>
+                                
+                                <!-- Dettagli date e notti -->
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                                    <div>
+                                        <span style="font-size: 0.75rem; text-transform: uppercase; color: #a0aec0; font-weight: 800; display: block; margin-bottom: 4px;">Soggiorno</span>
+                                        <span style="font-weight: 700; color: #1f2b37; font-size: 0.95rem;"><i class="far fa-calendar-alt" style="color: #0abab5; margin-right: 6px;"></i> <[booking_check_in]> - <[booking_check_out]></span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 0.75rem; text-transform: uppercase; color: #a0aec0; font-weight: 800; display: block; margin-bottom: 4px;">Durata</span>
+                                        <span style="font-weight: 700; color: #1f2b37; font-size: 0.95rem;"><i class="fas fa-moon" style="color: #0abab5; margin-right: 6px;"></i> <[booking_nights]> Notti</span>
+                                    </div>
+                                    <div>
+                                        <span style="font-size: 0.75rem; text-transform: uppercase; color: #a0aec0; font-weight: 800; display: block; margin-bottom: 4px;">Tariffa Giornaliera</span>
+                                        <span style="font-weight: 700; color: #1f2b37; font-size: 0.95rem;">&euro;<[booking_base_price]></span>
+                                    </div>
+                                    <div class="text-md-right d-flex align-items-center justify-content-md-end">
+                                        <a href="<[booking_remove_url]>" class="btn-elite-cancel"><i class="fas fa-trash-alt mr-1"></i> Rimuovi Camera</a>
                                     </div>
                                 </div>
+                                
+                                <!-- Servizi Aggiuntivi -->
+                                <h5 style="font-weight: 800; color: #1f2b37; margin-bottom: 12px; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px;">Personalizza con Servizi Extra</h5>
+                                <p style="color: #718096; font-size: 0.85rem; margin-bottom: 15px;">Spunta i servizi desiderati specificamente per questa camera:</p>
+                                
+                                <div class="amenities-list" style="margin-bottom: 25px;">
+                                    <[booking_amenities_html]>
+                                </div>
+                                
+                                <!-- Prezzo Totale Camera -->
+                                <div style="display: flex; justify-content: flex-end; align-items: center; border-top: 1px solid #edf2f7; padding-top: 18px; flex-wrap: wrap; gap: 10px;">
+                                    <span style="font-weight: 700; color: #718096; font-size: 0.95rem;">Totale per questa camera:</span>
+                                    <span id="booking_total_<[booking_id]>" style="font-size: 1.4rem; color: #0abab5; font-weight: 800;">&euro;<[booking_total_price]></span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <[/foreach]>
+                    </div>
+                    
+                    <!-- Colonna Destra: Riepilogo del Carrello e Conferma -->
+                    <div class="col-lg-4">
+                        <div class="premium-glass-card sticky-top" style="top: 30px;">
+                            <div class="card-head-decor">
+                                <h3>Sommario Carrello</h3>
+                                <p>Verifica il totale cumulato</p>
                             </div>
                             
+                            <div class="p-4 p-md-5" style="background-color: #fbfcfe;">
+                                <div class="premium-price-box" style="text-align: center; padding: 25px 20px;">
+                                    <span style="font-size: 0.75rem; text-transform: uppercase; color: #718096; font-weight: 800; display: block; margin-bottom: 8px; letter-spacing: 1px;">Totale Complessivo</span>
+                                    <span class="price-total-value" id="grand-total-value" style="font-size: 2.2rem; color: #0abab5; font-weight: 900; display: block; line-height: 1;">&euro;<[grand_total_price]></span>
+                                </div>
+                                
+                                <div class="p-3 rounded mb-4" style="background-color: #e6f7f6; border: 1px solid #81d8d0;">
+                                    <p style="color: #089c97; font-size: 0.85rem; line-height: 1.5; margin: 0;">
+                                        <i class="fas fa-info-circle mr-1"></i> Le stanze sopra elencate sono state **bloccate** appositamente per te nel nostro sistema, ma per completare la prenotazione definitiva e ricevere la fattura clicca sul pulsante sottostante.
+                                    </p>
+                                </div>
+                                
+                                <a href="<[confirm_url]>" class="btn-elite-confirm"><i class="fas fa-check-circle mr-1"></i> Conferma Prenotazione</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -400,3 +402,47 @@
         </div>
     </div>
 </main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gestione delegate per il click dei checkbox delle amenities
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('amenity-checkbox')) {
+            const cb = e.target;
+            const bookingId = cb.dataset.bookingId;
+            const amenityId = cb.dataset.amenityId;
+            const card = document.getElementById('card_amenity_' + bookingId + '_' + amenityId);
+            
+            // Toggle grafico classe di selezione
+            if (cb.checked) {
+                if (card) card.classList.add('selected');
+            } else {
+                if (card) card.classList.remove('selected');
+            }
+            
+            // Chiamata asincrona al server per aggiornare lo stato nel database
+            fetch(`cart.php?action=toggle_amenity&booking_id=${bookingId}&amenity_id=${amenityId}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        // Aggiorna il totale specifico della camera
+                        const bTotalSpan = document.getElementById('booking_total_' + bookingId);
+                        if (bTotalSpan) {
+                            bTotalSpan.textContent = '€' + data.booking_total_price;
+                        }
+                        // Aggiorna il totale complessivo del carrello
+                        const grandTotalSpan = document.getElementById('grand-total-value');
+                        if (grandTotalSpan) {
+                            grandTotalSpan.textContent = '€' + data.cart_grand_total;
+                        }
+                    } else {
+                        alert('Impossibile aggiornare il servizio: ' + data.error);
+                    }
+                })
+                .catch(err => {
+                    console.error('Errore di connessione:', err);
+                });
+        }
+    });
+});
+</script>
