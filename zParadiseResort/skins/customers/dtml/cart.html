@@ -1,0 +1,402 @@
+<!-- Google Fonts per il look premium -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+<style>
+    .cart-wrapper-premium {
+        padding: 60px 0;
+        background: radial-gradient(circle at 50% 0%, #fcfdfe 0%, #ebf1f6 100%);
+        min-height: 90vh;
+        position: relative;
+        overflow: hidden;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    /* Cerchi sfocati decorativi per effetto Premium Glass */
+    .blur-decor {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        z-index: 0;
+        opacity: 0.4;
+        pointer-events: none;
+    }
+    .blur-1 {
+        width: 350px;
+        height: 350px;
+        background: #e28743;
+        top: -100px;
+        left: -100px;
+    }
+    .blur-2 {
+        width: 450px;
+        height: 450px;
+        background: #1f2b37;
+        bottom: -150px;
+        right: -100px;
+    }
+
+    /* Stepper di avanzamento prenotazione */
+    .booking-stepper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 600px;
+        margin: 0 auto 35px auto;
+        position: relative;
+        z-index: 2;
+    }
+    .step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        flex: 1;
+    }
+    .step-item::after {
+        content: '';
+        position: absolute;
+        top: 18px;
+        left: 50%;
+        width: 100%;
+        height: 3px;
+        background: #cbd5e0;
+        z-index: -1;
+    }
+    .step-item:last-child::after {
+        display: none;
+    }
+    .step-item.completed::after {
+        background: #d87040;
+    }
+    .step-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 3px solid #cbd5e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #718096;
+        font-size: 0.9rem;
+        transition: all 0.4s ease;
+        z-index: 2;
+    }
+    .step-item.active .step-icon {
+        border-color: #d87040;
+        color: #d87040;
+        box-shadow: 0 0 15px rgba(216, 112, 64, 0.25);
+    }
+    .step-item.completed .step-icon {
+        background: #d87040;
+        border-color: #d87040;
+        color: #ffffff;
+    }
+    .step-text {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #718096;
+        margin-top: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .step-item.active .step-text {
+        color: #d87040;
+    }
+    .step-item.completed .step-text {
+        color: #1f2b37;
+    }
+
+    /* Card di Dettaglio Glassmorphism */
+    .premium-glass-card {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px rgba(31, 43, 55, 0.05);
+        z-index: 2;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card-head-decor {
+        background: linear-gradient(135deg, #1f2b37 0%, #0c1117 100%);
+        padding: 30px;
+        text-align: center;
+        position: relative;
+    }
+    
+    .card-head-decor::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #d87040 0%, #f39c12 100%);
+    }
+
+    .card-head-decor h3 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        font-size: 2rem;
+        color: #ffffff;
+        margin-bottom: 5px;
+    }
+    
+    .card-head-decor p {
+        color: #a0aec0;
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+
+    /* Righe Dettaglio */
+    .premium-detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+    }
+    .premium-detail-row:last-child {
+        border-bottom: none;
+    }
+    .premium-label {
+        font-weight: 700;
+        color: #4a5568;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.95rem;
+    }
+    .premium-label i {
+        color: #d87040;
+        font-size: 1.1rem;
+        width: 20px;
+        text-align: center;
+    }
+    .premium-value {
+        font-weight: 800;
+        color: #1f2b37;
+        font-size: 1rem;
+    }
+
+    /* Box Prezzo Totale */
+    .premium-price-box {
+        background: rgba(247, 250, 252, 0.9);
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .price-detail-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        color: #718096;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .price-total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 2px dashed #cbd5e0;
+    }
+    
+    .price-total-row strong {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        color: #1f2b37;
+        font-weight: 800;
+    }
+    
+    .price-total-value {
+        font-size: 1.6rem;
+        color: #d87040;
+        font-weight: 900;
+    }
+
+    /* Pulsanti Elite */
+    .btn-elite-confirm {
+        background: linear-gradient(135deg, #d87040 0%, #c65e2e 100%);
+        color: white !important;
+        border: none;
+        padding: 16px 20px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1.05rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 10px 20px rgba(216, 112, 64, 0.2);
+        cursor: pointer;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        text-decoration: none;
+    }
+    
+    .btn-elite-confirm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 25px rgba(216, 112, 64, 0.3);
+        background: linear-gradient(135deg, #e58254 0%, #d87040 100%);
+    }
+    
+    .btn-elite-cancel {
+        background: transparent;
+        color: #e53e3e !important;
+        border: 2px solid #e53e3e;
+        padding: 14px 20px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1.05rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        text-decoration: none;
+    }
+    
+    .btn-elite-cancel:hover {
+        background: rgba(229, 62, 62, 0.05);
+    }
+</style>
+
+<main>
+    <div class="cart-wrapper-premium">
+        <!-- Elementi di sfondo sfocati -->
+        <div class="blur-decor blur-1"></div>
+        <div class="blur-decor blur-2"></div>
+
+        <div class="container" style="position: relative; z-index: 10;">
+            
+            <[if!empty error]>
+                <div class="row justify-content-center mb-4">
+                    <div class="col-lg-8">
+                        <div class="alert alert-danger shadow-sm" role="alert" style="border-left: 5px solid #dc3545; border-radius: 12px; font-weight: 600;">
+                            <i class="fas fa-exclamation-circle mr-2 text-danger"></i> <[error]>
+                        </div>
+                    </div>
+                </div>
+            <[/if!empty]>
+
+            <!-- Stepper del percorso -->
+            <div class="booking-stepper">
+                <div class="step-item completed">
+                    <div class="step-icon"><i class="fas fa-search"></i></div>
+                    <div class="step-text">Ricerca</div>
+                </div>
+                <div class="step-item active">
+                    <div class="step-icon">2</div>
+                    <div class="step-text">Carrello</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-icon">3</div>
+                    <div class="step-text">Conferma</div>
+                </div>
+            </div>
+
+            <!-- Stato Carrello Vuoto -->
+            <[if!empty is_cart_empty]>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="text-center p-5 premium-glass-card" style="padding: 60px 40px !important;">
+                            <span style="font-size: 4.5rem; color: #cbd5e0; margin-bottom: 20px; display: block;"><i class="fas fa-shopping-bag text-muted"></i></span>
+                            <h3 style="font-family: 'Playfair Display', serif; color: #1f2b37; margin-bottom: 12px; font-weight: 700; font-size: 1.8rem;">Il carrello è vuoto</h3>
+                            <p style="color: #718096; font-size: 1.05rem; margin-bottom: 30px; max-width: 450px; margin-left: auto; margin-right: auto; line-height: 1.6;">Esplora le nostre meravigliose camere e suite per trovare la sistemazione perfetta.</p>
+                            <a href="<[base]>/rooms.php" class="btn-elite-confirm" style="max-width: 250px; margin: 0 auto; text-decoration: none;">Esplora Camere</a>
+                        </div>
+                    </div>
+                </div>
+            <[/if!empty]>
+
+            <!-- Stato Carrello con Elemento (Side-by-Side Layout) -->
+            <[ifempty is_cart_empty]>
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="premium-glass-card">
+                            <div class="card-head-decor">
+                                <h3>Il tuo Soggiorno</h3>
+                                <p>Rivedi i dettagli prima di completare la prenotazione al Resort</p>
+                            </div>
+                            
+                            <div class="row no-gutters">
+                                <!-- Colonna Sinistra: Dettagli Camera -->
+                                <div class="col-md-7 p-4 p-md-5" style="background-color: #ffffff; border-right: 1px solid #edf2f7;">
+                                    <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #1f2b37; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #d87040; padding-bottom: 8px; display: inline-block;">Sistemazione Scelta</h4>
+                                    
+                                    <div class="premium-details-list" style="margin-bottom: 25px;">
+                                        <div class="premium-detail-row">
+                                            <div class="premium-label"><i class="fas fa-bed"></i> Categoria Camera</div>
+                                            <div class="premium-value"><[category_name]></div>
+                                        </div>
+                                        <div class="premium-detail-row">
+                                            <div class="premium-label"><i class="fas fa-key"></i> Stanza Assegnata</div>
+                                            <div class="premium-value">Camera <[room_number]></div>
+                                        </div>
+                                        <div class="premium-detail-row">
+                                            <div class="premium-label"><i class="far fa-calendar-check"></i> Arrivo (Check-In)</div>
+                                            <div class="premium-value"><[check_in]></div>
+                                        </div>
+                                        <div class="premium-detail-row">
+                                            <div class="premium-label"><i class="far fa-calendar-times"></i> Partenza (Check-Out)</div>
+                                            <div class="premium-value"><[check_out]></div>
+                                        </div>
+                                        <div class="premium-detail-row">
+                                            <div class="premium-label"><i class="fas fa-moon"></i> Notti di Soggiorno</div>
+                                            <div class="premium-value"><[nights]> Notti</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="p-3 rounded" style="background-color: #fffaf0; border: 1px solid #feebc8;">
+                                        <p style="color: #c05621; font-size: 0.88rem; line-height: 1.5; margin: 0;">
+                                            <i class="fas fa-lock mr-1 text-warning"></i> La camera è temporaneamente riservata in sessione. Clicca su "Conferma Prenotazione" per registrarla nel database.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- Colonna Destra: Pricing & Actions -->
+                                <div class="col-md-5 p-4 p-md-5 d-flex flex-column justify-content-between" style="background-color: #fbfcfe;">
+                                    <div>
+                                        <h4 style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #1f2b37; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #d87040; padding-bottom: 8px; display: inline-block;">Sommario Prezzo</h4>
+                                        
+                                        <div class="premium-price-box">
+                                            <div class="price-detail-item">
+                                                <span>Tariffa Giornaliera</span>
+                                                <span>&euro;<[base_price]></span>
+                                            </div>
+                                            <div class="price-detail-item">
+                                                <span>Pernottamenti</span>
+                                                <span>x <[nights]> Notti</span>
+                                            </div>
+                                            <div class="price-total-row">
+                                                <strong>Totale</strong>
+                                                <span class="price-total-value">&euro;<[total_price]></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="actions-container">
+                                        <a href="<[confirm_url]>" class="btn-elite-confirm mb-3" style="text-decoration: none;">Conferma Prenotazione</a>
+                                        <a href="<[remove_url]>" class="btn-elite-cancel">Rimuovi Camera</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            <[/ifempty]>
+
+        </div>
+    </div>
+</main>

@@ -1,0 +1,368 @@
+<!-- Google Fonts per il look premium -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+<style>
+    .success-wrapper-premium {
+        padding: 60px 0;
+        background: radial-gradient(circle at 50% 0%, #fcfdfe 0%, #ebf1f6 100%);
+        min-height: 90vh;
+        position: relative;
+        overflow: hidden;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    
+    /* Cerchi sfocati decorativi per effetto Premium Glass */
+    .blur-decor {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        z-index: 0;
+        opacity: 0.35;
+        pointer-events: none;
+    }
+    .blur-1 {
+        width: 350px;
+        height: 350px;
+        background: #2b8a3e;
+        top: -100px;
+        left: -100px;
+    }
+    .blur-2 {
+        width: 450px;
+        height: 450px;
+        background: #1f2b37;
+        bottom: -150px;
+        right: -100px;
+    }
+
+    /* Stepper di avanzamento prenotazione */
+    .booking-stepper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 600px;
+        margin: 0 auto 35px auto;
+        position: relative;
+        z-index: 2;
+    }
+    .step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        flex: 1;
+    }
+    .step-item::after {
+        content: '';
+        position: absolute;
+        top: 18px;
+        left: 50%;
+        width: 100%;
+        height: 3px;
+        background: #cbd5e0;
+        z-index: -1;
+    }
+    .step-item:last-child::after {
+        display: none;
+    }
+    .step-item.completed::after {
+        background: #2b8a3e;
+    }
+    .step-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: #ffffff;
+        border: 3px solid #cbd5e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: #718096;
+        font-size: 0.9rem;
+        transition: all 0.4s ease;
+        z-index: 2;
+    }
+    .step-item.active .step-icon {
+        border-color: #2b8a3e;
+        color: #2b8a3e;
+        box-shadow: 0 0 15px rgba(43, 138, 62, 0.25);
+    }
+    .step-item.completed .step-icon {
+        background: #2b8a3e;
+        border-color: #2b8a3e;
+        color: #ffffff;
+    }
+    .step-text {
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #718096;
+        margin-top: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .step-item.active .step-text {
+        color: #2b8a3e;
+    }
+    .step-item.completed .step-text {
+        color: #1f2b37;
+    }
+
+    /* Card di Successo Glassmorphism */
+    .premium-glass-card {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px rgba(31, 43, 55, 0.05);
+        z-index: 2;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .card-head-success {
+        background: linear-gradient(135deg, #2b8a3e 0%, #1e5e2a 100%);
+        padding: 30px;
+        text-align: center;
+        color: #ffffff;
+        position: relative;
+    }
+    
+    .card-head-success::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #d87040 0%, #f39c12 100%);
+    }
+
+    .card-head-success h3 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 800;
+        font-size: 2rem;
+        color: #ffffff;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+    
+    .card-head-success p {
+        color: #d3f9d8;
+        font-size: 0.9rem;
+        margin-bottom: 0;
+    }
+
+    .success-icon-anim {
+        font-size: 4rem;
+        color: #ffffff;
+        display: inline-block;
+        animation: scaleInSuccess 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Codice prenotazione */
+    .premium-ref-box {
+        text-align: center;
+        margin: 20px 0;
+    }
+    .premium-ref-box span {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        color: #a0aec0;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+    }
+    .premium-ref-box h4 {
+        font-size: 2.2rem;
+        color: #1f2b37;
+        font-weight: 900;
+        margin-top: 5px;
+    }
+
+    /* Righe Dettaglio */
+    .premium-detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+    }
+    .premium-detail-row:last-child {
+        border-bottom: none;
+    }
+    .premium-label {
+        font-weight: 700;
+        color: #4a5568;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 0.95rem;
+    }
+    .premium-label i {
+        color: #2b8a3e;
+        font-size: 1.1rem;
+        width: 20px;
+        text-align: center;
+    }
+    .premium-value {
+        font-weight: 800;
+        color: #1f2b37;
+        font-size: 1rem;
+    }
+
+    /* Box Prezzo Totale */
+    .premium-price-box {
+        background: rgba(247, 250, 252, 0.9);
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .price-total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .price-total-row strong {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.25rem;
+        color: #1f2b37;
+        font-weight: 800;
+    }
+    
+    .price-total-value {
+        font-size: 1.6rem;
+        color: #2b8a3e;
+        font-weight: 900;
+    }
+
+    /* Pulsante Elite */
+    .btn-elite-home {
+        background: linear-gradient(135deg, #1f2b37 0%, #0c1117 100%);
+        color: white !important;
+        border: none;
+        padding: 16px 20px;
+        border-radius: 12px;
+        font-weight: 800;
+        font-size: 1.05rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        box-shadow: 0 10px 20px rgba(31, 43, 55, 0.2);
+        cursor: pointer;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        text-decoration: none;
+    }
+    
+    .btn-elite-home:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 25px rgba(31, 43, 55, 0.3);
+        background: linear-gradient(135deg, #2d3e4f 0%, #1f2b37 100%);
+    }
+
+    @keyframes scaleInSuccess {
+        0% { transform: scale(0); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+</style>
+
+<main>
+    <div class="success-wrapper-premium">
+        <!-- Elementi di sfondo sfocati -->
+        <div class="blur-decor blur-1"></div>
+        <div class="blur-decor blur-2"></div>
+
+        <div class="container" style="position: relative; z-index: 10;">
+            
+            <!-- Stepper del percorso -->
+            <div class="booking-stepper">
+                <div class="step-item completed">
+                    <div class="step-icon"><i class="fas fa-search"></i></div>
+                    <div class="step-text">Ricerca</div>
+                </div>
+                <div class="step-item completed">
+                    <div class="step-icon"><i class="fas fa-shopping-bag"></i></div>
+                    <div class="step-text">Carrello</div>
+                </div>
+                <div class="step-item active">
+                    <div class="step-icon"><i class="fas fa-check"></i></div>
+                    <div class="step-text">Conferma</div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="premium-glass-card">
+                        
+                        <div class="card-head-success">
+                            <span class="success-icon-anim"><i class="fas fa-check-circle"></i></span>
+                            <h3>Prenotazione Confermata</h3>
+                            <p>Il tuo soggiorno da sogno è registrato con successo nel nostro sistema</p>
+                        </div>
+                        
+                        <div class="row no-gutters">
+                            <!-- Colonna Sinistra: Dettagli Prenotazione -->
+                            <div class="col-md-7 p-4 p-md-5" style="background-color: #ffffff; border-right: 1px solid #edf2f7;">
+                                <h5 class="summary-title" style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #1f2b37; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #2b8a3e; padding-bottom: 8px; display: inline-block;">Riepilogo Soggiorno</h5>
+                                
+                                <div class="premium-details-list" style="margin-bottom: 25px;">
+                                    <div class="premium-detail-row">
+                                        <div class="premium-label"><i class="fas fa-bed"></i> Sistemazione</div>
+                                        <div class="premium-value"><[category_name]> (Camera <[room_number]>)</div>
+                                    </div>
+                                    <div class="premium-detail-row">
+                                        <div class="premium-label"><i class="far fa-calendar-check"></i> Data Check-In</div>
+                                        <div class="premium-value"><[check_in]></div>
+                                    </div>
+                                    <div class="premium-detail-row">
+                                        <div class="premium-label"><i class="far fa-calendar-times"></i> Data Check-Out</div>
+                                        <div class="premium-value"><[check_out]></div>
+                                    </div>
+                                    <div class="premium-detail-row">
+                                        <div class="premium-label"><i class="fas fa-moon"></i> Durata Soggiorno</div>
+                                        <div class="premium-value"><[nights]> Notti</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="p-3 rounded text-center" style="background-color: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 12px;">
+                                    <p style="color: #2e7d32; font-size: 0.9rem; margin: 0; line-height: 1.5;">
+                                        <i class="fas fa-receipt mr-1"></i> Abbiamo generato la tua fattura pro-forma. Potrai pagare al tuo arrivo in reception.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Colonna Destra: Riferimento & Azioni -->
+                            <div class="col-md-5 p-4 p-md-5 d-flex flex-column justify-content-between" style="background-color: #fbfcfe;">
+                                <div>
+                                    <div class="premium-ref-box">
+                                        <span>Codice Riferimento</span>
+                                        <h4>#<[booking_id]></h4>
+                                    </div>
+                                    
+                                    <div class="premium-price-box">
+                                        <div class="price-total-row">
+                                            <strong>Totale</strong>
+                                            <span class="price-total-value">&euro;<[total_price]></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="actions-container">
+                                    <a href="<[base]>/index.php" class="btn-elite-home">Torna alla Home</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</main>

@@ -23,6 +23,15 @@
             <link rel="stylesheet" href="<[base]>/skins/<[skin]>/assets/css/nice-select.css">
             <link rel="stylesheet" href="<[base]>/skins/<[skin]>/assets/css/style.css">
             <link rel="stylesheet" href="<[base]>/skins/<[skin]>/assets/css/responsive.css">
+            <style>
+                /* Riduce il padding orizzontale dei menu per evitare il wrapping disallineato */
+                @media (min-width: 992px) {
+                    .main-header .main-menu ul li a {
+                        padding: 38px 10px !important; 
+                        font-size: 15px !important;
+                    }
+                }
+            </style>
    </head>
 
    <body>
@@ -63,6 +72,7 @@
                                         <li><a href="<[base]>/index.php#services">Servizi & SPA</a></li>
                                         <li><a href="<[base]>/index.php#contact">Contatti</a></li>
                                         <[if!empty is_logged]>
+                                        <li><a href="<[base]>/cart.php">Carrello<[cart_badge]></a></li>
                                         <li><a style="color: #d87040; font-weight: bold;" href="#">Ciao, <[user.name]></a>
                                             <ul class="submenu">
                                                 <li><a href="<[base]>/logout.php">Esci (Logout)</a></li>
