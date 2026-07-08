@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             );
             $roleStmt->execute([$row['id']]);
             $roleRow = $roleStmt->fetch();
-            $role = $roleRow['name'] ?? 'guest';
+            $role = strtolower($roleRow['name'] ?? 'guest');
 
             if ($role === 'admin') {
                 $dest = $config['base'] . '/admin/index.php';

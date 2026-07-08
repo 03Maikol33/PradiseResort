@@ -1,0 +1,83 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1">Panoramica</p>
+        <h1 class="h3 mb-1">Dashboard Gestionale</h1>
+        <p class="text-muted mb-0">Benvenuto, <strong><[user_name]></strong>. Monitora lo stato attuale del resort.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="row g-3 mt-1" aria-label="Dashboard metrics">
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-primary">
+        <div class="metric-top">
+          <span class="metric-label">Ricavi Totali</span>
+          <span class="metric-icon"><i class="bi bi-currency-euro" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value">&euro;<[total_revenue]></div>
+        <div class="metric-meta">
+          <span>Stime basate su prenotazioni confermate/completate</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-success">
+        <div class="metric-top">
+          <span class="metric-label">Prenotazioni Totali</span>
+          <span class="metric-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value"><[total_bookings]></div>
+        <div class="metric-meta">
+          <span>Registrate a sistema</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-warning">
+        <div class="metric-top">
+          <span class="metric-label">In Attesa (Pending)</span>
+          <span class="metric-icon"><i class="bi bi-hourglass-split" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value"><[pending_bookings]></div>
+        <div class="metric-meta">
+          <span>Da confermare</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-danger">
+        <div class="metric-top">
+          <span class="metric-label">Stanze in Manutenzione</span>
+          <span class="metric-icon"><i class="bi bi-tools" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value"><[maintenance_rooms]></div>
+        <div class="metric-meta">
+          <span>Interventi tecnici attivi</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="panel mt-4">
+    <div class="panel-header">
+      <div>
+        <h2 class="h5 mb-1 section-title"><i class="bi bi-activity" aria-hidden="true"></i><span>Azioni Rapide</span></h2>
+        <p class="text-muted mb-0">Gestisci i flussi del resort</p>
+      </div>
+    </div>
+    <div class="p-4">
+      <div class="d-flex gap-3 flex-wrap">
+        <a href="<[base]>/<[role_path]>/bookings.php" class="btn btn-primary btn-lg"><i class="bi bi-calendar-check"></i> Gestisci Prenotazioni</a>
+        <[if!empty is_admin_role]>
+        <a href="<[base]>/admin/users.php" class="btn btn-outline-secondary btn-lg"><i class="bi bi-people"></i> Gestisci Utenti</a>
+        <[/if!empty]>
+      </div>
+    </div>
+  </section>
+</div>
