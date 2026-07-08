@@ -9,6 +9,13 @@
   <link rel="stylesheet" href="<[base]>/skins/<[skin]>/assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="<[base]>/skins/<[skin]>/assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="<[base]>/skins/<[skin]>/assets/css/style.css">
+  <script>
+    window.adminHMDUser = {
+      name: "<[user.name]>",
+      workspace: "Paradise Resort",
+      avatar: "<[base]>/skins/<[skin]>/assets/images/avatar/avatar.jpg"
+    };
+  </script>
 </head>
 
 <body>
@@ -27,7 +34,7 @@
       </div>
 
       <nav class="sidebar-nav">
-        <a class="nav-link active" href="index.html" aria-current="page">
+        <a class="nav-link" href="index.html" aria-current="page">
           <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
           <span class="nav-text">Dashboard</span>
         </a>
@@ -82,8 +89,8 @@
       </nav>
 
       <div class="sidebar-user">
-        <img class="avatar-img avatar-md sidebar-user-avatar" src="<[base]>/skins/<[skin]>/assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-        <strong>Admin Hasan</strong>
+        <img class="avatar-img avatar-md sidebar-user-avatar" src="<[base]>/skins/<[skin]>/assets/images/avatar/avatar.jpg" alt="Nome Utente">
+        <strong><[user.name]></strong>
         <small>Active Workspace</small>
       </div>
 
@@ -132,14 +139,14 @@
 
             <div class="dropdown">
               <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="avatar-img avatar-sm" src="<[base]>/skins/<[skin]>/assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-                <span class="profile-name d-none d-sm-inline">Admin Hasan</span>
+                <img class="avatar-img avatar-sm" src="<[base]>/skins/<[skin]>/assets/images/avatar/avatar.jpg" alt="Foto profilo">
+                <span class="profile-name d-none d-sm-inline"><[user.name]></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="profile.html">Profile</a></li>
-                <li><a class="dropdown-item" href="settings.html">Account settings</a></li>
+                <li><a class="dropdown-item" href="profile.html">Profilo</a></li>
+                <li><a class="dropdown-item" href="settings.html">Impostazioni account</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="login.html">Sign out</a></li>
+                <li><a class="dropdown-item" href="login.html">Esci</a></li>
               </ul>
             </div>
           </div>

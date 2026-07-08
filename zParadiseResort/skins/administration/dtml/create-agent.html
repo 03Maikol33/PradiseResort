@@ -78,8 +78,8 @@
       </nav>
 
       <div class="sidebar-user">
-        <img class="avatar-img avatar-md sidebar-user-avatar" src="../assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-        <strong>Admin Hasan</strong>
+        <img class="avatar-img avatar-md sidebar-user-avatar" src="../assets/images/avatar/avatar.jpg" alt="<[user.name]>">
+        <strong><[user.name]></strong>
         <small>Active Workspace</small>
       </div>
 
@@ -130,8 +130,8 @@
 
             <div class="dropdown">
               <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="avatar-img avatar-sm" src="../assets/images/avatar/avatar.jpg" alt="Admin Hasan">
-                <span class="profile-name d-none d-sm-inline">Admin Hasan</span>
+                <img class="avatar-img avatar-sm" src="../assets/images/avatar/avatar.jpg" alt="<[user.name]>">
+                <span class="profile-name d-none d-sm-inline"><[user.name]></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="profile.html">Profile</a></li>
@@ -167,7 +167,7 @@
                   <div class="col-md-6"><label class="form-label" for="agentType">Agent Type</label><select class="form-select" id="agentType" required><option value="">Choose type</option><option>Chatbot</option><option>Task Automation</option><option>Data Analysis</option><option>Content Generation</option><option>Custom</option></select><div class="invalid-feedback">Choose an agent type.</div></div>
                   <div class="col-12"><label class="form-label" for="description">Description</label><textarea class="form-control" id="description" rows="3" placeholder="Describe what this agent does and its primary responsibilities" required></textarea><div class="invalid-feedback">Description is required.</div></div>
                   <div class="col-md-6"><label class="form-label" for="team">Assigned Team</label><select class="form-select" id="team" required><option value="">Choose team</option><option>Operations</option><option>Sales</option><option>Content</option><option>Finance</option><option>Support</option></select><div class="invalid-feedback">Choose a team.</div></div>
-                  <div class="col-md-6"><label class="form-label" for="owner">Owner/Manager</label><select class="form-select" id="owner" required><option value="">Choose owner</option><option>Admin Hasan</option><option>Team Lead</option><option>Manager</option><option>Supervisor</option></select><div class="invalid-feedback">Choose an owner.</div></div>
+                  <div class="col-md-6"><label class="form-label" for="owner">Owner/Manager</label><select class="form-select" id="owner" required><option value="">Choose owner</option><option><[user.name]></option><option>Team Lead</option><option>Manager</option><option>Supervisor</option></select><div class="invalid-feedback">Choose an owner.</div></div>
                   <div class="col-12"><label class="form-label">Capabilities</label><div class="capability-checkboxes"><div class="form-check"><input class="form-check-input" type="checkbox" id="cap1" value="nlp"><label class="form-check-label" for="cap1">Natural Language Processing</label></div><div class="form-check"><input class="form-check-input" type="checkbox" id="cap2" value="automation"><label class="form-check-label" for="cap2">Task Automation</label></div><div class="form-check"><input class="form-check-input" type="checkbox" id="cap3" value="analytics"><label class="form-check-label" for="cap3">Analytics & Reporting</label></div><div class="form-check"><input class="form-check-input" type="checkbox" id="cap4" value="integration"><label class="form-check-label" for="cap4">API Integration</label></div><div class="form-check"><input class="form-check-input" type="checkbox" id="cap5" value="scheduling"><label class="form-check-label" for="cap5">Scheduling</label></div><div class="form-check"><input class="form-check-input" type="checkbox" id="cap6" value="alerts"><label class="form-check-label" for="cap6">Alert Management</label></div></div></div>
                   <div class="col-md-6"><label class="form-label" for="status">Status</label><select class="form-select" id="status" required><option value="">Choose status</option><option selected>Draft</option><option>Active</option><option>Inactive</option></select><div class="invalid-feedback">Choose a status.</div></div>
                   <div class="col-md-6"><label class="form-label" for="priority">Priority Level</label><select class="form-select" id="priority" required><option value="">Choose priority</option><option>Low</option><option>Medium</option><option selected>High</option><option>Critical</option></select><div class="invalid-feedback">Choose a priority level.</div></div>

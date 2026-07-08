@@ -15,7 +15,6 @@ if (!is_admin()) {
 // Inizializza la pagina usando il frame privato dell'amministrazione
 $page = new_page('administration', 'frame-private');
 $block = new_block('users');
-
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 0;
 
