@@ -1,0 +1,62 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-tags" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1"><a href="categories.php" class="text-decoration-none">Categorie Camere</a> / Gestione</p>
+        <h1 class="h3 mb-1"><[page_title]></h1>
+      </div>
+    </div>
+  </div>
+
+  <[if show_error]>
+  <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i> <[error_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if]>
+
+  <section class="panel mt-3">
+    <div class="panel-header">
+      <div>
+        <h2 class="h5 mb-1 section-title"><i class="bi bi-pencil-square" aria-hidden="true"></i><span>Dettagli Categoria</span></h2>
+      </div>
+    </div>
+    <div class="panel-body">
+      <form action="category_edit.php" method="POST">
+        <input type="hidden" name="id" value="<[cat_id]>">
+        
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="name" class="form-label">Nome Categoria <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="name" name="name" value="<[cat_name]>" required>
+          </div>
+          <div class="col-md-3">
+            <label for="base_price" class="form-label">Prezzo Base (€) <span class="text-danger">*</span></label>
+            <input type="number" step="0.01" class="form-control" id="base_price" name="base_price" value="<[cat_base_price]>" required>
+          </div>
+          <div class="col-md-3">
+            <label for="capacity" class="form-label">Capacità (Persone) <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="capacity" name="capacity" value="<[cat_capacity]>" required min="1">
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="image_url" class="form-label">URL Immagine</label>
+          <input type="text" class="form-control" id="image_url" name="image_url" value="<[cat_image_url]>">
+          <div class="form-text">Inserisci l'URL dell'immagine rappresentativa della categoria.</div>
+        </div>
+
+        <div class="mb-4">
+          <label for="description" class="form-label">Descrizione</label>
+          <textarea class="form-control" id="description" name="description" rows="4"><[cat_description]></textarea>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i><[action_text]></button>
+          <a href="categories.php" class="btn btn-outline-secondary">Annulla</a>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
