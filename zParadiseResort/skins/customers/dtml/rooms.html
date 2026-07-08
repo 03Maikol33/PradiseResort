@@ -31,6 +31,31 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Category Filter -->
+            <style>
+                .room-filter-btn {
+                    padding: 10px 20px !important; 
+                    border-radius: 30px !important;
+                    background-color: #f0f0f0 !important; 
+                    color: #333 !important;
+                }
+                .room-filter-btn.active-filter {
+                    background-color: #0abab5 !important; 
+                    color: #fff !important;
+                }
+            </style>
+            <div class="row justify-content-center mb-50">
+                <div class="col-lg-10 text-center">
+                    <div class="room-filter d-flex flex-wrap justify-content-center" style="gap: 15px;">
+                        <a href="<[filter_all_url]>" class="btn btn-sm room-filter-btn <[filter_all_class]>">Tutte</a>
+                        <[foreach]>
+                            <a href="<[filter_url]>" class="btn btn-sm room-filter-btn <[filter_class]>"><[filter_cat_name]></a>
+                        <[/foreach]>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <[foreach]>
                     <div class="col-xl-4 col-lg-6 col-md-6">

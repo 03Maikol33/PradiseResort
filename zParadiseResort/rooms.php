@@ -11,13 +11,40 @@ $skin->setContent('user.name', $_SESSION['user']['name'] ?? '');
 
 $block = new_block('rooms');
 
+// Recupera le categorie per i filtri
+$stmtCat = $db->query("SELECT id, name FROM room_categories ORDER BY base_price ASC");
+$categories = $stmtCat->fetchAll(PDO::FETCH_ASSOC);
+
+$selectedCatId = (int)($_GET['category_id'] ?? 0);
+
+foreach ($categories as $cat) {
+    $isActive = ($cat['id'] == $selectedCatId);
+    $block->setContent('filter_cat_id', $cat['id']);
+    $block->setContent('filter_cat_name', htmlspecialchars($cat['name']));
+    $block->setContent('filter_class', $isActive ? 'active-filter' : '');
+    $block->setContent('filter_style', $isActive ? 'background-color: #0abab5; color: #fff;' : 'background-color: #f0f0f0; color: #333;');
+    $block->setContent('filter_url', $config['base'] . '/rooms.php?category_id=' . $cat['id']);
+}
+$isAllActive = ($selectedCatId == 0);
+$block->setContent('filter_all_class', $isAllActive ? 'active-filter' : '');
+$block->setContent('filter_all_style', $isAllActive ? 'background-color: #0abab5; color: #fff;' : 'background-color: #f0f0f0; color: #333;');
+$block->setContent('filter_all_url', $config['base'] . '/rooms.php');
+
 // Query per recuperare le stanze disponibili
-$stmt = $db->query("
+$query = "
     SELECT r.id as room_id, r.category_id, r.room_number, c.name, c.base_price, c.image_url, c.description
     FROM rooms r
     JOIN room_categories c ON r.category_id = c.id
     WHERE r.status = 'available'
-");
+";
+$params = [];
+if ($selectedCatId > 0) {
+    $query .= " AND c.id = :cat_id";
+    $params['cat_id'] = $selectedCatId;
+}
+
+$stmt = $db->prepare($query);
+$stmt->execute($params);
 $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($rooms as $room) {
