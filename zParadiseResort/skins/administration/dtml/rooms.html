@@ -1,0 +1,83 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-door-open" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1">Gestione</p>
+        <h1 class="h3 mb-1">Camere Fisiche</h1>
+        <p class="text-muted mb-0">Gestisci l'inventario delle singole stanze dell'hotel.</p>
+      </div>
+    </div>
+  </div>
+
+  <[if!empty show_success]>
+  <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+    <i class="bi bi-check-circle me-2"></i> <[success_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <[if!empty show_error]>
+  <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i> <[error_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <section class="panel mt-3">
+    <div class="panel-header flex-column flex-md-row align-items-md-center">
+      <div>
+        <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>Lista Stanze</span></h2>
+      </div>
+      <div class="d-flex flex-wrap gap-2 mt-2 mt-md-0 w-100 w-md-auto justify-content-md-end">
+        <form action="rooms.php" method="GET" class="d-flex gap-2">
+            <select name="category" class="form-select form-select-sm">
+                <option value="">Tutte le Categorie</option>
+                <[foreach]>
+                <option value="<[filter_cat_id]>" <[filter_cat_selected]>><[filter_cat_name]></option>
+                <[/foreach]>
+            </select>
+            <select name="floor" class="form-select form-select-sm">
+                <option value="">Tutti i Piani</option>
+                <[foreach]>
+                <option value="<[filter_floor_val]>" <[filter_floor_selected]>>Piano <[filter_floor_val]></option>
+                <[/foreach]>
+            </select>
+            <button type="submit" class="btn btn-outline-secondary btn-sm">Filtra</button>
+        </form>
+        <a href="room_edit.php" class="btn btn-sm text-white" style="background-color: #007a7a; border-color: #007a7a;"><i class="bi bi-plus-circle me-1"></i>Aggiungi Stanza</a>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0" id="roomsTable">
+        <thead>
+          <tr>
+            <th scope="col">Numero</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Piano</th>
+            <th scope="col">Stato</th>
+            <th scope="col" class="text-end">Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <[foreach]>
+          <tr>
+            <td><span class="fw-bold"><[room_number]></span></td>
+            <td><[room_category]></td>
+            <td><[room_floor]></td>
+            <td><span class="badge <[room_status_badge]>"><[room_status_label]></span></td>
+            <td class="text-end">
+              <a href="room_edit.php?id=<[room_id]>" class="btn btn-sm btn-outline-primary" title="Modifica"><i class="bi bi-pencil"></i></a>
+              <a href="room_delete.php?id=<[room_id]>" class="btn btn-sm btn-outline-danger" title="Elimina" onclick="return confirm('Sei sicuro di voler eliminare questa stanza?');"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+          <[/foreach]>
+          
+          <[ifempty rooms_list]>
+          <tr><td colspan="5" class="text-center py-4">Nessuna stanza trovata con questi filtri</td></tr>
+          <[/ifempty]>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

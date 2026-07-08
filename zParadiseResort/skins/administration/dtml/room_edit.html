@@ -1,0 +1,68 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-door-open" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1"><a href="rooms.php" class="text-decoration-none">Camere Fisiche</a> / Gestione</p>
+        <h1 class="h3 mb-1"><[page_title]></h1>
+      </div>
+    </div>
+  </div>
+
+  <[if!empty show_error]>
+  <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i> <[error_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <section class="panel mt-3">
+    <div class="panel-header">
+      <div>
+        <h2 class="h5 mb-1 section-title"><i class="bi bi-pencil-square" aria-hidden="true"></i><span>Dettagli Stanza</span></h2>
+      </div>
+    </div>
+    <div class="panel-body">
+      <form action="room_edit.php" method="POST">
+        <input type="hidden" name="id" value="<[room_id]>">
+        
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label for="room_number" class="form-label">Numero Stanza <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="room_number" name="room_number" value="<[room_number]>" required>
+            <div class="form-text">Es. 101, 102A, Suite-1. Deve essere unico.</div>
+          </div>
+          
+          <div class="col-md-4">
+            <label for="category_id" class="form-label">Categoria <span class="text-danger">*</span></label>
+            <select class="form-select" id="category_id" name="category_id" required>
+              <option value="" disabled <[ifempty room_id]>selected<[/ifempty]>>Seleziona una categoria</option>
+              <[foreach]>
+              <option value="<[cat_opt_id]>" <[cat_opt_selected]>><[cat_opt_name]></option>
+              <[/foreach]>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label for="floor" class="form-label">Piano <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="floor" name="floor" value="<[room_floor]>" required>
+          </div>
+          
+          <div class="col-md-2">
+            <label for="status" class="form-label">Stato <span class="text-danger">*</span></label>
+            <select class="form-select" id="status" name="status" required>
+              <option value="available" <[status_available_selected]>>Disponibile</option>
+              <option value="maintenance" <[status_maintenance_selected]>>In Manutenzione</option>
+              <option value="cleaning" <[status_cleaning_selected]>>In Pulizia</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i><[action_text]></button>
+          <a href="rooms.php" class="btn btn-outline-secondary">Annulla</a>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
