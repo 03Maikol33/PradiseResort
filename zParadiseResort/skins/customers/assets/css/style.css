@@ -34,23 +34,23 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400,700,900|Noto+Serif:400,400i,700&display=swap");
 .boxed-btn {
   background: #fff;
-  color: #dca73a !important;
+  color: #0abab5 !important;
   display: inline-block;
   padding: 18px 44px;
   font-family: "Lato", sans-serif;
   font-size: 14px;
   font-weight: 400;
   border: 0;
-  border: 1px solid #dca73a;
+  border: 1px solid #0abab5;
   letter-spacing: 3px;
   text-align: center;
-  color: #dca73a;
+  color: #0abab5;
   text-transform: uppercase;
   cursor: pointer; }
   .boxed-btn:hover {
-    background: #dca73a;
+    background: #0abab5;
     color: #fff !important;
-    border: 1px solid #dca73a; }
+    border: 1px solid #0abab5; }
   .boxed-btn:focus {
     outline: none; }
   .boxed-btn.large-width {
@@ -277,7 +277,7 @@ label {
 /* button style */
 .btn {
   -moz-user-select: none;
-  background: #dca73a;
+  background: #0abab5;
   border: medium none;
   border-radius: 5px;
   color: #fff;
@@ -297,16 +297,16 @@ label {
   white-space: nowrap; }
 
 .btn:hover {
-  background: #f1b233;
+  background: #089c99;
   color: #fff; }
 
 .border-btn {
   background: none;
-  border: 2px solid #dca73a;
-  color: #dca73a; }
+  border: 2px solid #0abab5;
+  color: #0abab5; }
 
 .border-btn i {
-  color: #dca73a !important;
+  color: #0abab5 !important;
   position: relative;
   left: 0; }
 
@@ -399,7 +399,7 @@ label {
 
 /* scrollUp */
 #scrollUp {
-  background: #dca73a;
+  background: #0abab5;
   height: 50px;
   width: 50px;
   right: 50px;
@@ -1507,7 +1507,7 @@ label {
   position: relative;
   border-style: solid;
   border-width: 3px;
-  border-top-color: #dca73a;
+  border-top-color: #0abab5;
   border-bottom-color: transparent;
   border-left-color: transparent;
   border-right-color: transparent;
@@ -1547,7 +1547,7 @@ label {
 
 .preloader .pere-text strong {
   font-weight: 800;
-  color: #dca73a;
+  color: #0abab5;
   text-transform: uppercase; }
 
 @-webkit-keyframes zoom {
@@ -1766,7 +1766,7 @@ label {
   background: #16161a; }
 
 .theme-bg {
-  background: #dca73a; }
+  background: #0abab5; }
 
 .brand-bg {
   background: #f1f4fa; }
@@ -1782,7 +1782,7 @@ label {
   color: #16161a; }
 
 .theme-color {
-  color: #dca73a; }
+  color: #0abab5; }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .header-area {
@@ -1817,7 +1817,7 @@ label {
       transition: all 0.3s ease-out 0s;
       font-family: 'Lato', sans-serif; }
     .main-header .main-menu ul li:hover > a {
-      color: #dca73a; }
+      color: #0abab5; }
   .main-header .main-menu ul ul.submenu {
     position: absolute;
     width: 170px;
@@ -1841,7 +1841,7 @@ label {
         font-size: 14px;
         color: #0b1c39; }
         .main-header .main-menu ul ul.submenu > li > a:hover {
-          color: #dca73a; }
+          color: #0abab5; }
 
 .main-header ul > li:hover > ul.submenu {
   visibility: visible;
@@ -2099,11 +2099,11 @@ label {
   top: 50px; }
 
 .nice-select .option:hover, .nice-select .option.focus, .nice-select .option.selected.focus {
-  background-color: #dca73a;
+  background-color: #0abab5;
   color: #791616; }
 
 .booking-area .booking-wrap .nice-select.open .list {
-  border: 1px solid #dca73a;
+  border: 1px solid #0abab5;
   width: 100%; }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
@@ -2144,7 +2144,7 @@ label {
     .customer-caption {
       padding-left: 0px; } }
   .customer-caption span {
-    color: #dca73a;
+    color: #0abab5;
     font-size: 14px;
     display: block;
     margin-bottom: 13px; }
@@ -2363,7 +2363,7 @@ label {
   -o-transition: all 0.3s ease-out 0s;
   transition: all 0.3s ease-out 0s; }
   .single-room .room-caption:hover h3 a {
-    color: #dca73a; }
+    color: #0abab5; }
   .single-room .room-caption h3 {
     color: #112e41;
     font-size: 25px;
@@ -2373,7 +2373,7 @@ label {
       .single-room .room-caption h3 {
         font-size: 20px; } }
     .single-room .room-caption h3 a:hover {
-      color: #dca73a; }
+      color: #0abab5; }
   .single-room .room-caption .per-night span {
     color: #112e41;
     font-size: 18px;
@@ -2489,7 +2489,7 @@ label {
     .dining-area .dining-caption {
       padding: 55px 38px 53px 29px; } }
   .dining-area .dining-caption span {
-    color: #dca73a;
+    color: #0abab5;
     text-transform: uppercase;
     margin-bottom: 14px;
     display: block; }
@@ -2522,7 +2522,7 @@ label {
 .testimonial-area .testimonial-ratting {
   margin-bottom: 21px; }
   .testimonial-area .testimonial-ratting i {
-    color: #FBBA42;
+    color: #0abab5;
     display: inline-block; }
 
 .testimonial-area .rattiong-caption span {
@@ -2587,7 +2587,7 @@ label {
       right: 0; } }
 
 .h1-testimonial-active:hover button {
-  background: #dca73a;
+  background: #0abab5;
   color: #fff; }
 
 .blog-area .single-blog {
@@ -2612,7 +2612,7 @@ label {
         padding: 22px 22px 20px 20px; } }
     .blog-area .single-blog .blog-caption .blog-cap-top span {
       color: #fff;
-      background: #dca73a;
+      background: #0abab5;
       padding: 4px 13px;
       text-transform: uppercase;
       font-size: 14px;
@@ -2623,7 +2623,7 @@ label {
       font-size: 14px;
       font-family: 'Lato', sans-serif; }
       .blog-area .single-blog .blog-caption .blog-cap-top ul li a {
-        color: #dca73a;
+        color: #0abab5;
         font-size: 14px; }
     .blog-area .single-blog .blog-caption .blog-cap-mid p a {
       color: #444444;
@@ -2635,7 +2635,7 @@ label {
         .blog-area .single-blog .blog-caption .blog-cap-mid p a {
           font-size: 14px; } }
       .blog-area .single-blog .blog-caption .blog-cap-mid p a:hover {
-        color: #dca73a; }
+        color: #0abab5; }
     .blog-area .single-blog .blog-caption .blog-cap-bottom {
       padding-top: 20px;
       border-top: 1px solid #f9f9f9; }
@@ -2674,7 +2674,7 @@ label {
       transform: scale(1.1); }
 
 .footer-area .footer-social2 a:hover {
-  background: #dca73a;
+  background: #0abab5;
   color: #fff;
   border: 1px solid transparent; }
 
@@ -2683,7 +2683,7 @@ label {
   font-size: 14px;
   padding-right: 52px; }
   .footer-area .footer-pera p span a {
-    color: #dca73a; }
+    color: #0abab5; }
     .footer-area .footer-pera p span a:hover {
       color: #fff; }
 
@@ -2700,7 +2700,7 @@ label {
     color: #868c98;
     font-weight: 300; }
     .footer-area .footer-tittle ul li a:hover {
-      color: #dca73a;
+      color: #0abab5;
       padding-left: 5px; }
 
 .footer-area .footer-form {
@@ -2721,7 +2721,7 @@ label {
       cursor: pointer; }
 
 .footer-area .info.error {
-  color: #dca73a; }
+  color: #0abab5; }
 
 .hero-caption span {
   color: #fff;
@@ -2736,7 +2736,7 @@ label {
     content: "";
     width: 75px;
     height: 3px;
-    background: #dca73a;
+    background: #0abab5;
     left: 0;
     top: 52%;
     transform: translateY(-50%); }
@@ -2760,7 +2760,7 @@ label {
   -o-transition: all 0.3s ease-out 0s;
   transition: all 0.3s ease-out 0s; }
   .blog_area a:hover, .blog_area a :hover {
-    background: -webkit-linear-gradient(131deg, #dca73a 0%, #dca73a 99%);
+    background: -webkit-linear-gradient(131deg, #0abab5 0%, #0abab5 99%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-decoration: none;
@@ -3090,7 +3090,7 @@ label {
   .blog_details a {
     color: #ff8b23; }
     .blog_details a:hover {
-      color: #dca73a; }
+      color: #0abab5; }
   .blog_details h2 {
     font-size: 18px;
     font-weight: 600;
@@ -3130,7 +3130,7 @@ label {
     left: 10px;
     display: block;
     color: #fff;
-    background-color: #dca73a;
+    background-color: #0abab5;
     padding: 8px 15px;
     border-radius: 5px; }
     @media (min-width: 768px) {
@@ -3269,7 +3269,7 @@ label {
     color: #888888;
     font-size: 13px; }
     .blog_right_sidebar .tag_cloud_widget ul li a:hover {
-      background: #dca73a;
+      background: #0abab5;
       color: #fff !important;
       -webkit-text-fill-color: #fff;
       text-decoration: none;
@@ -3420,7 +3420,7 @@ label {
   .single-post-area .blog-author a {
     display: inline-block; }
     .single-post-area .blog-author a:hover {
-      color: #dca73a; }
+      color: #0abab5; }
   .single-post-area .blog-author p {
     margin-bottom: 0;
     font-size: 15px; }
@@ -3606,23 +3606,23 @@ label {
 */
 .boxed-btn {
   background: #fff;
-  color: #dca73a !important;
+  color: #0abab5 !important;
   display: inline-block;
   padding: 18px 44px;
   font-family: "Lato", sans-serif;
   font-size: 14px;
   font-weight: 400;
   border: 0;
-  border: 1px solid #dca73a;
+  border: 1px solid #0abab5;
   letter-spacing: 3px;
   text-align: center;
-  color: #dca73a;
+  color: #0abab5;
   text-transform: uppercase;
   cursor: pointer; }
   .boxed-btn:hover {
-    background: #dca73a;
+    background: #0abab5;
     color: #fff !important;
-    border: 1px solid #dca73a; }
+    border: 1px solid #0abab5; }
   .boxed-btn:focus {
     outline: none; }
   .boxed-btn.large-width {

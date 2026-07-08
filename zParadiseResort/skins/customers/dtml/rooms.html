@@ -1,0 +1,55 @@
+<main>
+    <!-- slider Area Start-->
+    <div class="slider-area">
+        <div class="single-slider hero-overly slider-height2 d-flex align-items-center" data-background="<[base]>/skins/<[skin]>/assets/img/hero/roomspage_hero.jpg" >
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-11 offset-xl-1 offset-lg-1 offset-md-1">
+                        <div class="hero-caption">
+                            <span>Rooms</span>
+                            <h2>Le Nostre Camere</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+
+    <!-- Room Start -->
+    <section class="room-area r-padding1">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8">
+                    <!--font-back-tittle  -->
+                    <div class="font-back-tittle mb-45">
+                        <div class="archivment-front">
+                            <h3>Camere Disponibili</h3>
+                        </div>
+                        <h3 class="archivment-back">Disponibili</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <[foreach]>
+                <div class="col-xl-4 col-lg-6 col-md-6">
+                    <!-- Single Room -->
+                    <div class="single-room mb-50">
+                        <div class="room-img">
+                           <a href="#"><img src="<[room_image]>" alt="<[room_name]>"></a>
+                        </div>
+                        <div class="room-caption">
+                            <h3><a href="#"><[room_name]></a></h3>
+                            <div class="per-night">
+                                <span><u>€</u><[room_price]> <span>/ a notte</span></span>
+                            </div>
+                            <p style="margin-top: 10px; color: #777;"><[room_desc]></p>
+                        </div>
+                    </div>
+                </div>
+                <[/foreach]>
+            </div>
+        </div>
+    </section>
+    <!-- Room End -->
+</main>
