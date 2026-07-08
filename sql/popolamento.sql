@@ -2,11 +2,11 @@ USE ParadiseResort;
 
 -- 1. Popolamento Tabelle Indipendenti Base
 INSERT INTO users (first_name, last_name, email, password) VALUES
-('Marco', 'Rossi', 'admin@paradise.com', '$10$EcUFtRTyktApSLIwseID4.fiaei8P0LtIANGHxMlw74Rfnl.62t46'), -- Id 1 (Admin) Password: password
-('Giulia', 'Bianchi', 'reception@paradise.com', '$10$EcUFtRTyktApSLIwseID4.fiaei8P0LtIANGHxMlw74Rfnl.62t46'), -- Id 2 (Receptionist)
-('Alessandro', 'Verdi', 'alessandro.v@email.com', '$10$EcUFtRTyktApSLIwseID4.fiaei8P0LtIANGHxMlw74Rfnl.62t46'), -- Id 3 (Guest)
-('Sofia', 'Neri', 'sofia.n@email.com', '$10$EcUFtRTyktApSLIwseID4.fiaei8P0LtIANGHxMlw74Rfnl.62t46'), -- Id 4 (Guest)
-('Lorenzo', 'Gialli', 'lorenzo.g@email.com', '$10$EcUFtRTyktApSLIwseID4.fiaei8P0LtIANGHxMlw74Rfnl.62t46'); -- Id 5 (Guest)
+('Marco', 'Rossi', 'admin@paradise.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG'), -- Id 1 (Admin) Password: password
+('Giulia', 'Bianchi', 'reception@paradise.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG'), -- Id 2 (Receptionist)
+('Alessandro', 'Verdi', 'alessandro.v@email.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG'), -- Id 3 (Guest)
+('Sofia', 'Neri', 'sofia.n@email.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG'), -- Id 4 (Guest)
+('Lorenzo', 'Gialli', 'lorenzo.g@email.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG'); -- Id 5 (Guest)
 
 INSERT INTO gruppi (name, description) VALUES
 ('Admin', 'Amministratore di sistema con accesso totale'),
