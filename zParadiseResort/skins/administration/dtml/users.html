@@ -1,0 +1,58 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1">Gestione</p>
+        <h1 class="h3 mb-1">Utenti</h1>
+        <p class="text-muted mb-0">Cerca e gestisci gli account degli utenti.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="panel mt-3">
+    <div class="panel-header">
+      <div>
+        <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>Lista Utenti</span></h2>
+        <p class="text-muted mb-0">Cerca e gestisci gli account degli utenti.</p>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <form action="users.php" method="GET" class="d-flex gap-2">
+            <select name="category" class="form-select form-select-sm">
+                <option value="">Tutti</option>
+                <[foreach]>
+                <option value="<[category_id]>" <[category_selected]>><[category_name]></option>
+                <[/foreach]>
+            </select>
+            <input class="form-control form-control-sm table-search" type="search" name="search" value="<[search_query]>" placeholder="Cerca utente" aria-label="Cerca utenti">
+            <button type="submit" class="btn btn-primary btn-sm">Cerca</button>
+        </form>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0" id="usersTable">
+        <thead><tr><th scope="col">Utente</th><th scope="col">Email</th><th scope="col">Ruolo</th><th scope="col">Iscritto</th></tr></thead>
+        <tbody>
+          <[foreach]>
+          <tr>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div>
+                  <p class="fw-semibold mb-0"><[user_name]></p>
+                </div>
+              </div>
+            </td>
+            <td><p class="text-muted small mb-0"><[user_email]></p></td>
+            <td><[user_role]></td>
+            <td><[user_joined]></td>
+          </tr>
+          <[/foreach]>
+          
+          <[ifempty users_list]>
+          <tr><td colspan="4" class="text-center py-4">Nessun utente trovato</td></tr>
+          <[/ifempty]>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
