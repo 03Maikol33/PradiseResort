@@ -66,6 +66,8 @@ $skin->setContent('base',      $config['base']);
 $skin->setContent('skin',      $config['skin']);
 $skin->setContent('is_logged', !empty($_SESSION['user']) ? '1' : '');
 $skin->setContent('user.name', $_SESSION['user']['name'] ?? '');
+$skin->setContent('cart_count', !empty($_SESSION['cart']) ? '1' : '');
+$skin->setContent('cart_badge', !empty($_SESSION['cart']) ? ' (1)' : '');
 
 $block = new_block('login');
 $block->setContent('error',    $error);
