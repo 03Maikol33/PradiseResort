@@ -2,9 +2,30 @@
 
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
+// Helper for redirection
+function get_dashboard_url($user_id) {
+    global $config;
+    $roleStmt = db()->prepare(
+        'SELECT g.name FROM user_gruppi ug
+         JOIN gruppi g ON g.id = ug.group_id
+         WHERE ug.user_id = ?'
+    );
+    $roleStmt->execute([$user_id]);
+    $roleRow = $roleStmt->fetch();
+    $role = strtolower($roleRow['name'] ?? 'guest');
+
+    if ($role === 'admin') {
+        return $config['base'] . '/admin/users.php';
+    } elseif ($role === 'receptionist') {
+        return $config['base'] . '/receptionist/rooms.php';
+    } else {
+        return $config['base'] . '/profile.php'; // Dashboard for customer
+    }
+}
+
 //reindirizzamento utente loggato
 if (!empty($_SESSION['user'])) {
-    header('Location: ' . $config['base'] . '/index.php');
+    header('Location: ' . get_dashboard_url($_SESSION['user']['id']));
     exit;
 }
 
@@ -33,25 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // accesso tramite i suoi gruppi
             $_SESSION['user']['services'] = load_user_services((int)$row['id']);
 
-            // Controlla il ruolo dell'utente e reindirizza di conseguenza
-            $roleStmt = db()->prepare(
-                'SELECT g.name FROM user_gruppi ug
-                 JOIN gruppi g ON g.id = ug.group_id
-                 WHERE ug.user_id = ?'
-            );
-            $roleStmt->execute([$row['id']]);
-            $roleRow = $roleStmt->fetch();
-            $role = $roleRow['name'] ?? 'guest';
-
-            if ($role === 'admin') {
-                $dest = $config['base'] . '/admin/index.php';
-            } elseif ($role === 'receptionist') {
-                $dest = $config['base'] . '/receptionist/index.php';
-            } else {
-                $dest = $config['base'] . '/index.php';
-            }
-
-            header('Location: ' . $dest);
+            header('Location: ' . get_dashboard_url($row['id']));
             exit;
         } else {
             $error = 'email o password errati.';
