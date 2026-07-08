@@ -181,6 +181,7 @@ foreach ($categories as $cat) {
     
     $img = $cat['image_url'] ? $cat['image_url'] : 'room1.jpg';
     $block->setContent('category_image_path',  $config['base'] . '/skins/' . $config['skin'] . '/assets/img/rooms/' . htmlspecialchars($img));
+    $block->setContent('category_url',         $config['base'] . '/room-details.php?cat_id=' . $cat['id']);
 
     $isAvailable = false;
     $roomId = 0;
