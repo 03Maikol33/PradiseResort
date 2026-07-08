@@ -26,7 +26,7 @@ $block->setContent('error_msg', htmlspecialchars($error_msg));
 $block->setContent('show_success', $success_msg ? '1' : '');
 $block->setContent('show_error', $error_msg ? '1' : '');
 
-$query = "SELECT id, name, description, base_price, capacity, image_url FROM room_categories ORDER BY name ASC";
+$query = "SELECT id, name, description, base_price, capacity, image_url FROM room_categories ORDER BY id ASC";
 $stmt = $db->prepare($query);
 $stmt->execute();
 $categories = $stmt->fetchAll();

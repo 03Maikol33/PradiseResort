@@ -9,12 +9,12 @@
     </div>
   </div>
 
-  <[if show_error]>
+  <[if!empty show_error]>
   <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
     <i class="bi bi-exclamation-triangle me-2"></i> <[error_msg]>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-  <[/if]>
+  <[/if!empty]>
 
   <section class="panel mt-3">
     <div class="panel-header">
