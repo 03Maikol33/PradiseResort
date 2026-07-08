@@ -37,7 +37,9 @@ INSERT INTO group_services (group_id, service_id) VALUES
 INSERT INTO room_categories (name, description, base_price, capacity, image_url) VALUES
 ('Singola Standard', 'Stanza comoda per viaggiatori singoli', 75.00, 1, 'singola.jpg'),
 ('Doppia Superior', 'Stanza spaziosa con letto matrimoniale', 120.00, 2, 'doppia.jpg'),
-('Suite Vista Mare', 'Lussuosa suite con balcone panoramico', 250.00, 4, 'suite.jpg');
+('Suite Vista Mare', 'Lussuosa suite con balcone panoramico', 250.00, 4, 'suite.jpg'),
+('Camera Tripla', 'Stanza spaziosa ideale per tre persone, con un letto matrimoniale e un singolo.', 150.00, 3, 'room3.jpg'),
+('Appartamento Familiare', 'Un comodo appartamento per le famiglie più numerose con cucina e due bagni.', 300.00, 6, 'room2.jpg');
 
 INSERT INTO rooms (room_number, category_id, floor, status) VALUES
 ('101', 1, 1, 'available'),
@@ -45,7 +47,10 @@ INSERT INTO rooms (room_number, category_id, floor, status) VALUES
 ('201', 2, 2, 'available'),
 ('202', 2, 2, 'available'),
 ('301', 3, 3, 'available'),
-('302', 3, 3, 'maintenance');
+('302', 3, 3, 'maintenance'),
+('401', 4, 4, 'available'),
+('402', 4, 4, 'available'),
+('501', 5, 5, 'available');
 
 -- 4. Popolamento Stati e Servizi Extra (Amenities)
 INSERT INTO booking_statuses (name) VALUES
