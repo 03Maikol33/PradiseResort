@@ -157,7 +157,7 @@ $skin->setContent('user.name',  $_SESSION['user']['name'] ?? '');
 $skin->setContent('cart_count', !empty($_SESSION['cart']) ? '1' : '');
 $skin->setContent('cart_badge', !empty($_SESSION['cart']) ? ' (1)' : '');
 
-$block = new_block('rooms');
+$block = new_block('rooms-search');//** */
 $block->setContent('error', $error);
 $block->setContent('check_in_val', htmlspecialchars($checkInRaw));
 $block->setContent('check_out_val', htmlspecialchars($checkOutRaw));
@@ -219,8 +219,8 @@ foreach ($categories as $cat) {
         $availabilityHtml .= '      Totale: <strong>&euro;' . number_format($totalPrice, 2, ',', '.') . '</strong>';
         $availabilityHtml .= '  </span>';
 
-        if (!empty($_SESSION['user'])) {
-            $addUrl = $config['base'] . '/rooms.php?action=add&room_id=' . $roomId . '&check_in=' . urlencode($checkInRaw) . '&check_out=' . urlencode($checkOutRaw);
+        if (!empty($_SESSION['user'])) {/**** */
+            $addUrl = $config['base'] . '/rooms-search.php?action=add&room_id=' . $roomId . '&check_in=' . urlencode($checkInRaw) . '&check_out=' . urlencode($checkOutRaw);
             $availabilityHtml .= '  <a href="' . $addUrl . '" class="btn btn-sm" style="background-color: #d87040; color: white; padding: 12px 20px; font-weight: bold; border-radius: 4px; font-size: 0.9rem;">Prenota & Blocca</a>';
         } else {
             $loginUrl = $config['base'] . '/login.php';
