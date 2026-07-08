@@ -13,7 +13,7 @@ $block = new_block('rooms');
 
 // Query per recuperare le stanze disponibili
 $stmt = $db->query("
-    SELECT r.id as room_id, r.room_number, c.name, c.base_price, c.image_url, c.description
+    SELECT r.id as room_id, r.category_id, r.room_number, c.name, c.base_price, c.image_url, c.description
     FROM rooms r
     JOIN room_categories c ON r.category_id = c.id
     WHERE r.status = 'available'
@@ -41,13 +41,13 @@ foreach ($rooms as $room) {
         }
     }
     
-    // Aggiungo il numero della stanza al nome
     $room['name'] .= " (Camera " . $room['room_number'] . ")";
     
     $block->setContent('room_image', $room['image_url']);
     $block->setContent('room_name', $room['name']);
     $block->setContent('room_price', $room['base_price']);
     $block->setContent('room_desc', $room['description']);
+    $block->setContent('category_url', $config['base'] . '/room-details.php?cat_id=' . $room['category_id']);
 }
 
 $skin->setContent('body', $block->get());
