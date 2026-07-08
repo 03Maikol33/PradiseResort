@@ -78,18 +78,34 @@ if ($action === 'add') {
                 }
                 $totalPrice = $nights * $room['base_price'];
 
-                // Salva nel carrello in sessione
-                $_SESSION['cart'] = [
-                    'room_id'       => $room['room_id'],
-                    'room_number'   => $room['room_number'],
-                    'category_id'   => $room['category_id'],
-                    'category_name' => $room['category_name'],
-                    'check_in'      => $checkIn,
-                    'check_out'     => $checkOut,
-                    'nights'        => $nights,
-                    'base_price'    => $room['base_price'],
-                    'total_price'   => $totalPrice
-                ];
+                // Inserimento booking nel database in stato 'In Cart' (status_id = 1)
+                try {
+                    db()->beginTransaction();
+                    
+                    $ins = db()->prepare(
+                        'INSERT INTO bookings (user_id, room_id, status_id, check_in_date, check_out_date, total_price)
+                         VALUES (?, ?, 1, ?, ?, ?)'
+                    );
+                    $ins->execute([
+                        $_SESSION['user']['id'],
+                        $room['room_id'],
+                        $checkIn,
+                        $checkOut,
+                        $totalPrice
+                    ]);
+                    $bookingId = db()->lastInsertId();
+
+                    // Creazione fattura (invoice) associata in stato unpaid
+                    $insInvoice = db()->prepare(
+                        'INSERT INTO invoices (booking_id, total_amount, payment_status) VALUES (?, ?, \'unpaid\')'
+                    );
+                    $insInvoice->execute([$bookingId, $totalPrice]);
+
+                    db()->commit();
+                } catch (Exception $ex) {
+                    db()->rollBack();
+                    $errorMsg = 'Errore durante l\'inserimento nel carrello: ' . $ex->getMessage();
+                }
 
                 header('Location: ' . $config['base'] . '/cart.php');
                 exit;
@@ -154,8 +170,9 @@ $skin->setContent('base',       $config['base']);
 $skin->setContent('skin',       $config['skin']);
 $skin->setContent('is_logged',  !empty($_SESSION['user']) ? '1' : '');
 $skin->setContent('user.name',  $_SESSION['user']['name'] ?? '');
-$skin->setContent('cart_count', !empty($_SESSION['cart']) ? '1' : '');
-$skin->setContent('cart_badge', !empty($_SESSION['cart']) ? ' (1)' : '');
+$cartCountVal = get_cart_count();
+$skin->setContent('cart_count', $cartCountVal > 0 ? '1' : '');
+$skin->setContent('cart_badge', $cartCountVal > 0 ? " ($cartCountVal)" : '');
 
 $block = new_block('rooms-search');//** */
 $block->setContent('error', $error);

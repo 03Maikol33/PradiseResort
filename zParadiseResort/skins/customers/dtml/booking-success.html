@@ -6,7 +6,7 @@
 <style>
     .success-wrapper-premium {
         padding: 60px 0;
-        background: radial-gradient(circle at 50% 0%, #fcfdfe 0%, #ebf1f6 100%);
+        background: radial-gradient(circle at 50% 0%, #fcfdfe 0%, #e6f6f5 100%);
         min-height: 90vh;
         position: relative;
         overflow: hidden;
@@ -25,7 +25,7 @@
     .blur-1 {
         width: 350px;
         height: 350px;
-        background: #2b8a3e;
+        background: #0abab5;
         top: -100px;
         left: -100px;
     }
@@ -68,7 +68,7 @@
         display: none;
     }
     .step-item.completed::after {
-        background: #2b8a3e;
+        background: #0abab5;
     }
     .step-icon {
         width: 36px;
@@ -86,13 +86,13 @@
         z-index: 2;
     }
     .step-item.active .step-icon {
-        border-color: #2b8a3e;
-        color: #2b8a3e;
-        box-shadow: 0 0 15px rgba(43, 138, 62, 0.25);
+        border-color: #0abab5;
+        color: #0abab5;
+        box-shadow: 0 0 15px rgba(10, 186, 181, 0.25);
     }
     .step-item.completed .step-icon {
-        background: #2b8a3e;
-        border-color: #2b8a3e;
+        background: #0abab5;
+        border-color: #0abab5;
         color: #ffffff;
     }
     .step-text {
@@ -104,7 +104,7 @@
         letter-spacing: 1px;
     }
     .step-item.active .step-text {
-        color: #2b8a3e;
+        color: #0abab5;
     }
     .step-item.completed .step-text {
         color: #1f2b37;
@@ -124,7 +124,7 @@
     }
     
     .card-head-success {
-        background: linear-gradient(135deg, #2b8a3e 0%, #1e5e2a 100%);
+        background: linear-gradient(135deg, #0abab5 0%, #089c97 100%);
         padding: 30px;
         text-align: center;
         color: #ffffff;
@@ -138,7 +138,7 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #d87040 0%, #f39c12 100%);
+        background: linear-gradient(90deg, #0abab5 0%, #81d8d0 100%);
     }
 
     .card-head-success h3 {
@@ -151,7 +151,7 @@
     }
     
     .card-head-success p {
-        color: #d3f9d8;
+        color: #e6f7f6;
         font-size: 0.9rem;
         margin-bottom: 0;
     }
@@ -202,7 +202,7 @@
         font-size: 0.95rem;
     }
     .premium-label i {
-        color: #2b8a3e;
+        color: #0abab5;
         font-size: 1.1rem;
         width: 20px;
         text-align: center;
@@ -237,7 +237,7 @@
     
     .price-total-value {
         font-size: 1.6rem;
-        color: #2b8a3e;
+        color: #0abab5;
         font-weight: 900;
     }
 
@@ -309,7 +309,7 @@
                         <div class="row no-gutters">
                             <!-- Colonna Sinistra: Dettagli Prenotazione -->
                             <div class="col-md-7 p-4 p-md-5" style="background-color: #ffffff; border-right: 1px solid #edf2f7;">
-                                <h5 class="summary-title" style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #1f2b37; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #2b8a3e; padding-bottom: 8px; display: inline-block;">Riepilogo Soggiorno</h5>
+                                <h5 class="summary-title" style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #1f2b37; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #0abab5; padding-bottom: 8px; display: inline-block;">Riepilogo Soggiorno</h5>
                                 
                                 <div class="premium-details-list" style="margin-bottom: 25px;">
                                     <div class="premium-detail-row">
@@ -329,9 +329,24 @@
                                         <div class="premium-value"><[nights]> Notti</div>
                                     </div>
                                 </div>
+
+                                <!-- Visualizzazione Servizi Extra -->
+                                <[if!empty has_booking_amenities]>
+                                <div class="mt-4 pt-3 border-top" style="border-top-color: #e2e8f0 !important; margin-bottom: 25px;">
+                                    <h6 style="font-weight: 700; color: #1f2b37; margin-bottom: 12px; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px;">Servizi Aggiuntivi:</h6>
+                                    <ul style="list-style: none; padding-left: 0; margin-bottom: 0;">
+                                        <[foreach]>
+                                        <li style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(226,232,240,0.5); font-size: 0.9rem;">
+                                            <span style="color: #4a5568;"><i class="fas fa-check-circle" style="color: #0abab5; margin-right: 8px;"></i> <[booking_amenity_name]></span>
+                                            <span style="font-weight: 800; color: #1f2b37;">&euro;<[booking_amenity_price]></span>
+                                        </li>
+                                        <[/foreach]>
+                                    </ul>
+                                </div>
+                                <[/if!empty]>
                                 
-                                <div class="p-3 rounded text-center" style="background-color: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 12px;">
-                                    <p style="color: #2e7d32; font-size: 0.9rem; margin: 0; line-height: 1.5;">
+                                <div class="p-3 rounded text-center" style="background-color: #e6f7f6; border: 1px solid #81d8d0; border-radius: 12px;">
+                                    <p style="color: #089c97; font-size: 0.9rem; margin: 0; line-height: 1.5;">
                                         <i class="fas fa-receipt mr-1"></i> Abbiamo generato la tua fattura pro-forma. Potrai pagare al tuo arrivo in reception.
                                     </p>
                                 </div>
