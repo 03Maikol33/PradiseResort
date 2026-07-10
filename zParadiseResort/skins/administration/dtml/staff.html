@@ -1,0 +1,204 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-person-badge-fill" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1">Amministrazione</p>
+        <h1 class="h3 mb-1">Gestione Staff</h1>
+        <p class="text-muted mb-0">Registra e rimuovi i membri dello staff (Amministratori e Receptionist).</p>
+      </div>
+    </div>
+  </div>
+
+  <[if!empty message]>
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <[message]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <[if!empty error]>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <[error]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <div class="row g-3">
+    <!-- Lista Staff -->
+    <div class="col-12 col-xl-7">
+      <section class="panel h-100">
+        <div class="panel-header">
+          <div>
+            <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>Membri dello Staff</span></h2>
+            <p class="text-muted mb-0">Elenco di tutti gli account con privilegi amministrativi o di reception.</p>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle mb-0" id="staffTable">
+            <thead>
+              <tr>
+                <th scope="col">Utente</th>
+                <th scope="col">Email</th>
+                <th scope="col">Ruolo</th>
+                <th scope="col" class="text-end">Azione</th>
+              </tr>
+            </thead>
+            <tbody>
+              <[foreach]>
+              <tr>
+                <td>
+                  <div class="d-flex align-items-center gap-2">
+                    <div>
+                      <p class="fw-semibold mb-0"><[staff_name]></p>
+                    </div>
+                  </div>
+                </td>
+                <td><p class="text-muted small mb-0"><[staff_email]></p></td>
+                <td><[staff_role]></td>
+                <td class="text-end">
+                  <[staff_action]>
+                </td>
+              </tr>
+              <[/foreach]>
+              
+              <[ifempty staff_list]>
+              <tr><td colspan="4" class="text-center py-4">Nessun membro dello staff trovato</td></tr>
+              <[/ifempty]>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- Modulo Creazione -->
+    <div class="col-12 col-xl-5">
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="h5 mb-1 section-title"><i class="bi bi-person-plus" aria-hidden="true"></i><span>Nuovo Membro</span></h2>
+            <p class="text-muted mb-0">Crea un nuovo account staff o admin.</p>
+          </div>
+        </div>
+        <form id="createStaffForm" action="staff.php" method="POST" class="needs-validation" novalidate>
+          <input type="hidden" name="action" value="create">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label" for="firstName">Nome</label>
+              <input class="form-control" name="first_name" id="firstName" type="text" required>
+              <div class="invalid-feedback">Il nome è richiesto.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label" for="lastName">Cognome</label>
+              <input class="form-control" name="last_name" id="lastName" type="text" required>
+              <div class="invalid-feedback">Il cognome è richiesto.</div>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="email">Email</label>
+              <input class="form-control" name="email" id="email" type="email" required>
+              <div class="invalid-feedback">Inserisci un'email valida.</div>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="password">Password</label>
+              <input class="form-control" name="password" id="password" type="password" required>
+              <div class="invalid-feedback">La password è richiesta.</div>
+            </div>
+            <div class="col-12">
+              <label class="form-label" for="role">Ruolo</label>
+              <select class="form-select" name="role_id" id="role" required>
+                <option value="">Scegli il ruolo</option>
+                <option value="1">Amministratore (Admin)</option>
+                <option value="2">Receptionist (Staff)</option>
+              </select>
+              <div class="invalid-feedback">Scegli un ruolo.</div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button class="btn btn-primary" type="button" id="btnSubmitCreate">
+              <i class="bi bi-person-check" aria-hidden="true"></i> Registra
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <!-- Modal di Conferma Creazione -->
+  <div class="modal fade" id="createConfirmModal" tabindex="-1" aria-labelledby="createConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="createConfirmModalLabel">Conferma Registrazione</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Sei sicuro di voler registrare questo nuovo membro dello staff?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annulla</button>
+          <button type="button" class="btn btn-primary" id="btnConfirmCreate">Registra</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal di Conferma Eliminazione -->
+  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form action="staff.php" method="POST">
+          <input type="hidden" name="action" value="delete">
+          <input type="hidden" name="user_id" id="deleteUserId" value="">
+          <div class="modal-header">
+            <h2 class="modal-title h5" id="deleteConfirmModalLabel">Conferma Eliminazione</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Sei sicuro di voler eliminare l'account dello staff di <strong id="deleteUserName"></strong>? Questa azione non è reversibile.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annulla</button>
+            <button type="submit" class="btn btn-danger">Elimina Account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Gestione modale eliminazione
+  const deleteButtons = document.querySelectorAll(".btn-delete-staff");
+  const deleteUserIdInput = document.getElementById("deleteUserId");
+  const deleteUserNameSpan = document.getElementById("deleteUserName");
+
+  deleteButtons.forEach(button => {
+    button.addEventListener("click", function () {
+      const id = this.getAttribute("data-id");
+      const name = this.getAttribute("data-name");
+      deleteUserIdInput.value = id;
+      deleteUserNameSpan.textContent = name;
+    });
+  });
+
+  // Gestione modale creazione
+  const createForm = document.getElementById("createStaffForm");
+  const btnSubmitCreate = document.getElementById("btnSubmitCreate");
+  const btnConfirmCreate = document.getElementById("btnConfirmCreate");
+  const createConfirmModal = new bootstrap.Modal(document.getElementById("createConfirmModal"));
+
+  btnSubmitCreate.addEventListener("click", function () {
+    if (createForm.checkValidity()) {
+      createConfirmModal.show();
+    } else {
+      createForm.classList.add("was-validated");
+    }
+  });
+
+  btnConfirmCreate.addEventListener("click", function () {
+    createConfirmModal.hide();
+    createForm.submit();
+  });
+});
+</script>
