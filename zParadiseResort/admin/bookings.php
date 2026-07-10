@@ -2,15 +2,7 @@
 require_once __DIR__ . '/../include/bootstrap.inc.php';
 
 // Controlliamo che l'utente sia loggato e sia Admin
-if (empty($_SESSION['user'])) {
-    header("Location: {$config['base']}/login.php");
-    exit;
-}
-
-if (!is_admin()) {
-    header("Location: {$config['base']}/index.php");
-    exit;
-}
+require_admin();
 
 $db = db();
 $successMsg = $_SESSION['success_msg'] ?? '';

@@ -1,0 +1,141 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-tags" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1">Gestione / Permessi</p>
+        <h1 class="h3 mb-1">Permessi degli utenti</h1>
+        <p class="text-muted mb-0">Gestisci i permessi degli utenti.</p>
+      </div>
+    </div>
+  </div>
+
+  <[if!empty show_success]>
+  <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+    <i class="bi bi-check-circle me-2"></i> <[success_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <[if!empty show_error]>
+  <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i> <[error_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <section class="panel mt-3">
+    <div class="panel-header">
+      <div>
+        <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>Lista dei gruppi di utenti nel sistema</span></h2>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <a href="group_edit.php" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i>Aggiungi Gruppo di utenti</a>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0" id="categoriesTable">
+        <thead>
+          <tr>
+            <th scope="col">ID Gruppo</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrizione</th>
+            <th scope="col" class="text-end">Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <[foreach]>
+          <tr>
+            <td><[group_id]></td>
+            <td><span class="fw-semibold"><[group_name]></span></td>
+            <td><[group_description]></td>
+            <td class="text-end">
+              <a href="group_edit.php?id=<[group_id]>" class="btn btn-sm btn-outline-primary" title="Modifica"><i class="bi bi-pencil"></i></a>
+              <a href="group_delete.php?id=<[group_id]>" class="btn btn-sm btn-outline-danger" title="Elimina" onclick="return confirm('Sei sicuro di voler eliminare questo gruppo?');"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+          <[/foreach]>
+          
+          <[ifempty categories_list]>
+          <tr><td colspan="6" class="text-center py-4"> Errore: Nessun gruppo trovato</td></tr>
+          <[/ifempty]>
+        </tbody>
+      </table>
+    </div>
+  </section>
+  <[groups_tables_html]>
+  
+</div>
+
+<!-- Assign Modal -->
+<div class="modal fade" id="assignModal" tabindex="-1" aria-labelledby="assignModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="service_assign.php" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="assignModalLabel">Assegna Permesso</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Assegna un nuovo permesso al gruppo <strong id="assignGroupName"></strong>.</p>
+          <input type="hidden" name="group_id" id="assignGroupId" value="">
+          <div class="mb-3">
+            <label for="serviceSelect" class="form-label">Servizio</label>
+            <select class="form-select" name="service_id" id="serviceSelect" required>
+              <option value="">Seleziona un servizio...</option>
+              <[foreach]>
+              <option value="<[all_service_id]>"><[all_service_name]> - <[all_service_description]></option>
+              <[/foreach]>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+          <button type="submit" class="btn btn-primary">Assegna</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Remove Modal -->
+<div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="removeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="service_remove.php" method="POST">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="removeModalLabel">Rimuovi Permesso</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Sei sicuro di voler rimuovere il permesso <strong><span id="removeServiceName"></span></strong> dal gruppo <strong><span id="removeGroupName"></span></strong>?</p>
+          <input type="hidden" name="group_id" id="removeGroupId" value="">
+          <input type="hidden" name="service_id" id="removeServiceId" value="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+          <button type="submit" class="btn btn-danger">Rimuovi Permesso</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+function openAssignModal(groupId, groupName) {
+    document.getElementById('assignGroupId').value = groupId;
+    document.getElementById('assignGroupName').textContent = groupName;
+    var modal = new bootstrap.Modal(document.getElementById('assignModal'));
+    modal.show();
+}
+
+function openRemoveModal(groupId, serviceId, serviceName, groupName) {
+    document.getElementById('removeGroupId').value = groupId;
+    document.getElementById('removeServiceId').value = serviceId;
+    document.getElementById('removeServiceName').textContent = serviceName;
+    document.getElementById('removeGroupName').textContent = groupName;
+    var modal = new bootstrap.Modal(document.getElementById('removeModal'));
+    modal.show();
+}
+</script>
+

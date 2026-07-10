@@ -1,10 +1,7 @@
 <?php
 require_once __DIR__ . '/../include/bootstrap.inc.php';
 
-if (empty($_SESSION['user']) || !is_admin()) {
-    header("Location: {$config['base']}/login.php");
-    exit;
-}
+require_service('rooms.php');
 
 $page = new_page('administration', 'frame-private');
 $block = new_block('room_edit');

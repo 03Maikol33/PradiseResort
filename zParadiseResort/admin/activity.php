@@ -1,20 +1,7 @@
 <?php
 require_once __DIR__ . '/../include/bootstrap.inc.php';
 
-// Controlliamo che l'utente sia loggato e sia Admin
-if (empty($_SESSION['user'])) {
-    header("Location: {$config['base']}/login.php");
-    exit;
-}
-
-if (!is_admin()) {
-    if (is_receptionist()) {
-        header("Location: {$config['base']}/receptionist/activity.php");
-        exit;
-    }
-    header("Location: {$config['base']}/index.php");
-    exit;
-}
+require_admin();
 
 $db = db();
 $page = new_page('administration', 'frame-private');

@@ -88,6 +88,7 @@ function require_service(?string $service = null): void {
     if (!has_service($service)) {
         http_response_code(403);
         die('Accesso negato: servizio non autorizzato.');
+
     }
 }
 

@@ -14,11 +14,15 @@ INSERT INTO gruppi (name, description) VALUES
 ('Guest', 'Cliente registrato del resort');
 
 INSERT INTO services (script_name, description) VALUES
-('admin_dashboard.php', 'Dashboard principale di amministrazione'),
-('manage_rooms.php', 'Pannello CRUD per le stanze e le categorie'),
-('manage_bookings.php', 'Pannello per visualizzare e modificare lo stato delle prenotazioni'),
-('manage_users.php', 'Pannello per la gestione degli account e dei permessi'),
-('profile.php', 'Area personale dell\'utente loggato');
+('index.php', 'Dashboard principale'),
+('rooms.php', 'Gestione Camere'),
+('bookings.php', 'Gestione Prenotazioni'),
+('users.php', 'Gestione Utenti Registrati'),
+('staff.php', 'Gestione Staff'),
+('services.php', 'Gestione Permessi'),
+('categories.php', 'Gestione Categorie Camere'),
+('activity.php', 'Gestione Attività'),
+('profile.php', 'Area personale');
 
 -- 2. Popolamento Tabelle di Giunzione ACL
 INSERT INTO user_gruppi (user_id, group_id) VALUES
@@ -29,9 +33,9 @@ INSERT INTO user_gruppi (user_id, group_id) VALUES
 (5, 3); -- Lorenzo Gialli -> Guest
 
 INSERT INTO group_services (group_id, service_id) VALUES
-(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), -- L'Admin vede tutto
-(2, 1), (2, 2), (2, 3), (2, 5),         -- Il Receptionist non vede la gestione utenti
-(3, 5);                                 -- Il Guest vede solo il proprio profilo
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), -- L'Admin vede tutto
+(2, 1), (2, 2), (2, 3), (2, 8), (2, 9),                                 -- Receptionist vede dashboard, camere, prenotazioni, attività, profilo
+(3, 9);                                                                 -- Il Guest vede solo il proprio profilo
 
 -- 3. Popolamento Catalogo Stanze
 INSERT INTO room_categories (name, description, base_price, capacity, image_url) VALUES

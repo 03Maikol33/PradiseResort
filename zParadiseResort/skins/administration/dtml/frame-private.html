@@ -106,16 +106,20 @@
       </div>
 
       <nav class="sidebar-nav">
-        <a class="nav-link" href="<[base]>/<[role_path]>/index.php">
+        <a class="nav-link" href="index.php">
           <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
           <span class="nav-text">Dashboard</span>
         </a>
-        <a class="nav-link" href="<[base]>/<[role_path]>/bookings.php">
+        <a class="nav-link" href="bookings.php">
           <span class="nav-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
           <span class="nav-text">Prenotazioni</span>
         <a class="nav-link" href="users.php">
           <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
           <span class="nav-text">Utenti</span>
+        </a>
+                <a class="nav-link" href="activity.php">
+          <span class="nav-icon"><i class="bi bi-clock-history" aria-hidden="true"></i></span>
+          <span class="nav-text">Attività di Oggi</span>
         </a>
         <a class="nav-link" href="staff.php">
           <span class="nav-icon"><i class="bi bi-person-badge-fill" aria-hidden="true"></i></span>
@@ -127,6 +131,10 @@
         <a class="nav-link" href="rooms.php">
           <span class="nav-icon"><i class="bi bi-door-open" aria-hidden="true"></i></span>
           <span class="nav-text">Camere Fisiche</span>
+        </a>
+        <a class="nav-link" href="services.php">
+          <span class="nav-icon"><i class="bi bi-lock" aria-hidden="true"></i></span>
+          <span class="nav-text">Gestione permessi</span>
         </a>
         <a class="nav-link" href="add-user.html">
           <span class="nav-icon"><i class="bi bi-person-plus" aria-hidden="true"></i></span>
@@ -144,27 +152,12 @@
           <span class="nav-icon"><i class="bi bi-table" aria-hidden="true"></i></span>
           <span class="nav-text">Tables</span>
         </a>
-        <a class="nav-link" href="<[base]>/<[role_path]>/activity.php">
-          <span class="nav-icon"><i class="bi bi-clock-history" aria-hidden="true"></i></span>
-          <span class="nav-text">Attività di Oggi</span>
-        </a>
-        <[if!empty is_admin_role]>
-        <a class="nav-link" href="<[base]>/admin/users.php">
-          <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
-          <span class="nav-text">Utenti</span>
-        </a>
-        <[/if!empty]>
       </nav>
 
       <div class="sidebar-user">
         <div class="avatar-initials avatar-md"><[user_initials]></div>
         <strong><[user_name]></strong>
         <small><[user_role]></small>
-      </div>
-
-      <div class="sidebar-footer">
-        <span class="status-dot"></span>
-        <span class="sidebar-footer-text">Sistema attivo</span>
       </div>
     </aside>
 

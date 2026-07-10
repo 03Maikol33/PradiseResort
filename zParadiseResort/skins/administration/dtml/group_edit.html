@@ -1,0 +1,46 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1"><a href="services.php" class="text-decoration-none">Gestione Permessi</a> / Gruppi</p>
+        <h1 class="h3 mb-1"><[page_title]></h1>
+      </div>
+    </div>
+  </div>
+
+  <[if!empty show_error]>
+  <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i> <[error_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <section class="panel mt-3">
+    <div class="panel-header">
+      <div>
+        <h2 class="h5 mb-1 section-title"><i class="bi bi-pencil-square" aria-hidden="true"></i><span>Dettagli Gruppo Utenti</span></h2>
+      </div>
+    </div>
+    <div class="panel-body">
+      <form action="group_edit.php" method="POST">
+        <input type="hidden" name="id" value="<[group_id]>">
+        
+        <div class="mb-3">
+          <label for="name" class="form-label">Nome Gruppo <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" id="name" name="name" value="<[group_name]>" required>
+        </div>
+
+        <div class="mb-4">
+          <label for="description" class="form-label">Descrizione</label>
+          <textarea class="form-control" id="description" name="description" rows="4"><[group_description]></textarea>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i><[action_text]></button>
+          <a href="services.php" class="btn btn-outline-secondary">Annulla</a>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>

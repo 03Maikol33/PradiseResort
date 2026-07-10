@@ -1,10 +1,7 @@
 <?php
 require_once __DIR__ . '/../include/bootstrap.inc.php';
 
-if (empty($_SESSION['user']) || !is_admin()) {
-    header("Location: {$config['base']}/login.php");
-    exit;
-}
+require_service('categories.php');
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 

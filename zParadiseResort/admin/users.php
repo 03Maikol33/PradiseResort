@@ -1,16 +1,7 @@
 <?php
 require_once __DIR__ . '/../include/bootstrap.inc.php';
 
-// Controlliamo che l'utente sia loggato e abbia i permessi corretti
-if (empty($_SESSION['user'])) {
-    header("Location: {$config['base']}/login.php");
-    exit;
-}
-
-if (!is_admin()) {
-    header("Location: {$config['base']}/index.php");
-    exit;
-}
+require_admin();
 
 // Inizializza la pagina usando il frame privato dell'amministrazione
 $page = new_page('administration', 'frame-private');
