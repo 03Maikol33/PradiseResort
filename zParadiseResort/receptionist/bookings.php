@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Inizializza la pagina usando il frame privato dell'amministrazione
-$page = new_page('administration', 'frame-private');
+$page = new_page('administration', 'receptionist-frame-private');
 $block = new_block('bookings');
 
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';

@@ -17,7 +17,7 @@ if (!is_receptionist()) {
 }
 
 $db = db();
-$page = new_page('administration', 'frame-private');
+$page = new_page('administration', 'receptionist-frame-private');
 $block = new_block('activity');
 
 $todayStr = date('Y-m-d');

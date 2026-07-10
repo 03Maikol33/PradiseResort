@@ -17,7 +17,7 @@ if (!is_receptionist()) {
 }
 
 // Inizializza la pagina usando il frame privato dell'amministrazione
-$page = new_page('administration', 'frame-private');
+$page = new_page('administration', 'receptionist-frame-private');
 $block = new_block('dashboard');
 
 // Eseguiamo le query per i dati della dashboard
