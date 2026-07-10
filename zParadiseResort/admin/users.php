@@ -82,5 +82,6 @@ if (count($users) > 0) {
     $block->setContent('users_list', ''); 
 }
 
+setup_backoffice_page($page, 'Amministratore', 'admin');
 $page->setContent('body', $block->get());
 $page->close();

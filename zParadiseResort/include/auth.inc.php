@@ -26,6 +26,32 @@ function is_admin(): bool {
     return (bool)$stmt->fetch();
 }
 
+function is_receptionist(): bool {
+    if (empty($_SESSION['user']['id'])) {
+        return false;
+    }
+    $stmt = db()->prepare(
+        'SELECT 1 FROM user_gruppi ug
+         JOIN gruppi g ON g.id = ug.group_id
+         WHERE ug.user_id = ? AND g.name = ?'
+    );
+    $stmt->execute([$_SESSION['user']['id'], 'Receptionist']);
+    return (bool)$stmt->fetch();
+}
+
+function is_staff(): bool {
+    if (empty($_SESSION['user']['id'])) {
+        return false;
+    }
+    $stmt = db()->prepare(
+        'SELECT 1 FROM user_gruppi ug
+         JOIN gruppi g ON g.id = ug.group_id
+         WHERE ug.user_id = ? AND g.name IN (?, ?)'
+    );
+    $stmt->execute([$_SESSION['user']['id'], 'Admin', 'Receptionist']);
+    return (bool)$stmt->fetch();
+}
+
 /*
  * Carica i servizi (pagine protette) a cui l'utente ha accesso, risolti
  * tramite la catena utente → gruppi → servizi. Restituisce una mappa
@@ -79,5 +105,17 @@ function block_admin(): void {
     if (!empty($_SESSION['user']) && is_admin()) {
         header('Location: ' . $config['base'] . '/admin/index.php');
         exit;
+    }
+}
+function block_staff(): void {
+    global $config;
+    if (!empty($_SESSION['user'])) {
+        if (is_admin()) {
+            header('Location: ' . $config['base'] . '/admin/index.php');
+            exit;
+        } elseif (is_receptionist()) {
+            header('Location: ' . $config['base'] . '/receptionist/index.php');
+            exit;
+        }
     }
 }

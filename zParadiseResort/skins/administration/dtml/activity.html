@@ -1,0 +1,220 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-clock-history" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1">Operatività</p>
+        <h1 class="h3 mb-1">Attività di Oggi</h1>
+        <p class="text-muted mb-0">Riepilogo giornaliero degli arrivi, delle partenze e degli ospiti attualmente in struttura.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Riepilogo Numerico -->
+  <div class="row g-3 mt-1 mb-4">
+    <div class="col-12 col-sm-4">
+      <div class="card border-0 shadow-sm p-3 text-center bg-white" style="border-radius: 12px; border: 1px solid #e2e8f0 !important;">
+        <i class="bi bi-box-arrow-in-right text-success fs-3 mb-1 d-block"></i>
+        <span class="text-muted small fw-bold text-uppercase" style="font-size:0.75rem;">Arrivi del Giorno</span>
+        <strong class="fs-2 text-dark d-block my-1"><[cnt_arrivals]></strong>
+        <span class="badge text-bg-success-soft small" style="background-color: rgba(25, 135, 84, 0.1); color: #198754; font-size: 0.75rem;">Check-in previsti</span>
+      </div>
+    </div>
+    <div class="col-12 col-sm-4">
+      <div class="card border-0 shadow-sm p-3 text-center bg-white" style="border-radius: 12px; border: 1px solid #e2e8f0 !important;">
+        <i class="bi bi-box-arrow-left text-danger fs-3 mb-1 d-block"></i>
+        <span class="text-muted small fw-bold text-uppercase" style="font-size:0.75rem;">Partenze del Giorno</span>
+        <strong class="fs-2 text-dark d-block my-1"><[cnt_departures]></strong>
+        <span class="badge text-bg-danger-soft small" style="background-color: rgba(220, 53, 69, 0.1); color: #dc3545; font-size: 0.75rem;">Check-out previsti</span>
+      </div>
+    </div>
+    <div class="col-12 col-sm-4">
+      <div class="card border-0 shadow-sm p-3 text-center bg-white" style="border-radius: 12px; border: 1px solid #e2e8f0 !important;">
+        <i class="bi bi-house-heart text-primary fs-3 mb-1 d-block"></i>
+        <span class="text-muted small fw-bold text-uppercase" style="font-size:0.75rem;">Ospiti in Casa</span>
+        <strong class="fs-2 text-dark d-block my-1"><[cnt_in_house]></strong>
+        <span class="badge text-bg-primary-soft small" style="background-color: rgba(13, 110, 253, 0.1); color: #0d6efd; font-size: 0.75rem;">Soggiorni attivi</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pannelli Dettaglio Attività -->
+  <div class="row g-4">
+    <!-- Colonna Arrivi di Oggi -->
+    <div class="col-12">
+      <div class="panel">
+        <div class="panel-header border-bottom pb-3 mb-3 d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="h5 mb-1 text-dark fw-bold"><i class="bi bi-box-arrow-in-right me-2 text-success"></i>Arrivi Previsti Oggi</h2>
+            <p class="text-muted small mb-0">Prenotazioni con check-in in data odierna.</p>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead>
+              <tr>
+                <th scope="col">Rif / Ospite</th>
+                <th scope="col">Stanza / Categoria</th>
+                <th scope="col">Durata soggiorno</th>
+                <th scope="col">Prezzo</th>
+                <th scope="col">Stato</th>
+                <th scope="col" class="text-end">Azione</th>
+              </tr>
+            </thead>
+            <tbody>
+              <[foreach_arrival]>
+              <tr>
+                <td>
+                  <span class="fw-bold">#<[arr_booking_id]></span> - <span class="fw-semibold"><[arr_guest_name]></span><br>
+                  <small class="text-muted"><[arr_guest_email]></small>
+                </td>
+                <td>
+                  <span class="badge text-bg-light">Camera <[arr_room_number]></span><br>
+                  <small class="text-muted"><[arr_room_category]></small>
+                </td>
+                <td>
+                  <div class="small">
+                    <strong>In:</strong> <[arr_check_in]> &rarr; <strong>Out:</strong> <[arr_check_out]>
+                  </div>
+                </td>
+                <td>
+                  <span class="fw-bold">&euro;<[arr_total_price]></span>
+                </td>
+                <td>
+                  <span class="badge <[arr_badge_class]>"><[arr_status_name]></span>
+                </td>
+                <td class="text-end">
+                  <a class="btn btn-xs btn-outline-primary" href="<[base]>/<[role_path]>/bookings.php?search=<[arr_booking_id]>">Gestisci</a>
+                </td>
+              </tr>
+              <[/foreach_arrival]>
+              <[ifempty arr_list_empty]>
+              <tr>
+                <td colspan="6" class="text-center py-4 text-muted small">Nessun arrivo previsto per oggi.</td>
+              </tr>
+              <[/ifempty]>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonna Partenze di Oggi -->
+    <div class="col-12">
+      <div class="panel mt-3">
+        <div class="panel-header border-bottom pb-3 mb-3 d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="h5 mb-1 text-dark fw-bold"><i class="bi bi-box-arrow-left me-2 text-danger"></i>Partenze Previste Oggi</h2>
+            <p class="text-muted small mb-0">Prenotazioni con check-out in data odierna.</p>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead>
+              <tr>
+                <th scope="col">Rif / Ospite</th>
+                <th scope="col">Stanza / Categoria</th>
+                <th scope="col">Durata soggiorno</th>
+                <th scope="col">Prezzo</th>
+                <th scope="col">Stato</th>
+                <th scope="col" class="text-end">Azione</th>
+              </tr>
+            </thead>
+            <tbody>
+              <[foreach_departure]>
+              <tr>
+                <td>
+                  <span class="fw-bold">#<[dep_booking_id]></span> - <span class="fw-semibold"><[dep_guest_name]></span><br>
+                  <small class="text-muted"><[dep_guest_email]></small>
+                </td>
+                <td>
+                  <span class="badge text-bg-light">Camera <[dep_room_number]></span><br>
+                  <small class="text-muted"><[dep_room_category]></small>
+                </td>
+                <td>
+                  <div class="small">
+                    <strong>In:</strong> <[dep_check_in]> &rarr; <strong>Out:</strong> <[dep_check_out]>
+                  </div>
+                </td>
+                <td>
+                  <span class="fw-bold">&euro;<[dep_total_price]></span>
+                </td>
+                <td>
+                  <span class="badge <[dep_badge_class]>"><[dep_status_name]></span>
+                </td>
+                <td class="text-end">
+                  <a class="btn btn-xs btn-outline-primary" href="<[base]>/<[role_path]>/bookings.php?search=<[dep_booking_id]>">Gestisci</a>
+                </td>
+              </tr>
+              <[/foreach_departure]>
+              <[ifempty dep_list_empty]>
+              <tr>
+                <td colspan="6" class="text-center py-4 text-muted small">Nessuna partenza prevista per oggi.</td>
+              </tr>
+              <[/ifempty]>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Colonna Ospiti Attivi (In Casa) -->
+    <div class="col-12">
+      <div class="panel mt-3">
+        <div class="panel-header border-bottom pb-3 mb-3 d-flex justify-content-between align-items-center">
+          <div>
+            <h2 class="h5 mb-1 text-dark fw-bold"><i class="bi bi-house-heart me-2 text-primary"></i>Ospiti Attualmente in Struttura</h2>
+            <p class="text-muted small mb-0">Prenotazioni in corso con soggiorno attivo in data odierna.</p>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table align-middle mb-0">
+            <thead>
+              <tr>
+                <th scope="col">Rif / Ospite</th>
+                <th scope="col">Stanza / Categoria</th>
+                <th scope="col">Periodo</th>
+                <th scope="col">Prezzo</th>
+                <th scope="col">Stato</th>
+                <th scope="col" class="text-end">Azione</th>
+              </tr>
+            </thead>
+            <tbody>
+              <[foreach_inhouse]>
+              <tr>
+                <td>
+                  <span class="fw-bold">#<[inh_booking_id]></span> - <span class="fw-semibold"><[inh_guest_name]></span><br>
+                  <small class="text-muted"><[inh_guest_email]></small>
+                </td>
+                <td>
+                  <span class="badge text-bg-light">Camera <[inh_room_number]></span><br>
+                  <small class="text-muted"><[inh_room_category]></small>
+                </td>
+                <td>
+                  <div class="small">
+                    <strong>In:</strong> <[inh_check_in]> &rarr; <strong>Out:</strong> <[inh_check_out]>
+                  </div>
+                </td>
+                <td>
+                  <span class="fw-bold">&euro;<[inh_total_price]></span>
+                </td>
+                <td>
+                  <span class="badge <[inh_badge_class]>"><[inh_status_name]></span>
+                </td>
+                <td class="text-end">
+                  <a class="btn btn-xs btn-outline-primary" href="<[base]>/<[role_path]>/bookings.php?search=<[inh_booking_id]>">Gestisci</a>
+                </td>
+              </tr>
+              <[/foreach_inhouse]>
+              <[ifempty inh_list_empty]>
+              <tr>
+                <td colspan="6" class="text-center py-4 text-muted small">Nessun ospite attualmente in struttura.</td>
+              </tr>
+              <[/ifempty]>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

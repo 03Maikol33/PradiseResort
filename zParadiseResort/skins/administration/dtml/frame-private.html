@@ -1,19 +1,92 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="adminHMD professional admin dashboard template">
-  <title>Dashboard | adminHMD</title>
+  <meta name="description" content="Gestionale Interno - Paradise Resort">
+  <title>Gestionale | Paradise Resort</title>
 
   <link rel="stylesheet" href="<[base]>/skins/<[skin]>/assets/css/bootstrap.min.css">
   <link rel="stylesheet" href="<[base]>/skins/<[skin]>/assets/vendors/bootstrap-icons/bootstrap-icons.css">
   <link rel="stylesheet" href="<[base]>/skins/<[skin]>/assets/css/style.css">
+  
+  <style>
+    /* Ottimizzazioni per la sidebar mini (collassata) */
+    @media (min-width: 992px) {
+      body.sidebar-mini .sidebar-user strong,
+      body.sidebar-mini .sidebar-user small {
+        display: none !important;
+      }
+      body.sidebar-mini .sidebar-user {
+        border: none !important;
+        background: transparent !important;
+        padding: 0.5rem 0 !important;
+        margin: auto 0 1rem !important;
+      }
+      body.sidebar-mini .sidebar-activity {
+        display: none !important;
+      }
+    }
+    
+    /* Cerchi per le iniziali dell'avatar dinamico */
+    .avatar-initials {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0ABAB5, #0a8985);
+      user-select: none;
+    }
+    .avatar-initials.avatar-md {
+      width: 56px;
+      height: 56px;
+      font-size: 1.25rem;
+      border-radius: 50%;
+      border: 3px solid #53e9b9;
+      margin: 0 auto 0.5rem;
+    }
+    .avatar-initials.avatar-sm {
+      width: 32px;
+      height: 32px;
+      font-size: 0.85rem;
+      border-radius: 8px;
+      border: 2px solid #53e9b9;
+    }
+
+    /* Adattamento grandezza card per migliore UX e reattività dello schermo */
+    .metric-card {
+      min-height: auto !important;
+      padding: 1rem 1.15rem !important;
+      border-radius: 8px !important;
+    }
+    .metric-value {
+      font-size: 1.7rem !important;
+      margin-top: 0.5rem !important;
+      font-weight: 800 !important;
+    }
+    .metric-meta {
+      margin-top: 0.4rem !important;
+      font-size: 0.78rem !important;
+    }
+    .metric-icon {
+      width: 36px !important;
+      height: 36px !important;
+      font-size: 1.1rem !important;
+    }
+    
+    @media (min-width: 768px) {
+      .border-end-md {
+        border-right: 1px solid #f1f5f9 !important;
+        padding-right: 1.5rem !important;
+      }
+    }
+  </style>
+
   <script>
     window.adminHMDUser = {
-      name: "<[user.name]>",
-      workspace: "Paradise Resort",
-      avatar: "<[base]>/skins/<[skin]>/assets/images/avatar/avatar.jpg"
+      name: "<[user_name]>",
+      workspace: "Paradise Resort"
     };
   </script>
 </head>
@@ -22,22 +95,24 @@
   <div class="admin-shell">
     <div class="sidebar-backdrop" data-sidebar-close></div>
 
-    <aside class="admin-sidebar" id="adminSidebar" aria-label="Main navigation">
+    <aside class="admin-sidebar" id="adminSidebar" aria-label="Navigazione principale">
       <div class="sidebar-header">
-        <a class="brand-mark" href="index.html" aria-label="adminHMD dashboard">
-          
+        <a class="brand-mark" href="<[base]>/<[role_path]>/index.php" aria-label="Dashboard Paradise Resort">
           <span class="brand-copy">
             <span class="brand-title">Paradise Resort</span>
-            <span class="brand-subtitle">Gestionale interno</span>
+            <span class="brand-subtitle">Gestionale Interno</span>
           </span>
         </a>
       </div>
 
       <nav class="sidebar-nav">
-        <a class="nav-link" href="index.html" aria-current="page">
+        <a class="nav-link" href="<[base]>/<[role_path]>/index.php">
           <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
           <span class="nav-text">Dashboard</span>
         </a>
+        <a class="nav-link" href="<[base]>/<[role_path]>/bookings.php">
+          <span class="nav-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
+          <span class="nav-text">Prenotazioni</span>
         <a class="nav-link" href="users.php">
           <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
           <span class="nav-text">Utenti</span>
@@ -69,91 +144,64 @@
           <span class="nav-icon"><i class="bi bi-table" aria-hidden="true"></i></span>
           <span class="nav-text">Tables</span>
         </a>
-        <a class="nav-link" href="forms.html">
-          <span class="nav-icon"><i class="bi bi-ui-checks-grid" aria-hidden="true"></i></span>
-          <span class="nav-text">Forms</span>
+        <a class="nav-link" href="<[base]>/<[role_path]>/activity.php">
+          <span class="nav-icon"><i class="bi bi-clock-history" aria-hidden="true"></i></span>
+          <span class="nav-text">Attività di Oggi</span>
         </a>
-        <a class="nav-link" href="components.html">
-          <span class="nav-icon"><i class="bi bi-grid-3x3-gap" aria-hidden="true"></i></span>
-          <span class="nav-text">Components</span>
+        <[if!empty is_admin_role]>
+        <a class="nav-link" href="<[base]>/admin/users.php">
+          <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+          <span class="nav-text">Utenti</span>
         </a>
-        <a class="nav-link" href="alerts.html">
-          <span class="nav-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
-          <span class="nav-text">Alerts</span>
-        </a>
-        <a class="nav-link" href="modals.html">
-          <span class="nav-icon"><i class="bi bi-window-stack" aria-hidden="true"></i></span>
-          <span class="nav-text">Modals</span>
-        </a>
-        <a class="nav-link" href="settings.html">
-          <span class="nav-icon"><i class="bi bi-gear" aria-hidden="true"></i></span>
-          <span class="nav-text">Settings</span>
-        </a>
-        <a class="nav-link" href="blank.html">
-          <span class="nav-icon"><i class="bi bi-file-earmark" aria-hidden="true"></i></span>
-          <span class="nav-text">Blank Page</span>
-        </a>
+        <[/if!empty]>
       </nav>
 
       <div class="sidebar-user">
-        <img class="avatar-img avatar-md sidebar-user-avatar" src="<[base]>/skins/<[skin]>/assets/images/avatar/avatar.jpg" alt="Nome Utente">
-        <strong><[user.name]></strong>
-        <small>Active Workspace</small>
+        <div class="avatar-initials avatar-md"><[user_initials]></div>
+        <strong><[user_name]></strong>
+        <small><[user_role]></small>
       </div>
 
       <div class="sidebar-footer">
         <span class="status-dot"></span>
-        <span class="sidebar-footer-text">System running smoothly</span>
+        <span class="sidebar-footer-text">Sistema attivo</span>
       </div>
     </aside>
 
     <div class="admin-main">
       <nav class="navbar admin-navbar navbar-expand bg-white">
         <div class="container-fluid px-3 px-lg-4">
-          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="Toggle sidebar">
+          <button class="sidebar-toggle" type="button" data-sidebar-toggle aria-controls="adminSidebar" aria-expanded="true" aria-label="Espandi sidebar">
             <span></span>
             <span></span>
             <span></span>
           </button>
 
-    
-
           <div class="navbar-actions ms-auto">
-            <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch color theme" title="Switch color theme">
+            <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
               <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
             </button>
+            
             <div class="dropdown">
-              <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifications">
-                <span class="notification-dot"></span>
+              <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifiche">
+                <[notification_badge]>
                 <i class="bi bi-bell" aria-hidden="true"></i>
               </button>
-              <div class="dropdown-menu dropdown-menu-end notification-menu">
-                <div class="dropdown-header fw-bold text-body">Notifications</div>
-                <a class="dropdown-item" href="users.html">
-                  <span class="notification-title">New user registered</span>
-                  <span class="notification-time">4 minutes ago</span>
-                </a>
-                <a class="dropdown-item" href="charts.html">
-                  <span class="notification-title">Revenue target reached</span>
-                  <span class="notification-time">32 minutes ago</span>
-                </a>
-                <a class="dropdown-item" href="settings.html">
-                  <span class="notification-title">Security review completed</span>
-                  <span class="notification-time">1 hour ago</span>
-                </a>
+              <div class="dropdown-menu dropdown-menu-end notification-menu p-2">
+                <div class="dropdown-header fw-bold text-body border-bottom pb-2 mb-2">Notifiche</div>
+                <[notifications_list]>
               </div>
             </div>
 
             <div class="dropdown">
               <button class="profile-button dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <img class="avatar-img avatar-sm" src="<[base]>/skins/<[skin]>/assets/images/avatar/avatar.jpg" alt="Foto profilo">
-                <span class="profile-name d-none d-sm-inline"><[user.name]></span>
+                <div class="avatar-initials avatar-sm"><[user_initials]></div>
+                <span class="profile-name d-none d-sm-inline"><[user_name]></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="profile.html">Profilo</a></li>
-                <li><a class="dropdown-item" href="settings.html">Impostazioni account</a></li>
+                <li><a class="dropdown-item" href="<[base]>/profile.php">Area Personale</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="login.html">Esci</a></li>
+                <li><a class="dropdown-item text-danger" href="<[base]>/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Esci</a></li>
               </ul>
             </div>
           </div>
@@ -162,9 +210,10 @@
 
       <[body]>
 
-      <footer class="admin-footer">
-        <div class="container-fluid px-3 px-lg-4">
-          <span>Copyright 2026 adminHMD. <br> Developed by <a target="_blank"  href="https://github.com/HasanMahmudDev">Md. Hasan Mahmud</a> • Distributed by <a target="_blank" href="https://themewagon.com">ThemeWagon</a> </span>
+      <footer class="admin-footer border-top mt-auto">
+        <div class="container-fluid px-3 px-lg-4 d-flex justify-content-between align-items-center">
+          <span>&copy; 2026 Paradise Resort - Area Riservata</span>
+          <span>Tutti i diritti riservati</span>
         </div>
       </footer>
     </div>

@@ -1,0 +1,129 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1">Panoramica</p>
+        <h1 class="h3 mb-1">Dashboard Gestionale</h1>
+        <p class="text-muted mb-0">Benvenuto, <strong><[user_name]></strong>. Monitora lo stato attuale del resort.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="row g-3 mt-1" aria-label="Metriche Dashboard">
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-primary">
+        <div class="metric-top">
+          <span class="metric-label">Ricavi Totali</span>
+          <span class="metric-icon"><i class="bi bi-currency-euro" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value">&euro;<[total_revenue]></div>
+        <div class="metric-meta">
+          <span>Stime basate su prenotazioni confermate/completate</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-success">
+        <div class="metric-top">
+          <span class="metric-label">Prenotazioni Totali</span>
+          <span class="metric-icon"><i class="bi bi-calendar-check" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value"><[total_bookings]></div>
+        <div class="metric-meta">
+          <span>Registrate a sistema</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-warning">
+        <div class="metric-top">
+          <span class="metric-label">In Attesa</span>
+          <span class="metric-icon"><i class="bi bi-hourglass-split" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value"><[pending_bookings]></div>
+        <div class="metric-meta">
+          <span>Da confermare dello staff</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-danger">
+        <div class="metric-top">
+          <span class="metric-label">Stanze in Manutenzione</span>
+          <span class="metric-icon"><i class="bi bi-tools" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value"><[maintenance_rooms]></div>
+        <div class="metric-meta">
+          <span>Interventi tecnici attivi</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Sezione Stato del Resort -->
+  <div class="row g-4 mt-2">
+    <div class="col-12">
+      <div class="panel">
+        <div class="panel-header mb-4">
+          <div>
+            <h2 class="h5 mb-1 section-title"><i class="bi bi-house-gear me-2 text-primary"></i><span>Occupazione e Stato delle Camere</span></h2>
+            <p class="text-muted small mb-0">Riepilogo in tempo reale della disponibilità e dello stato manutentivo delle sistemazioni.</p>
+          </div>
+        </div>
+
+        <div class="row g-4 align-items-center">
+          <!-- Barre Grafiche -->
+          <div class="col-12 col-md-7">
+            <div class="mb-4">
+              <div class="d-flex justify-content-between mb-2 small text-dark fw-bold">
+                <span>Camere Libere / Disponibili</span>
+                <span class="text-success"><[rooms_available]> / <[rooms_total]> camere</span>
+              </div>
+              <div class="progress" style="height: 12px; background-color: #cbd5e1; border-radius: 6px;">
+                <div class="progress-bar bg-success" role="progressbar" style="width: <[pct_available]>%; border-radius: 6px;" aria-valuenow="<[pct_available]>" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex justify-content-between mb-2 small text-dark fw-bold">
+                <span>Camere Occupate da Ospiti</span>
+                <span class="text-primary"><[rooms_occupied]> / <[rooms_total]> camere</span>
+              </div>
+              <div class="progress" style="height: 12px; background-color: #cbd5e1; border-radius: 6px;">
+                <div class="progress-bar bg-primary" role="progressbar" style="width: <[pct_occupied]>%; border-radius: 6px;" aria-valuenow="<[pct_occupied]>" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex justify-content-between mb-2 small text-dark fw-bold">
+                <span>Camere in Manutenzione (Bloccate)</span>
+                <span class="text-danger"><[rooms_maintenance]> / <[rooms_total]> camere</span>
+              </div>
+              <div class="progress" style="height: 12px; background-color: #cbd5e1; border-radius: 6px;">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: <[pct_maintenance]>%; border-radius: 6px;" aria-valuenow="<[pct_maintenance]>" aria-valuemin="0" aria-valuemax="100"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Riquadro Informativo Laterale -->
+          <div class="col-12 col-md-5">
+            <div class="p-4 rounded bg-light border" style="border-radius: 8px;">
+              <h6 class="fw-bold mb-2 text-dark" style="font-size: 0.9rem;"><i class="bi bi-info-circle text-primary me-2"></i>Stato Operativo</h6>
+              <p class="text-muted mb-3" style="font-size: 0.82rem; line-height: 1.5;">
+                I dati sulle camere occupate e disponibili sono calcolati dinamicamente incrociando i check-in e check-out della giornata odierna. Le stanze in manutenzione sono bloccate e non prenotabili dai clienti.
+              </p>
+              <div class="d-flex align-items-center gap-2 small text-danger">
+                <i class="bi bi-exclamation-triangle-fill"></i>
+                <span><strong><[rooms_maintenance]></strong> stanza/e attualmente in riparazione</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

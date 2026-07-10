@@ -43,3 +43,99 @@ function new_block(string $template): Template {
     $root = __DIR__ . '/..';
     return new Template("{$root}/skins/{$skinName}/dtml/{$template}");
 }
+
+function setup_backoffice_page(Template $page, string $roleName, string $rolePath): void {
+    global $config;
+    
+    $_SESSION['user']['role_path'] = $rolePath; // Salva il path in sessione per i link delle notifiche
+    
+    $name = $_SESSION['user']['name'] ?? '';
+    $words = explode(' ', trim($name));
+    $initials = '';
+    foreach ($words as $w) {
+        $initials .= strtoupper(substr($w, 0, 1));
+    }
+    $initials = substr($initials, 0, 2);
+    if ($initials === '') {
+        $initials = 'U';
+    }
+    
+    $page->setContent('base', $config['base']);
+    $page->setContent('skin', 'administration');
+    $page->setContent('user_name', htmlspecialchars($name));
+    $page->setContent('user_role', $roleName);
+    $page->setContent('role_path', $rolePath);
+    $page->setContent('is_admin_role', ($rolePath === 'admin') ? '1' : '');
+    $page->setContent('user_initials', htmlspecialchars($initials));
+
+    // Notifiche
+    $notif = get_backoffice_notifications_html();
+    $page->setContent('notifications_list', $notif['html']);
+    $page->setContent('notification_badge', $notif['count'] > 0 ? '<span class="notification-dot"></span>' : '');
+}
+
+function get_backoffice_notifications_html(): array {
+    $db = db();
+    $items = [];
+    $count = 0;
+    
+    // 1. Prenotazioni in attesa
+    try {
+        $stmt = $db->query("
+            SELECT b.id, u.first_name, u.last_name, b.created_at
+            FROM bookings b
+            JOIN users u ON b.user_id = u.id
+            WHERE b.status_id = 2
+            ORDER BY b.created_at DESC
+            LIMIT 5
+        ");
+        $pending = $stmt->fetchAll();
+        foreach ($pending as $p) {
+            $count++;
+            $timeStr = date('d/m H:i', strtotime($p['created_at']));
+            $guest = htmlspecialchars($p['first_name'] . ' ' . $p['last_name']);
+            // Link to bookings page filtered by pending
+            $url = $GLOBALS['config']['base'] . '/' . ($_SESSION['user']['role_path'] ?? 'receptionist') . '/bookings.php?status=2';
+            $items[] = '
+                <a class="dropdown-item" href="' . $url . '">
+                  <span class="notification-title text-wrap" style="white-space: normal;"><i class="bi bi-hourglass-split text-warning me-2"></i>Da confermare: #' . $p['id'] . '</span>
+                  <span class="notification-time text-wrap" style="white-space: normal;">Cliente: ' . $guest . ' (' . $timeStr . ')</span>
+                </a>';
+        }
+    } catch (Exception $e) {}
+
+    // 2. Ticket manutenzione attivi (Open=1, In Progress=2)
+    try {
+        $stmt = $db->query("
+            SELECT mt.id, r.room_number, mt.issue_description, mt.created_at
+            FROM maintenance_tickets mt
+            JOIN rooms r ON mt.room_id = r.id
+            WHERE mt.status_id IN (1, 2)
+            ORDER BY mt.created_at DESC
+            LIMIT 5
+        ");
+        $tickets = $stmt->fetchAll();
+        foreach ($tickets as $t) {
+            $count++;
+            $timeStr = date('d/m H:i', strtotime($t['created_at']));
+            $desc = htmlspecialchars(mb_strimwidth($t['issue_description'], 0, 30, "..."));
+            $items[] = '
+                <a class="dropdown-item" href="#">
+                  <span class="notification-title text-wrap" style="white-space: normal;"><i class="bi bi-tools text-danger me-2"></i>Manutenzione Cam. ' . htmlspecialchars($t['room_number']) . '</span>
+                  <span class="notification-time text-wrap" style="white-space: normal;">' . $desc . ' (' . $timeStr . ')</span>
+                </a>';
+        }
+    } catch (Exception $e) {}
+
+    $html = '';
+    if (empty($items)) {
+        $html = '<div class="dropdown-item text-center text-muted py-3">Nessuna nuova notifica</div>';
+    } else {
+        $html = implode('', $items);
+    }
+
+    return [
+        'html' => $html,
+        'count' => $count
+    ];
+}

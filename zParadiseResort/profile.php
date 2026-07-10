@@ -2,8 +2,9 @@
 
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
-// Protezione pagina: richiede login
+// Protezione pagina: richiede login ed esclude lo staff
 require_login();
+block_staff();
 
 // Migrazione autogestita (Self-Healing) del database
 try {
@@ -116,7 +117,7 @@ if ($action === 'cancel') {
 
 // Caricamento storico delle prenotazioni dell'utente (escludendo quelle in stato 'In Cart')
 $stmt = db()->prepare(
-    'SELECT b.id, b.check_in_date, b.check_out_date, b.total_price, b.status_id,
+    'SELECT b.id, b.check_in_date, b.check_out_date, b.total_price, b.status_id, b.staff_notes,
             bs.name AS status_name, rc.name AS category_name, r.room_number
      FROM bookings b
      JOIN rooms r ON r.id = b.room_id
@@ -217,12 +218,22 @@ foreach ($bookings as $b) {
                        '</div>';
     }
 
+    $notesHtml = '';
+    if (!empty($b['staff_notes'])) {
+        $notesHtml = '
+        <div style="background-color: #fffbeb; color: #b45309; border: 1px solid #fef3c7; border-left: 4px solid #f59e0b; padding: 10px 15px; border-radius: 6px; margin: 15px 0 10px; font-size: 0.9rem; display: flex; align-items: start; gap: 8px;">
+            <i class="fas fa-exclamation-triangle" style="margin-top: 3px; flex-shrink: 0;"></i>
+            <div><strong>Avviso dello Staff:</strong> ' . htmlspecialchars($b['staff_notes']) . '</div>
+        </div>';
+    }
+
     $cardHtml = '
     <div class="booking-history-card">
         <div class="booking-header">
             <h5 class="booking-title">Prenotazione #' . $b['id'] . '</h5>
             <div>' . $statusHtml . '</div>
         </div>
+        ' . $notesHtml . '
         
         <div class="booking-grid">
             <div class="booking-meta-item">

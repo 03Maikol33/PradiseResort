@@ -21,6 +21,13 @@ require_once __DIR__ . '/db.inc.php';
 require_once __DIR__ . '/page.inc.php';
 require_once __DIR__ . '/auth.inc.php';
 
+// Migrazione autogestita (Self-Healing) per le note dello staff sulle prenotazioni
+try {
+    db()->query("SELECT staff_notes FROM bookings LIMIT 1");
+} catch (Exception $e) {
+    db()->query("ALTER TABLE bookings ADD COLUMN staff_notes TEXT DEFAULT NULL");
+}
+
 function get_cart_count(): int {
     if (empty($_SESSION['user']['id'])) {
         return 0;
