@@ -2,8 +2,9 @@
 
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
-// Protezione pagina: richiede login
+// Protezione pagina: richiede login ed esclude lo staff
 require_login();
+block_staff();
 
 $bookingId = (int)($_GET['id'] ?? 0);
 

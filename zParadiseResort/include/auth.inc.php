@@ -107,3 +107,15 @@ function block_admin(): void {
         exit;
     }
 }
+function block_staff(): void {
+    global $config;
+    if (!empty($_SESSION['user'])) {
+        if (is_admin()) {
+            header('Location: ' . $config['base'] . '/admin/index.php');
+            exit;
+        } elseif (is_receptionist()) {
+            header('Location: ' . $config['base'] . '/receptionist/index.php');
+            exit;
+        }
+    }
+}

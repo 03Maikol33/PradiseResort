@@ -4,8 +4,16 @@ require_once __DIR__ . '/include/bootstrap.inc.php';
 
 //reindirizzamento utente loggato
 if (!empty($_SESSION['user'])) {
-    header('Location: ' . $config['base'] . '/index.php');
-    exit;
+    if (is_admin()) {
+        header('Location: ' . $config['base'] . '/admin/index.php');
+        exit;
+    } elseif (is_receptionist()) {
+        header('Location: ' . $config['base'] . '/receptionist/index.php');
+        exit;
+    } else {
+        header('Location: ' . $config['base'] . '/index.php');
+        exit;
+    }
 }
 
 $error = '';
