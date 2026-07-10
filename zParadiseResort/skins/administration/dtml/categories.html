@@ -1,0 +1,70 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-tags" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1">Gestione</p>
+        <h1 class="h3 mb-1">Categorie Camere</h1>
+        <p class="text-muted mb-0">Gestisci le tipologie di camere offerte dall'hotel.</p>
+      </div>
+    </div>
+  </div>
+
+  <[if!empty show_success]>
+  <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+    <i class="bi bi-check-circle me-2"></i> <[success_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <[if!empty show_error]>
+  <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i> <[error_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <section class="panel mt-3">
+    <div class="panel-header">
+      <div>
+        <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>Lista Categorie</span></h2>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <a href="category_edit.php" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i>Aggiungi Categoria</a>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0" id="categoriesTable">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrizione</th>
+            <th scope="col">Prezzo Base</th>
+            <th scope="col">Capacità</th>
+            <th scope="col" class="text-end">Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <[foreach]>
+          <tr>
+            <td><[cat_id]></td>
+            <td><span class="fw-semibold"><[cat_name]></span></td>
+            <td><[cat_desc]></td>
+            <td>€<[cat_price]></td>
+            <td><[cat_capacity]> persone</td>
+            <td class="text-end">
+              <a href="category_edit.php?id=<[cat_id]>" class="btn btn-sm btn-outline-primary" title="Modifica"><i class="bi bi-pencil"></i></a>
+              <a href="category_delete.php?id=<[cat_id]>" class="btn btn-sm btn-outline-danger" title="Elimina" onclick="return confirm('Sei sicuro di voler eliminare questa categoria?');"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+          <[/foreach]>
+          
+          <[ifempty categories_list]>
+          <tr><td colspan="6" class="text-center py-4">Nessuna categoria trovata</td></tr>
+          <[/ifempty]>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
