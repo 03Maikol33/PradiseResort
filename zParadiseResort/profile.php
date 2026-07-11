@@ -295,5 +295,70 @@ if (empty($pastBookingsHtml)) {
 $block->setContent('active_bookings_html', $activeBookingsHtml);
 $block->setContent('past_bookings_html',   $pastBookingsHtml);
 
+// Caricamento prenotazioni Ristorante
+$stmtRest = db()->prepare(
+    'SELECT id, reservation_date, meal_type, reservation_time, guests, status
+     FROM restaurant_reservations
+     WHERE user_id = ?
+     ORDER BY reservation_date DESC, reservation_time DESC'
+);
+$stmtRest->execute([$_SESSION['user']['id']]);
+$restBookings = $stmtRest->fetchAll();
+
+$restBookingsHtml = '';
+foreach ($restBookings as $rb) {
+    $rDate = new DateTime($rb['reservation_date']);
+    $statusClass = '';
+    $statusName = $rb['status'];
+    
+    if ($statusName === 'Confirmed') {
+        $statusClass = 'badge-confirmed';
+        $statusName = 'Confermata';
+    } elseif ($statusName === 'Cancelled') {
+        $statusClass = 'badge-cancelled';
+        $statusName = 'Cancellata';
+    } else {
+        $statusClass = 'badge-pending';
+        $statusName = 'In Attesa';
+    }
+    
+    $statusHtml = '<span class="premium-status-badge ' . $statusClass . '">' . htmlspecialchars($statusName) . '</span>';
+    
+    $restBookingsHtml .= '
+    <div class="booking-history-card">
+        <div class="booking-header">
+            <h5 class="booking-title">Tavolo #' . $rb['id'] . '</h5>
+            <div>' . $statusHtml . '</div>
+        </div>
+        
+        <div class="booking-grid">
+            <div class="booking-meta-item">
+                <span class="booking-meta-label">Servizio</span>
+                <span class="booking-meta-value"><i class="fas fa-utensils"></i> ' . htmlspecialchars($rb['meal_type']) . '</span>
+            </div>
+            <div class="booking-meta-item">
+                <span class="booking-meta-label">Data e Ora</span>
+                <span class="booking-meta-value"><i class="far fa-calendar-alt"></i> ' . $rDate->format('d/m/Y') . ' - ' . substr($rb['reservation_time'], 0, 5) . '</span>
+            </div>
+            <div class="booking-meta-item">
+                <span class="booking-meta-label">Ospiti</span>
+                <span class="booking-meta-value"><i class="fas fa-user-friends"></i> ' . (int)$rb['guests'] . '</span>
+            </div>
+        </div>
+    </div>';
+}
+
+if (empty($restBookingsHtml)) {
+    $restBookingsHtml = '
+    <div class="text-center p-4" style="background: rgba(255, 255, 255, 0.4); border: 1px dashed #cbd5e0; border-radius: 16px;">
+        <span style="font-size: 2.5rem; color: #cbd5e0; margin-bottom: 10px; display: block;"><i class="fas fa-utensils text-muted"></i></span>
+        <h6 style="color: #718096; font-weight: 600; margin-bottom: 5px;">Nessuna prenotazione ristorante</h6>
+        <p style="color: #a0aec0; font-size: 0.85rem; margin-bottom: 15px;">Riserva un tavolo e gusta le nostre specialità!</p>
+        <a href="' . $config['base'] . '/restaurant_menu.php" class="btn-elite-edit" style="display: inline-block; padding: 6px 16px; font-size: 0.8rem; text-decoration: none;">Scopri il Menù</a>
+    </div>';
+}
+
+$block->setContent('restaurant_bookings_html', $restBookingsHtml);
+
 $skin->setContent('body', $block->get());
 $skin->close();

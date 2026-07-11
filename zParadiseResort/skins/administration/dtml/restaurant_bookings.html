@@ -1,0 +1,88 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Prenotazioni Ristorante</h1>
+</div>
+
+<[if success_msg]>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <[success_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<[/if]>
+
+<[if error_msg]>
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <[error_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<[/if]>
+
+<!-- Filtri di ricerca -->
+<div class="card mb-4">
+    <div class="card-body bg-light">
+        <form method="GET" action="" class="row g-3 align-items-end">
+            <div class="col-md-5">
+                <label for="search" class="form-label fw-bold">Cerca Cliente</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                    <input type="text" class="form-control" id="search" name="search" value="<[search_query]>" placeholder="Nome, Cognome o Email">
+                </div>
+            </div>
+            <div class="col-md-5">
+                <label for="status" class="form-label fw-bold">Filtra per Stato</label>
+                <select class="form-select" id="status" name="status">
+                    <option value="">Tutti gli stati</option>
+                    <option value="Pending">In Attesa</option>
+                    <option value="Confirmed">Confermata</option>
+                    <option value="Cancelled">Cancellata</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary"><i class="bi bi-funnel"></i> Filtra</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Tabella Prenotazioni -->
+<div class="table-responsive">
+    <table class="table table-striped table-hover align-middle shadow-sm">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Data e Ora</th>
+                <th scope="col">Servizio</th>
+                <th scope="col">Ospiti</th>
+                <th scope="col">Stato</th>
+                <th scope="col" class="text-end">Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            <[if bookings_list]>
+                <[foreach]>
+                <tr>
+                    <td><strong>#<[booking_id]></strong><br><small class="text-muted"><[booking_created]></small></td>
+                    <td>
+                        <div class="fw-bold"><[guest_name]></div>
+                        <small class="text-muted"><i class="bi bi-envelope"></i> <[guest_email]></small>
+                    </td>
+                    <td>
+                        <div class="fw-bold"><[reservation_date]></div>
+                        <small class="text-muted"><i class="bi bi-clock"></i> <[reservation_time]></small>
+                    </td>
+                    <td><[meal_type]></td>
+                    <td><[guests]></td>
+                    <td><span class="badge <[status_badge_class]>"><[status]></span></td>
+                    <td class="text-end">
+                        <[booking_actions]>
+                    </td>
+                </tr>
+                <[/foreach]>
+            <[else]>
+                <tr>
+                    <td colspan="7" class="text-center text-muted py-4">Nessuna prenotazione trovata per i criteri selezionati.</td>
+                </tr>
+            <[/if]>
+        </tbody>
+    </table>
+</div>

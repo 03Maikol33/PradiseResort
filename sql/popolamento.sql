@@ -22,7 +22,8 @@ INSERT INTO services (script_name, description) VALUES
 ('services.php', 'Gestione Permessi'),
 ('categories.php', 'Gestione Categorie Camere'),
 ('activity.php', 'Gestione Attività'),
-('profile.php', 'Area personale');
+('profile.php', 'Area personale'),
+('restaurant_bookings.php', 'Gestione Prenotazioni Ristorante');
 
 -- 2. Popolamento Tabelle di Giunzione ACL
 INSERT INTO user_gruppi (user_id, group_id) VALUES
@@ -33,8 +34,8 @@ INSERT INTO user_gruppi (user_id, group_id) VALUES
 (5, 3); -- Lorenzo Gialli -> Guest
 
 INSERT INTO group_services (group_id, service_id) VALUES
-(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), -- L'Admin vede tutto
-(2, 1), (2, 2), (2, 3), (2, 8), (2, 9),                                 -- Receptionist vede dashboard, camere, prenotazioni, attività, profilo
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), -- L'Admin vede tutto
+(2, 1), (2, 2), (2, 3), (2, 8), (2, 9), (2, 10),                                 -- Receptionist vede dashboard, camere, prenotazioni, attività, profilo, prenotazioni ristorante
 (3, 9);                                                                 -- Il Guest vede solo il proprio profilo
 
 -- 3. Popolamento Catalogo Stanze
@@ -94,3 +95,8 @@ INSERT INTO reviews (user_id, room_category_id, rating, comment) VALUES
 INSERT INTO maintenance_tickets (room_id, reported_by_user_id, status_id, issue_description) VALUES
 (6, 2, 2, 'Il condizionatore perde acqua, chiamato il tecnico.'),
 (2, 2, 3, 'Sostituzione lampadina fulminata in bagno completata.');
+
+-- 6. Popolamento Prenotazioni Ristorante
+INSERT INTO restaurant_reservations (user_id, reservation_date, meal_type, reservation_time, guests, status) VALUES
+(3, '2026-08-01', 'Cena', '20:30', 2, 'Confirmed'),
+(4, '2026-08-02', 'Pranzo', '13:00', 4, 'Pending');

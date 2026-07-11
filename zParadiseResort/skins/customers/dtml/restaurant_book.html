@@ -1,0 +1,136 @@
+<main>
+    <!-- slider Area Start-->
+    <div class="slider-area">
+        <div class="single-slider hero-overly slider-height2 d-flex align-items-center"
+            data-background="<[base]>/skins/<[skin]>/assets/img/hero/h1_hero.jpg">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-11 offset-xl-1 offset-lg-1 offset-md-1">
+                        <div class="hero-caption">
+                            <span>Ristorante</span>
+                            <h2>Prenota un Tavolo</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+
+    <!-- Booking Form Start -->
+    <section class="contact-section" style="padding-top: 50px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    
+                    <[if!empty message]>
+                    <div class="alert alert-success mt-4">
+                        <[message]>
+                    </div>
+                    <[/if!empty]>
+
+                    <[if!empty error]>
+                    <div class="alert alert-danger mt-4">
+                        <[error]>
+                    </div>
+                    <[/if!empty]>
+
+                    <style>
+                        /* Sovrascriviamo il bordo arancione di default del plugin nice-select */
+                        .nice-select {
+                            border-color: #ced4da !important;
+                        }
+                        .nice-select .list {
+                            width: 100%;
+                        }
+                        .nice-select.open, .nice-select:active, .nice-select:focus,
+                        .form-control:focus {
+                            border-color: #0abab5 !important;
+                        }
+                    </style>
+
+                    <div class="mt-5" id="contactForm" style="background: #ffffff; padding: 40px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+                        <form action="<[base]>/restaurant_book.php" method="POST">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group mb-4">
+                                        <label for="reservation_date" style="font-weight: 600; display:block; margin-bottom: 8px;">Data</label>
+                                        <input class="form-control" name="reservation_date" id="reservation_date" type="date" required min="<[min_date]>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group mb-4">
+                                        <label for="guests" style="font-weight: 600; display:block; margin-bottom: 8px;">Ospiti</label>
+                                        <input class="form-control" name="guests" id="guests" type="number" min="1" max="20" value="2" required>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group mb-4">
+                                        <label for="meal_type" style="font-weight: 600; display:block; margin-bottom: 8px;">Servizio</label>
+                                        <select class="form-control" name="meal_type" id="meal_type" required>
+                                            <option value="Pranzo" selected>Pranzo</option>
+                                            <option value="Cena">Cena</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group mb-4">
+                                        <label for="reservation_time" style="font-weight: 600; display:block; margin-bottom: 8px;">Orario</label>
+                                        <select class="form-control" name="reservation_time" id="reservation_time" required>
+                                            <option value="">Seleziona prima il servizio...</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-3">
+                                <button type="submit" class="button button-contactForm boxed-btn">Conferma Prenotazione</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Booking Form End -->
+</main>
+
+<script>
+window.addEventListener('load', function() {
+    var todayDate = '<[min_date]>';
+    var minTimeToday = '<[min_time_today]>';
+
+    function updateTimes() {
+        var mealType = $('#meal_type').val();
+        var selectedDate = $('#reservation_date').val();
+        var $timeSelect = $('#reservation_time');
+        
+        $timeSelect.empty();
+        
+        var times = [];
+        if (mealType === "Pranzo") {
+            times = ["12:30", "13:00", "13:30", "14:00"];
+        } else if (mealType === "Cena") {
+            times = ["19:30", "20:00", "20:30", "21:00", "21:30"];
+        }
+
+        if (selectedDate === todayDate) {
+            times = times.filter(function(t) { return t >= minTimeToday; });
+        }
+        
+        if (times.length > 0) {
+            for(var i=0; i<times.length; i++){
+                $timeSelect.append('<option value="' + times[i] + '">' + times[i] + '</option>');
+            }
+        } else {
+            $timeSelect.append('<option value="">Nessun orario disponibile...</option>');
+        }
+        
+        if($.fn.niceSelect) {
+            $timeSelect.niceSelect('update');
+        }
+    }
+
+    $('#meal_type, #reservation_date').on('change', updateTimes);
+    updateTimes();
+});
+</script>

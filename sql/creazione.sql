@@ -128,3 +128,15 @@ CREATE TABLE maintenance_tickets (
     FOREIGN KEY (reported_by_user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (status_id) REFERENCES ticket_statuses(id) ON DELETE RESTRICT
 );
+
+CREATE TABLE restaurant_reservations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    reservation_date DATE NOT NULL,
+    meal_type ENUM('Pranzo', 'Cena') NOT NULL,
+    reservation_time TIME NOT NULL,
+    guests INT NOT NULL DEFAULT 1,
+    status ENUM('Pending', 'Confirmed', 'Cancelled') DEFAULT 'Pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
