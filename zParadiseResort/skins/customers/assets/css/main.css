@@ -2734,7 +2734,7 @@ label {
 
 /* line 785, C:/Users/SPN Graphics/Desktop/hotel_up/Hotel_HTML/assets/scss/_common.scss */
 .r-padding1 {
-  padding-top: 170px;
+  padding-top: 50px;
   padding-bottom: 200px;
 }
 
@@ -3979,7 +3979,7 @@ label {
   content: "";
   top: 0;
   bottom: 0;
-  background-image: url(../img/dining/dining-img.png);
+  background-image: url(../img/hero/rist_2.jpg);
   width: 50%;
   border-radius: 0 5px 0 0;
   background-size: cover;

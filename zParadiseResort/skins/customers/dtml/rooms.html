@@ -34,11 +34,32 @@
             
             <!-- Category Filter -->
             <style>
+                .room-filter-container {
+                    overflow-x: auto;
+                    white-space: nowrap;
+                    padding-bottom: 15px; /* Spazio per la barra di scorrimento se appare */
+                    display: flex;
+                    justify-content: center; /* Centra se ci stanno tutti */
+                }
+                /* Stile scrollbar personalizzata */
+                .room-filter-container::-webkit-scrollbar {
+                    height: 6px;
+                }
+                .room-filter-container::-webkit-scrollbar-thumb {
+                    background-color: #0abab5;
+                    border-radius: 10px;
+                }
+                
                 .room-filter-btn {
                     padding: 10px 20px !important; 
                     border-radius: 30px !important;
-                    background-color: #f0f0f0 !important; 
+                    background-color: #ffffff !important; 
                     color: #333 !important;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+                    white-space: nowrap;
+                }
+                .room-filter-btn:hover {
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
                 }
                 .room-filter-btn.active-filter {
                     background-color: #0abab5 !important; 
@@ -46,8 +67,8 @@
                 }
             </style>
             <div class="row justify-content-center mb-50">
-                <div class="col-lg-10 text-center">
-                    <div class="room-filter d-flex flex-wrap justify-content-center" style="gap: 15px;">
+                <div class="col-12 text-center room-filter-container">
+                    <div class="room-filter d-inline-flex" style="gap: 15px;">
                         <a href="<[filter_all_url]>" class="btn btn-sm room-filter-btn <[filter_all_class]>">Tutte</a>
                         <[foreach]>
                             <a href="<[filter_url]>" class="btn btn-sm room-filter-btn <[filter_class]>"><[filter_cat_name]></a>
