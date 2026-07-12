@@ -93,6 +93,16 @@ $block = new_block('segnalazioni');
 
 $block->setContent('success_msg', htmlspecialchars($successMsg));
 $block->setContent('error_msg', htmlspecialchars($errorMsg));
+$block->setContent('can_create', '1');
+$block->setContent('can_close', '');
+$block->setContent('role_notice', '
+    <div class="alert bg-light border d-flex align-items-center justify-content-between mb-4 shadow-sm" style="border-radius: 8px;">
+      <div class="d-flex align-items-center gap-2 text-dark small">
+        <i class="bi bi-shield-lock-fill text-primary fs-5"></i>
+        <span><strong>Modalità Receptionist:</strong> Hai i permessi per <em>consultare</em> tutte le segnalazioni e <em>inviarne di nuove</em>. La chiusura e l\'eliminazione sono riservate all\'Amministratore.</span>
+      </div>
+    </div>
+');
 
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $statusFilter = isset($_GET['status']) ? (int)$_GET['status'] : 0;
@@ -226,6 +236,15 @@ if (count($tickets) > 0) {
 
         $block->setContent('status_badge_class', $badgeClass);
         $block->setContent('status_name_it', htmlspecialchars($statusNameIt));
+        $block->setContent('ticket_actions', '
+            <hr class="my-2 text-muted" style="opacity: 0.1;">
+            <div class="d-flex justify-content-between align-items-center w-100 pt-1 flex-wrap gap-2">
+              <span class="text-muted small" style="font-size: 0.78rem;">
+                <i class="bi bi-info-circle me-1"></i>Modalità di sola consultazione: impossibile eliminare o chiudere la segnalazione.
+              </span>
+              <span class="badge bg-light text-secondary border px-2 py-1" style="font-size: 0.72rem;">Sola Lettura</span>
+            </div>
+        ');
     }
 } else {
     $block->setContent('has_tickets', '');
