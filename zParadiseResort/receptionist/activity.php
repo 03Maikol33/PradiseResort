@@ -150,7 +150,44 @@ if ($cntInHouse > 0) {
         $block->setContent('inh_badge_class', $badgeClass);
     }
 } else {
-    $block->setContent('inh_list_empty', '1');
+    $block->setContent('inh_list_empty', '');
+}
+
+$block->setContent('base', $GLOBALS['config']['base']);
+$block->setContent('role_path', 'receptionist');
+
+// --- 4. Query Prenotazioni Ristorante di Oggi ---
+$stmtRest = $db->prepare("
+    SELECT r.id, r.reservation_date, r.reservation_time, r.guests, r.meal_type, r.status,
+           u.first_name, u.last_name, u.email
+    FROM restaurant_reservations r
+    JOIN users u ON r.user_id = u.id
+    WHERE r.reservation_date = ? AND r.status IN ('Pending', 'Confirmed')
+    ORDER BY r.reservation_time ASC
+");
+$stmtRest->execute([$todayStr]);
+$rest = $stmtRest->fetchAll();
+$cntRest = count($rest);
+$block->setContent('cnt_restaurant', $cntRest);
+
+if ($cntRest > 0) {
+    $block->setContent('rest_list_empty', '1');
+    foreach ($rest as $rt) {
+        $block->setContent('rest_booking_id', $rt['id']);
+        $block->setContent('rest_guest_name', htmlspecialchars($rt['first_name'] . ' ' . $rt['last_name']));
+        $block->setContent('rest_guest_email', htmlspecialchars($rt['email']));
+        $block->setContent('rest_time', htmlspecialchars(substr($rt['reservation_time'], 0, 5)));
+        $block->setContent('rest_guests', (int)$rt['guests']);
+        $block->setContent('rest_meal', htmlspecialchars($rt['meal_type']));
+        
+        $status_it = $rt['status'] === 'Confirmed' ? 'Confermata' : 'In Attesa';
+        $badgeClass = $rt['status'] === 'Confirmed' ? 'text-bg-success' : 'text-bg-warning';
+        
+        $block->setContent('rest_status_name', $status_it);
+        $block->setContent('rest_badge_class', $badgeClass);
+    }
+} else {
+    $block->setContent('rest_list_empty', '');
 }
 
 setup_backoffice_page($page, 'Receptionist', 'receptionist');

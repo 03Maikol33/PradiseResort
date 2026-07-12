@@ -34,9 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $checkStmt = $db->prepare("SELECT 1 FROM bookings WHERE id = ?");
                 $checkStmt->execute([$bookingId]);
                 if ($checkStmt->fetch()) {
-                    $updateStmt = $db->prepare("UPDATE bookings SET status_id = ? WHERE id = ?");
-                    $updateStmt->execute([$statusId, $bookingId]);
-                    $_SESSION['success_msg'] = "Stato della prenotazione #{$bookingId} aggiornato con successo.";
+                    if ($statusId === 4) {
+                        $db->prepare("DELETE FROM booking_amenities WHERE booking_id = ?")->execute([$bookingId]);
+                        $db->prepare("DELETE FROM invoices WHERE booking_id = ?")->execute([$bookingId]);
+                        $deleteStmt = $db->prepare("DELETE FROM bookings WHERE id = ?");
+                        $deleteStmt->execute([$bookingId]);
+                        $_SESSION['success_msg'] = "Prenotazione #{$bookingId} eliminata con successo.";
+                    } else {
+                        $updateStmt = $db->prepare("UPDATE bookings SET status_id = ? WHERE id = ?");
+                        $updateStmt->execute([$statusId, $bookingId]);
+                        $_SESSION['success_msg'] = "Stato della prenotazione #{$bookingId} aggiornato con successo.";
+                    }
                 } else {
                     $_SESSION['error_msg'] = "Prenotazione non trovata.";
                 }
@@ -153,7 +161,7 @@ $statusTranslations = [
 ];
 
 // Popola il menu dei filtri di stato
-$stmtStatuses = $db->query("SELECT id, name FROM booking_statuses ORDER BY id ASC");
+$stmtStatuses = $db->query("SELECT id, name FROM booking_statuses WHERE name != 'Cancelled' ORDER BY id ASC");
 $statuses = $stmtStatuses->fetchAll();
 foreach ($statuses as $st) {
     $stName = $statusTranslations[$st['name']] ?? $st['name'];
@@ -189,7 +197,7 @@ if ($statusFilter > 0) {
     $params[] = $statusFilter;
 }
 
-$query .= " ORDER BY b.created_at DESC";
+$query .= " ORDER BY b.check_in_date ASC";
 
 $stmt = $db->prepare($query);
 $stmt->execute($params);

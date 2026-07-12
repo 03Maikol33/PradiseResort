@@ -18,6 +18,11 @@ $block->setContent('show_error', $error_msg ? '1' : '');
 
 $category_id = isset($_GET['category']) ? (int)$_GET['category'] : 0;
 $floor = isset($_GET['floor']) ? trim($_GET['floor']) : '';
+$status_filter = isset($_GET['status']) ? trim($_GET['status']) : '';
+
+$block->setContent('status_Available_selected', strcasecmp($status_filter, 'Available') === 0 ? 'selected' : '');
+$block->setContent('status_Maintenance_selected', strcasecmp($status_filter, 'Maintenance') === 0 ? 'selected' : '');
+$block->setContent('status_Cleaning_selected', strcasecmp($status_filter, 'Cleaning') === 0 ? 'selected' : '');
 
 // Fetch categories for the filter dropdown
 $stmt_cats = $db->query("SELECT id, name FROM room_categories ORDER BY name ASC");
@@ -53,6 +58,11 @@ if ($category_id > 0) {
 if ($floor !== '') {
     $query .= " AND r.floor = ?";
     $params[] = (int)$floor;
+}
+
+if ($status_filter !== '') {
+    $query .= " AND r.status = ?";
+    $params[] = $status_filter;
 }
 
 $query .= " ORDER BY r.room_number ASC";
