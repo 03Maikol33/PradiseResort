@@ -120,8 +120,9 @@ function get_backoffice_notifications_html(): array {
             $timeStr = date('d/m H:i', strtotime($t['created_at']));
             $desc = htmlspecialchars(mb_strimwidth($t['issue_description'], 0, 30, "..."));
             $roomLabel = $t['room_number'] ? 'Cam. ' . htmlspecialchars($t['room_number']) : 'Generica';
+            $urlTicket = $GLOBALS['config']['base'] . '/' . ($_SESSION['user']['role_path'] ?? 'receptionist') . '/segnalazioni.php';
             $items[] = '
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="' . $urlTicket . '">
                   <span class="notification-title text-wrap" style="white-space: normal;"><i class="bi bi-tools text-danger me-2"></i>Manutenzione ' . $roomLabel . '</span>
                   <span class="notification-time text-wrap" style="white-space: normal;">' . $desc . ' (' . $timeStr . ')</span>
                 </a>';

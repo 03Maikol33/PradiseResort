@@ -23,7 +23,8 @@ INSERT INTO services (script_name, description) VALUES
 ('categories.php', 'Gestione Categorie Camere'),
 ('activity.php', 'Gestione Attività'),
 ('profile.php', 'Area personale'),
-('restaurant_bookings.php', 'Gestione Prenotazioni Ristorante');
+('restaurant_bookings.php', 'Gestione Prenotazioni Ristorante'),
+('segnalazioni.php', 'Gestione Segnalazioni');
 
 -- 2. Popolamento Tabelle di Giunzione ACL
 INSERT INTO user_gruppi (user_id, group_id) VALUES
@@ -34,8 +35,8 @@ INSERT INTO user_gruppi (user_id, group_id) VALUES
 (5, 3); -- Lorenzo Gialli -> Guest
 
 INSERT INTO group_services (group_id, service_id) VALUES
-(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), -- L'Admin vede tutto
-(2, 1), (2, 2), (2, 3), (2, 8), (2, 9), (2, 10),                                 -- Receptionist vede dashboard, camere, prenotazioni, attività, profilo, prenotazioni ristorante
+(1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (1, 11), -- L'Admin vede tutto
+(2, 1), (2, 2), (2, 3), (2, 8), (2, 9), (2, 10), (2, 11),                              -- Receptionist vede dashboard, camere, prenotazioni, attività, profilo, prenotazioni ristorante, segnalazioni
 (3, 9);                                                                 -- Il Guest vede solo il proprio profilo
 
 -- 3. Popolamento Catalogo Stanze

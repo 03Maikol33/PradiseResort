@@ -1,0 +1,225 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading d-flex justify-content-between align-items-center flex-wrap gap-3">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1">Assistenza & Manutenzione</p>
+        <h1 class="h3 mb-1">Segnalazioni Resort</h1>
+        <p class="text-muted mb-0">Consulta tutte le segnalazioni aperte o invia una nuova richiesta di intervento.</p>
+      </div>
+    </div>
+    <div>
+      <button type="button" class="btn btn-primary d-flex align-items-center gap-2 shadow-sm px-3 py-2" data-bs-toggle="modal" data-bs-target="#newTicketModal" style="border-radius: 8px; font-weight: 600;">
+        <i class="bi bi-plus-circle-fill"></i> Invia Nuova Segnalazione
+      </button>
+    </div>
+  </div>
+
+  <[if!empty success_msg]>
+  <div class="alert alert-success alert-dismissible fade show mt-3 shadow-sm" role="alert" style="border-radius: 8px;">
+    <i class="bi bi-check-circle-fill me-2"></i><[success_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <[if!empty error_msg]>
+  <div class="alert alert-danger alert-dismissible fade show mt-3 shadow-sm" role="alert" style="border-radius: 8px;">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i><[error_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <!-- Metriche e Schede Statistiche -->
+  <section class="row g-3 mt-1" aria-label="Metriche Segnalazioni">
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-primary shadow-sm">
+        <div class="metric-top">
+          <span class="metric-label">Totale Segnalazioni</span>
+          <span class="metric-icon"><i class="bi bi-clipboard-data" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value"><[total_tickets]></div>
+        <div class="metric-meta">
+          <span>Registrate nel sistema</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-warning shadow-sm">
+        <div class="metric-top">
+          <span class="metric-label">Aperte</span>
+          <span class="metric-icon"><i class="bi bi-exclamation-circle" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value"><[open_tickets]></div>
+        <div class="metric-meta">
+          <span>In attesa di presa in carico</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-info shadow-sm">
+        <div class="metric-top">
+          <span class="metric-label">In Lavorazione</span>
+          <span class="metric-icon"><i class="bi bi-tools" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value"><[in_progress_tickets]></div>
+        <div class="metric-meta">
+          <span>Intervento in corso</span>
+        </div>
+      </article>
+    </div>
+
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="metric-card metric-success shadow-sm">
+        <div class="metric-top">
+          <span class="metric-label">Risolte</span>
+          <span class="metric-icon"><i class="bi bi-check2-all" aria-hidden="true"></i></span>
+        </div>
+        <div class="metric-value"><[resolved_tickets]></div>
+        <div class="metric-meta">
+          <span>Interventi completati</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- Barra dei Filtri di Ricerca -->
+  <div class="card border-0 shadow-sm mt-3 mb-4" style="border-radius: 12px; background: #ffffff;">
+    <div class="card-body p-3 d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <div>
+        <h5 class="mb-1 text-dark fw-bold" style="font-size: 1.05rem;"><i class="bi bi-funnel me-2 text-primary"></i>Filtra e Cerca Segnalazioni</h5>
+        <p class="text-muted mb-0 small">Consulta e filtra l'archivio delle segnalazioni per stato o camera.</p>
+      </div>
+      <form action="" method="GET" class="d-flex flex-wrap gap-2 align-items-center">
+        <!-- 1. Filtro Stato -->
+        <select name="status" class="form-select form-select-sm" style="width: auto; min-width: 150px; border-color: #cbd5e1; border-radius: 6px;">
+          <option value="">Tutti gli stati</option>
+          <[foreach]>
+          <option value="<[filter_status_id]>" <[filter_status_selected]>><[filter_status_name]></option>
+          <[/foreach]>
+        </select>
+
+        <!-- 2. Filtro Camera -->
+        <select name="room_id" class="form-select form-select-sm" style="width: auto; min-width: 150px; border-color: #cbd5e1; border-radius: 6px;">
+          <option value="">Tutte le camere</option>
+          <[foreach]>
+          <option value="<[filter_room_id]>" <[filter_room_selected]>>Camera <[filter_room_number]></option>
+          <[/foreach]>
+        </select>
+
+        <input class="form-control form-control-sm" type="search" name="search" value="<[search_query]>" placeholder="Cerca descrizione o autore..." style="width: 220px; border-color: #cbd5e1; border-radius: 6px;" aria-label="Cerca">
+        <button type="submit" class="btn btn-primary btn-sm px-3" style="border-radius: 6px;">Applica</button>
+        <[if!empty search_query]>
+        <a href="segnalazioni.php" class="btn btn-outline-secondary btn-sm px-2" style="border-radius: 6px;" title="Reset filtri"><i class="bi bi-x-lg"></i></a>
+        <[/if!empty]>
+      </form>
+    </div>
+  </div>
+
+  <!-- Lista Segnalazioni (Grid di Card) -->
+  <div class="row g-3">
+    <!-- 3. Loop Segnalazioni -->
+    <[foreach]>
+    <div class="col-12 col-xxl-6">
+      <div class="card h-100 border-0 shadow-sm" style="border-radius: 12px; background: #ffffff; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #f1f5f9 !important;">
+        <div class="card-header d-flex justify-content-between align-items-center py-3 bg-light border-0" style="border-top-left-radius: 12px; border-top-right-radius: 12px; background-color: #f8fafc !important; border-bottom: 1px solid #f1f5f9 !important;">
+          <div>
+            <span class="text-primary fw-bold" style="font-size: 0.95rem;">Segnalazione #<[ticket_id]></span>
+            <span class="text-muted ms-2" style="font-size: 0.8rem;"><i class="bi bi-clock me-1"></i><[ticket_created]></span>
+          </div>
+          <span class="badge <[status_badge_class]> px-2.5 py-1.5 fw-bold" style="border-radius: 6px; font-size: 0.78rem;"><[status_name_it]></span>
+        </div>
+
+        <div class="card-body p-3 d-flex flex-column justify-content-between">
+          <div class="row g-3 mb-2">
+            <!-- Colonna Sinistra: Segnalato Da e Camera -->
+            <div class="col-12 col-md-4 border-end-md">
+              <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.72rem; letter-spacing: 0.5px;">Segnalato Da</h6>
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-person-fill"></i>
+                <div style="overflow: hidden;">
+                  <div class="fw-bold text-dark text-truncate" style="font-size: 0.92rem;"><[reporter_name]></div>
+                  <div class="text-muted small text-truncate" style="font-size: 0.78rem;"><[reporter_email]></div>
+                </div>
+              </div>
+
+              <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.72rem; letter-spacing: 0.5px;">Camera</h6>
+              <div>
+                <span class="badge text-bg-light fw-bold" style="font-size: 0.82rem; padding: 0.4rem 0.6rem; background-color: #f1f5f9 !important; color: #334155; border: 1px solid #e2e8f0;">
+                  <i class="bi bi-door-open me-1 text-primary"></i> <[room_label]>
+                </span>
+              </div>
+            </div>
+
+            <!-- Colonna Destra: Descrizione Problema -->
+            <div class="col-12 col-md-8">
+              <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.72rem; letter-spacing: 0.5px;">Descrizione del Problema</h6>
+              <div class="p-3 rounded bg-light text-dark mb-2" style="background-color: #f8fafc !important; font-size: 0.9rem; line-height: 1.5; min-height: 90px; border: 1px solid #e2e8f0; border-radius: 8px;">
+                <[issue_description]>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <[/foreach]>
+
+    <[ifempty has_tickets]>
+    <div class="col-12 text-center py-5">
+      <div class="card border-0 shadow-sm py-5" style="border-radius: 12px; background: #ffffff;">
+        <div class="card-body">
+          <i class="bi bi-clipboard-check text-muted fs-1 mb-2 d-block"></i>
+          <h5 class="text-muted fw-bold">Nessuna segnalazione presente</h5>
+          <p class="text-muted mb-0 small">Al momento non ci sono segnalazioni registrate o corrispondenti ai filtri applicati.</p>
+        </div>
+      </div>
+    </div>
+    <[/ifempty]>
+  </div>
+</div>
+
+<!-- Modal Nuova Segnalazione -->
+<div class="modal fade" id="newTicketModal" tabindex="-1" aria-labelledby="newTicketModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow" style="border-radius: 12px;">
+      <form action="segnalazioni.php" method="POST">
+        <input type="hidden" name="action" value="create_ticket">
+        <div class="modal-header bg-light border-bottom py-3" style="border-top-left-radius: 12px; border-top-right-radius: 12px;">
+          <h5 class="modal-title fw-bold text-dark" id="newTicketModalLabel">
+            <i class="bi bi-plus-circle text-primary me-2"></i>Invia Nuova Segnalazione
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+
+          <div class="mb-4">
+            <label for="modal_room_id" class="form-label fw-bold text-dark small text-uppercase">
+              Camera Interessata <span class="text-danger">*</span>
+            </label>
+            <select name="room_id" id="modal_room_id" class="form-select" required style="border-radius: 8px; border-color: #cbd5e1; padding: 0.6rem 0.8rem;">
+              <option value="nessuna" selected>Nessuna camera specifica</option>
+              <!-- 4. Loop Camere Modale -->
+              <[foreach]>
+              <option value="<[modal_room_id]>">Camera <[modal_room_number]> &mdash; <[modal_room_category]></option>
+              <[/foreach]>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="modal_issue_description" class="form-label fw-bold text-dark small text-uppercase">
+              Descrizione Dettagliata del Problema <span class="text-danger">*</span>
+            </label>
+            <textarea name="issue_description" id="modal_issue_description" class="form-control" rows="5" required placeholder="Es. Il climatizzatore della camera 101 non emette aria fredda..." style="border-radius: 8px; border-color: #cbd5e1; padding: 0.8rem; font-size: 0.95rem;"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer bg-light border-top py-3" style="border-bottom-left-radius: 12px; border-bottom-right-radius: 12px;">
+          <button type="button" class="btn btn-outline-secondary px-3" data-bs-dismiss="modal" style="border-radius: 8px; font-weight: 500;">Annulla</button>
+          <button type="submit" class="btn btn-primary px-4 fw-bold shadow-sm" style="border-radius: 8px;">
+            <i class="bi bi-send-fill me-2"></i>Invia Segnalazione
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
