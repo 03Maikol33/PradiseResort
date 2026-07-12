@@ -1,0 +1,132 @@
+<main>
+    <!-- slider Area Start-->
+    <div class="slider-area">
+        <div class="single-slider hero-overly slider-height2 d-flex align-items-center"
+            data-background="<[base]>/skins/<[skin]>/assets/img/hero/servicespage_hero.jpg"
+            style="background-image: url('<[base]>/skins/<[skin]>/assets/img/hero/servicespage_hero.jpg'); background-size: cover; background-position: center;">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-11 offset-xl-1 offset-lg-1 offset-md-1">
+                        <div class="hero-caption">
+                            <span>Servizi</span>
+                            <h2>Servizi Aggiuntivi</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+
+    <!-- Services Catalog Start -->
+    <section class="room-area r-padding1" style="padding-top: 100px; padding-bottom: 100px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8">
+                    <!--font-back-tittle  -->
+                    <div class="font-back-tittle mb-45">
+                        <div class="archivment-front">
+                            <h3>Il Nostro Catalogo</h3>
+                        </div>
+                        <h3 class="archivment-back">Servizi</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Custom styling for premium services cards -->
+            <style>
+                .service-card {
+                    background: #ffffff;
+                    border-radius: 16px;
+                    overflow: hidden;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+                    transition: transform 0.3s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease;
+                    border: 1px solid #f1f5f9;
+                    display: flex;
+                    flex-direction: column;
+                    height: 100%;
+                }
+                .service-card:hover {
+                    transform: translateY(-8px);
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+                    border-color: #0abab5;
+                }
+                .service-icon-wrapper {
+                    height: 200px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
+                    color: #0abab5;
+                    border-bottom: 1px solid #f1f5f9;
+                    position: relative;
+                    background-size: cover;
+                    background-position: center;
+                }
+                .service-price-tag {
+                    position: absolute;
+                    bottom: -15px;
+                    right: 20px;
+                    background: #0abab5;
+                    color: #ffffff;
+                    padding: 6px 16px;
+                    border-radius: 30px;
+                    font-weight: 700;
+                    font-size: 0.95rem;
+                    box-shadow: 0 4px 10px rgba(10, 186, 181, 0.3);
+                }
+                .service-body {
+                    padding: 30px 24px 24px;
+                    display: flex;
+                    flex-direction: column;
+                    flex-grow: 1;
+                }
+                .service-title {
+                    font-size: 1.35rem;
+                    font-weight: 700;
+                    color: #0f172a;
+                    margin-bottom: 12px;
+                }
+                .service-description {
+                    font-size: 0.95rem;
+                    color: #64748b;
+                    line-height: 1.6;
+                    margin-bottom: 0;
+                    flex-grow: 1;
+                }
+            </style>
+
+            <div class="row">
+                <[foreach]>
+                <div class="col-xl-4 col-lg-6 col-md-6 mb-30">
+                    <div class="service-card">
+                        <div class="service-icon-wrapper" <[service_image_style]>>
+                            <[service_icon_html]>
+                            <div class="service-price-tag">
+                                €<[service_price]>
+                            </div>
+                        </div>
+                        <div class="service-body">
+                            <h3 class="service-title"><[service_name]></h3>
+                            <p class="service-description"><[service_desc]></p>
+                        </div>
+                    </div>
+                </div>
+                <[/foreach]>
+
+                <[ifempty services_list]>
+                <div class="col-12 text-center py-5">
+                    <div class="card border-0 shadow-sm py-5" style="border-radius: 12px; background: #ffffff;">
+                        <div class="card-body">
+                            <i class="ti-face-sad text-muted fs-1 mb-2 d-block" style="font-size: 3rem;"></i>
+                            <h5 class="text-muted fw-bold">Nessun servizio disponibile</h5>
+                            <p class="text-muted mb-0 small">Siamo spiacenti, al momento non ci sono servizi aggiuntivi configurati nel catalogo.</p>
+                        </div>
+                    </div>
+                </div>
+                <[/ifempty]>
+            </div>
+        </div>
+    </section>
+    <!-- Services Catalog End -->
+</main>
