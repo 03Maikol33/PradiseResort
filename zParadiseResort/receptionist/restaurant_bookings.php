@@ -112,17 +112,20 @@ if (count($bookings) > 0) {
         $block->setContent('meal_type', htmlspecialchars($b['meal_type']));
         $block->setContent('reservation_time', htmlspecialchars(substr($b['reservation_time'], 0, 5)));
         $block->setContent('guests', (int)$b['guests']);
-        $block->setContent('status', htmlspecialchars($b['status']));
-
         $badgeClass = 'text-bg-secondary';
         $status = $b['status'];
+        $status_it = $status;
         if ($status === 'Pending') {
             $badgeClass = 'text-bg-warning';
+            $status_it = 'In Attesa';
         } elseif ($status === 'Confirmed') {
             $badgeClass = 'text-bg-success';
+            $status_it = 'Confermata';
         } elseif ($status === 'Cancelled') {
             $badgeClass = 'text-bg-danger';
+            $status_it = 'Cancellata';
         }
+        $block->setContent('status', htmlspecialchars($status_it));
         $block->setContent('status_badge_class', $badgeClass);
 
         $actionsHtml = '<div class="d-flex gap-1 justify-content-end">';
