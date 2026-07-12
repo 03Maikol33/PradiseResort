@@ -27,7 +27,7 @@
   <section class="panel mt-3">
     <div class="panel-header flex-column flex-md-row align-items-md-center">
       <div>
-        <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>Lista Prenotazioni</span></h2>
+        <h2 class="h5 mb-1 section-title d-flex align-items-center text-nowrap"><i class="bi bi-table me-2" aria-hidden="true"></i><span>Lista Prenotazioni</span></h2>
       </div>
       <div class="d-flex flex-wrap gap-2 mt-2 mt-md-0 w-100 w-md-auto justify-content-md-end">
         <form action="" method="GET" class="d-flex gap-2 align-items-center">
@@ -36,7 +36,6 @@
                 <option value="">Tutti gli stati</option>
                 <option value="Pending">In Attesa</option>
                 <option value="Confirmed">Confermata</option>
-                <option value="Cancelled">Cancellata</option>
             </select>
             <input type="date" class="form-control form-control-sm" id="date" name="date" value="<[date_query]>" style="max-width: 130px;">
             <button type="submit" class="btn btn-outline-secondary btn-sm">Filtra</button>

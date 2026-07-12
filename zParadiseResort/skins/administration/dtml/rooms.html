@@ -4,7 +4,7 @@
       <span class="page-icon"><i class="bi bi-door-open" aria-hidden="true"></i></span>
       <div>
         <p class="eyebrow mb-1">Gestione</p>
-        <h1 class="h3 mb-1">Camere Fisiche</h1>
+        <h1 class="h3 mb-1">Gestione delle Camere</h1>
         <p class="text-muted mb-0">Gestisci l'inventario delle singole stanze dell'hotel.</p>
       </div>
     </div>
@@ -27,7 +27,7 @@
   <section class="panel mt-3">
     <div class="panel-header flex-column flex-md-row align-items-md-center">
       <div>
-        <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>Lista Stanze</span></h2>
+        <h2 class="h5 mb-1 section-title d-flex align-items-center text-nowrap"><i class="bi bi-table me-2" aria-hidden="true"></i><span>Lista Stanze</span></h2>
       </div>
       <div class="d-flex flex-wrap gap-2 mt-2 mt-md-0 w-100 w-md-auto justify-content-md-end">
         <form action="rooms.php" method="GET" class="d-flex gap-2">
@@ -42,6 +42,12 @@
                 <[foreach]>
                 <option value="<[filter_floor_val]>" <[filter_floor_selected]>>Piano <[filter_floor_val]></option>
                 <[/foreach]>
+            </select>
+            <select name="status" class="form-select form-select-sm">
+                <option value="">Tutti gli Stati</option>
+                <option value="Available" <[status_Available_selected]>>Disponibile</option>
+                <option value="Maintenance" <[status_Maintenance_selected]>>In Manutenzione</option>
+                <option value="Cleaning" <[status_Cleaning_selected]>>In Pulizia</option>
             </select>
             <button type="submit" class="btn btn-outline-secondary btn-sm">Filtra</button>
         </form>

@@ -38,6 +38,8 @@ if (!empty($_SESSION['user'])) {
 }
 
 $error = '';
+$success = $_SESSION['success_msg'] ?? '';
+unset($_SESSION['success_msg']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -101,6 +103,7 @@ $skin->setContent('cart_badge', $cartCountVal > 0 ? " ($cartCountVal)" : '');
 
 $block = new_block('login');
 $block->setContent('error',    $error);
+$block->setContent('success',  $success);
 $block->setContent('email', htmlspecialchars($_POST['email'] ?? ''));
 
 $skin->setContent('body', $block->get());

@@ -41,11 +41,11 @@ INSERT INTO group_services (group_id, service_id) VALUES
 
 -- 3. Popolamento Catalogo Stanze
 INSERT INTO room_categories (name, description, base_price, capacity, image_url) VALUES
-('Singola Standard', 'Stanza comoda per viaggiatori singoli', 75.00, 1, 'singola.jpg'),
-('Doppia Superior', 'Stanza spaziosa con letto matrimoniale', 120.00, 2, 'doppia.jpg'),
-('Suite Vista Mare', 'Lussuosa suite con balcone panoramico', 250.00, 4, 'suite.jpg'),
-('Camera Tripla', 'Stanza spaziosa ideale per tre persone, con un letto matrimoniale e un singolo.', 150.00, 3, 'room3.jpg'),
-('Appartamento Familiare', 'Un comodo appartamento per le famiglie più numerose con cucina e due bagni.', 300.00, 6, 'room2.jpg');
+('Deluxe Singola', 'Elegante stanza per viaggiatori singoli con finiture di pregio', 150.00, 1, 'deluxe_singola.jpg'),
+('Junior Suite', 'Ampia e raffinata con letto king size e area relax', 280.00, 2, 'doppia.jpg'),
+('Suite Vista Mare', 'Lussuosa suite con balcone panoramico e vasca idromassaggio', 450.00, 4, 'suite.jpg'),
+('Family Suite', 'Spaziosa suite per famiglie, due ambienti separati e comfort esclusivi', 550.00, 4, 'room3.jpg'),
+('Presidential Suite', 'La massima espressione del lusso, vista mozzafiato, maggiordomo e piscina privata', 1200.00, 6, 'room2.jpg');
 
 INSERT INTO rooms (room_number, category_id, floor, status) VALUES
 ('101', 1, 1, 'available'),

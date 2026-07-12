@@ -33,9 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $checkStmt = $db->prepare("SELECT 1 FROM restaurant_reservations WHERE id = ?");
                 $checkStmt->execute([$bookingId]);
                 if ($checkStmt->fetch()) {
-                    $updateStmt = $db->prepare("UPDATE restaurant_reservations SET status = ? WHERE id = ?");
-                    $updateStmt->execute([$status, $bookingId]);
-                    $_SESSION['success_msg'] = "Stato della prenotazione #{$bookingId} aggiornato con successo a {$status}.";
+                    if ($status === 'Cancelled') {
+                        $deleteStmt = $db->prepare("DELETE FROM restaurant_reservations WHERE id = ?");
+                        $deleteStmt->execute([$bookingId]);
+                        $_SESSION['success_msg'] = "Prenotazione #{$bookingId} eliminata con successo.";
+                    } else {
+                        $updateStmt = $db->prepare("UPDATE restaurant_reservations SET status = ? WHERE id = ?");
+                        $updateStmt->execute([$status, $bookingId]);
+                        $_SESSION['success_msg'] = "Stato della prenotazione #{$bookingId} aggiornato con successo a {$status}.";
+                    }
                 } else {
                     $_SESSION['error_msg'] = "Prenotazione non trovata.";
                 }
@@ -89,7 +95,7 @@ if ($dateFilter !== '') {
     $params[] = $dateFilter;
 }
 
-$query .= " ORDER BY r.reservation_date DESC, r.reservation_time DESC";
+$query .= " ORDER BY r.reservation_date ASC, r.reservation_time ASC";
 
 $stmt = $db->prepare($query);
 $stmt->execute($params);
@@ -106,17 +112,20 @@ if (count($bookings) > 0) {
         $block->setContent('meal_type', htmlspecialchars($b['meal_type']));
         $block->setContent('reservation_time', htmlspecialchars(substr($b['reservation_time'], 0, 5)));
         $block->setContent('guests', (int)$b['guests']);
-        $block->setContent('status', htmlspecialchars($b['status']));
-
         $badgeClass = 'text-bg-secondary';
         $status = $b['status'];
+        $status_it = $status;
         if ($status === 'Pending') {
             $badgeClass = 'text-bg-warning';
+            $status_it = 'In Attesa';
         } elseif ($status === 'Confirmed') {
             $badgeClass = 'text-bg-success';
+            $status_it = 'Confermata';
         } elseif ($status === 'Cancelled') {
             $badgeClass = 'text-bg-danger';
+            $status_it = 'Cancellata';
         }
+        $block->setContent('status', htmlspecialchars($status_it));
         $block->setContent('status_badge_class', $badgeClass);
 
         $actionsHtml = '<div class="d-flex gap-1 justify-content-end">';
