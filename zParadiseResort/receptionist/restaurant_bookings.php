@@ -1,8 +1,20 @@
 <?php
 require_once __DIR__ . '/../include/bootstrap.inc.php';
 
-// Controlliamo i permessi per il servizio
-require_service('restaurant_bookings.php');
+// Controlliamo che l'utente sia loggato e sia Receptionist
+if (empty($_SESSION['user'])) {
+    header("Location: {$config['base']}/login.php");
+    exit;
+}
+
+if (!is_receptionist()) {
+    if (is_admin()) {
+        header("Location: {$config['base']}/admin/restaurant_bookings.php");
+        exit;
+    }
+    header("Location: {$config['base']}/index.php");
+    exit;
+}
 
 $db = db();
 $successMsg = $_SESSION['success_msg'] ?? '';
@@ -40,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-$page = new_page('administration', 'frame-private');
+$page = new_page('administration', 'receptionist-frame-private');
 $block = new_block('restaurant_bookings');
 
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
@@ -144,7 +156,7 @@ if ($errorMsg !== '') {
     $block->setContent('error_msg', htmlspecialchars($errorMsg));
 }
 
-setup_backoffice_page($page, 'Gestione Ristorante', 'admin');
+setup_backoffice_page($page, 'Gestione Ristorante', 'receptionist');
 
 $page->setContent('body', $block->get());
 $page->close();
