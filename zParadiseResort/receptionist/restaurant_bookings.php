@@ -33,9 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $checkStmt = $db->prepare("SELECT 1 FROM restaurant_reservations WHERE id = ?");
                 $checkStmt->execute([$bookingId]);
                 if ($checkStmt->fetch()) {
-                    $updateStmt = $db->prepare("UPDATE restaurant_reservations SET status = ? WHERE id = ?");
-                    $updateStmt->execute([$status, $bookingId]);
-                    $_SESSION['success_msg'] = "Stato della prenotazione #{$bookingId} aggiornato con successo a {$status}.";
+                    if ($status === 'Cancelled') {
+                        $deleteStmt = $db->prepare("DELETE FROM restaurant_reservations WHERE id = ?");
+                        $deleteStmt->execute([$bookingId]);
+                        $_SESSION['success_msg'] = "Prenotazione #{$bookingId} eliminata con successo.";
+                    } else {
+                        $updateStmt = $db->prepare("UPDATE restaurant_reservations SET status = ? WHERE id = ?");
+                        $updateStmt->execute([$status, $bookingId]);
+                        $_SESSION['success_msg'] = "Stato della prenotazione #{$bookingId} aggiornato con successo a {$status}.";
+                    }
                 } else {
                     $_SESSION['error_msg'] = "Prenotazione non trovata.";
                 }
@@ -89,7 +95,7 @@ if ($dateFilter !== '') {
     $params[] = $dateFilter;
 }
 
-$query .= " ORDER BY r.reservation_date DESC, r.reservation_time DESC";
+$query .= " ORDER BY r.reservation_date ASC, r.reservation_time ASC";
 
 $stmt = $db->prepare($query);
 $stmt->execute($params);
