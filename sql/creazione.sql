@@ -119,7 +119,7 @@ CREATE TABLE ticket_statuses (
 
 CREATE TABLE maintenance_tickets (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    room_id INT NOT NULL,
+    room_id INT DEFAULT NULL,
     reported_by_user_id INT NOT NULL,
     status_id INT NOT NULL,
     issue_description TEXT NOT NULL,

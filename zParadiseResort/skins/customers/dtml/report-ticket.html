@@ -1,0 +1,109 @@
+<main>
+    <!-- slider Area Start-->
+    <div class="slider-area">
+        <div class="single-slider hero-overly slider-height2 d-flex align-items-center"
+            data-background="<[base]>/skins/<[skin]>/assets/img/hero/ristorante_paradiseresort.jpg">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-11 offset-xl-1 offset-lg-1 offset-md-1">
+                        <div class="hero-caption">
+                            <span>Assistenza & Supporto</span>
+                            <h2>Invia una Segnalazione</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+
+    <!-- Ticket Form Section Start -->
+    <section class="contact-section" style="padding-top: 50px; padding-bottom: 80px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    
+                    <[if!empty message]>
+                    <div class="alert alert-success mt-4">
+                        <i class="fas fa-check-circle mr-2"></i> <[message]>
+                    </div>
+                    <[/if!empty]>
+
+                    <[if!empty error]>
+                    <div class="alert alert-danger mt-4">
+                        <i class="fas fa-exclamation-circle mr-2"></i> <[error]>
+                    </div>
+                    <[/if!empty]>
+
+                    <style>
+                        /* Sovrascriviamo il bordo arancione di default del plugin nice-select */
+                        .nice-select {
+                            border-color: #ced4da !important;
+                        }
+                        .nice-select .list {
+                            width: 100%;
+                            z-index: 99;
+                        }
+                        .nice-select.open, .nice-select:active, .nice-select:focus,
+                        .form-control:focus {
+                            border-color: #0abab5 !important;
+                        }
+                    </style>
+
+                    <div class="mt-5" id="ticketForm" style="background: #ffffff; padding: 40px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+                        <[if!empty has_active_bookings]>
+                        <h4 style="color: #1a202c; font-weight: 700; margin-bottom: 25px; text-align: center;">Dettagli Segnalazione</h4>
+                        <form action="<[base]>/send-report-ticket.php" method="POST">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group mb-4">
+                                        <label for="ticket_date" style="font-weight: 600; display:block; margin-bottom: 8px;">Data e Ora Invio</label>
+                                        <input disabled class="form-control" name="ticket_date" id="ticket_date" type="datetime-local" value="<[dateNow]>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group mb-4">
+                                        <label for="room_id" style="font-weight: 600; display:block; margin-bottom: 8px;">Camera di Riferimento</label>
+                                        <select class="form-control" name="room_id" id="room_id" required>
+                                            <option value="nessuna" selected>Nessuna camera</option>
+                                            <[foreach]>
+                                            <option value="<[room_id]>">Camera <[room_number]></option>
+                                            <[/foreach]>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mb-4">
+                                        <label for="descrizione" style="font-weight: 600; display:block; margin-bottom: 8px;">Descrivi il problema o la richiesta</label>
+                                        <textarea class="form-control" name="descrizione" id="descrizione" rows="5" placeholder="Inserisci qui i dettagli della segnalazione..." required style="min-height: 130px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-3 text-center">
+                                <button type="submit" class="button button-contactForm boxed-btn">Invia Segnalazione</button>
+                            </div>
+                        </form>
+                        <[/if!empty]>
+
+                        <[ifempty has_active_bookings]>
+                        <div class="text-center py-4">
+                            <div style="font-size: 3.2rem; color: #d97706; margin-bottom: 20px;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3 style="color: #1a202c; font-weight: 700; margin-bottom: 15px;">Funzione Riservata agli Ospiti in Soggiorno</h3>
+                            <p style="font-size: 1rem; color: #4a5568; max-width: 600px; margin: 0 auto 20px; line-height: 1.6;">
+                                L'invio di segnalazioni online è disponibile esclusivamente per i clienti che hanno una prenotazione attiva nel momento attuale.
+                            </p>
+                            <p style="font-size: 0.9rem; color: #718096; margin-bottom: 0;">
+                                Se riscontri un'urgenza o ritieni si tratti di un errore, contatta direttamente la nostra reception o rivolgiti al personale della struttura.
+                            </p>
+                        </div>
+                        <[/ifempty]>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Ticket Form Section End -->
+</main>

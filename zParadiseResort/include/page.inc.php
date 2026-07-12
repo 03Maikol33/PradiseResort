@@ -109,7 +109,7 @@ function get_backoffice_notifications_html(): array {
         $stmt = $db->query("
             SELECT mt.id, r.room_number, mt.issue_description, mt.created_at
             FROM maintenance_tickets mt
-            JOIN rooms r ON mt.room_id = r.id
+            LEFT JOIN rooms r ON mt.room_id = r.id
             WHERE mt.status_id IN (1, 2)
             ORDER BY mt.created_at DESC
             LIMIT 5
@@ -119,9 +119,10 @@ function get_backoffice_notifications_html(): array {
             $count++;
             $timeStr = date('d/m H:i', strtotime($t['created_at']));
             $desc = htmlspecialchars(mb_strimwidth($t['issue_description'], 0, 30, "..."));
+            $roomLabel = $t['room_number'] ? 'Cam. ' . htmlspecialchars($t['room_number']) : 'Generica';
             $items[] = '
                 <a class="dropdown-item" href="#">
-                  <span class="notification-title text-wrap" style="white-space: normal;"><i class="bi bi-tools text-danger me-2"></i>Manutenzione Cam. ' . htmlspecialchars($t['room_number']) . '</span>
+                  <span class="notification-title text-wrap" style="white-space: normal;"><i class="bi bi-tools text-danger me-2"></i>Manutenzione ' . $roomLabel . '</span>
                   <span class="notification-time text-wrap" style="white-space: normal;">' . $desc . ' (' . $timeStr . ')</span>
                 </a>';
         }
