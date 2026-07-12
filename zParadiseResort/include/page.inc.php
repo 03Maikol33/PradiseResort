@@ -129,6 +129,33 @@ function get_backoffice_notifications_html(): array {
         }
     } catch (Exception $e) {}
 
+    // 3. Servizi aggiuntivi sospesi ma richiesti da prenotazioni attive
+    try {
+        $stmt = $db->query("
+            SELECT b.id as booking_id, a.name as amenity_name, u.first_name, u.last_name
+            FROM booking_amenities ba
+            JOIN amenities a ON ba.amenity_id = a.id
+            JOIN bookings b ON ba.booking_id = b.id
+            JOIN users u ON b.user_id = u.id
+            WHERE a.is_suspended = 1 AND b.status_id IN (2, 3)
+            ORDER BY b.id DESC
+            LIMIT 5
+        ");
+        $suspendedAlerts = $stmt->fetchAll();
+        foreach ($suspendedAlerts as $sa) {
+            $count++;
+            $guest = htmlspecialchars($sa['first_name'] . ' ' . $sa['last_name']);
+            $srvName = htmlspecialchars($sa['amenity_name']);
+            // Link to bookings page search by booking id
+            $url = $GLOBALS['config']['base'] . '/' . ($_SESSION['user']['role_path'] ?? 'receptionist') . '/bookings.php?search=' . $sa['booking_id'];
+            $items[] = '
+                <a class="dropdown-item" href="' . $url . '">
+                  <span class="notification-title text-wrap" style="white-space: normal; color: #dc3545;"><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Servizio Sospeso: ' . $srvName . '</span>
+                  <span class="notification-time text-wrap" style="white-space: normal;">Richiesto da: ' . $guest . ' (Pren. #' . $sa['booking_id'] . ')</span>
+                </a>';
+        }
+    } catch (Exception $e) {}
+
     $html = '';
     if (empty($items)) {
         $html = '<div class="dropdown-item text-center text-muted py-3">Nessuna nuova notifica</div>';

@@ -1,0 +1,73 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-gift" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1">Gestione</p>
+        <h1 class="h3 mb-1">Servizi Aggiuntivi</h1>
+        <p class="text-muted mb-0">Gestisci i servizi extra e le amenities disponibili nel resort.</p>
+      </div>
+    </div>
+  </div>
+
+  <[if!empty show_success]>
+  <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+    <i class="bi bi-check-circle me-2"></i> <[success_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <[if!empty show_error]>
+  <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <i class="bi bi-exclamation-triangle me-2"></i> <[error_msg]>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <[/if!empty]>
+
+  <section class="panel mt-3">
+    <div class="panel-header">
+      <div>
+        <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>Lista Servizi</span></h2>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <a href="amenity_edit.php" class="btn btn-primary btn-sm"><i class="bi bi-plus-circle me-1"></i>Aggiungi Servizio</a>
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table align-middle mb-0" id="amenitiesTable">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Immagine</th>
+            <th scope="col">Nome Servizio</th>
+            <th scope="col">Descrizione</th>
+            <th scope="col">Prezzo</th>
+            <th scope="col">Stato</th>
+            <th scope="col" class="text-end">Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <[foreach]>
+          <tr>
+            <td><[am_id]></td>
+            <td><[am_image_html]></td>
+            <td><span class="fw-semibold text-dark"><[am_name]></span></td>
+            <td><[am_desc]></td>
+            <td>€<[am_price]></td>
+            <td><[am_status]></td>
+            <td class="text-end">
+              <[am_toggle_btn]>
+              <a href="amenity_edit.php?id=<[am_id]>" class="btn btn-sm btn-outline-primary" title="Modifica"><i class="bi bi-pencil"></i></a>
+              <a href="amenity_delete.php?id=<[am_id]>" class="btn btn-sm btn-outline-danger" title="Elimina" onclick="return confirm('Sei sicuro di voler eliminare questo servizio aggiuntivo?');"><i class="bi bi-trash"></i></a>
+            </td>
+          </tr>
+          <[/foreach]>
+          
+          <[ifempty amenities_list]>
+          <tr><td colspan="5" class="text-center py-4">Nessun servizio aggiuntivo trovato</td></tr>
+          <[/ifempty]>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>

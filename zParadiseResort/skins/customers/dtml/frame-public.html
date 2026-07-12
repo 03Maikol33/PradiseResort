@@ -28,8 +28,14 @@
         /* Riduce il padding orizzontale dei menu per evitare il wrapping disallineato */
         @media (min-width: 992px) {
             .main-header .main-menu ul li a {
-                padding: 38px 10px !important;
-                font-size: 15px !important;
+                padding: 38px 4px !important;
+                font-size: 13px !important;
+            }
+        }
+        @media (min-width: 1200px) {
+            .main-header .main-menu ul li a {
+                padding: 38px 8px !important;
+                font-size: 14px !important;
             }
         }
     </style>
@@ -72,6 +78,7 @@
                                         <li><a href="<[base]>/restaurant_menu.php">Ristorante</a></li>
                                         <li><a href="<[base]>/rooms.php">Camere & Suite</a></li>
                                         <li><a href="<[base]>/spa.php">Piscine & SPA</a></li>
+                                        <li><a href="<[base]>/services.php">Servizi Aggiuntivi</a></li>
                                         <li><a href="<[base]>/index.php#contact">Contatti</a></li>
                                         <[if!empty is_logged]>
                                             <li><a href="<[base]>/cart.php">Carrello<[cart_badge]></a></li>
