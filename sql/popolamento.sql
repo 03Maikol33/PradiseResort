@@ -53,21 +53,12 @@ INSERT INTO group_services (group_id, service_id) VALUES
 (3, 9), (3, 15), (3, 16), (3, 17), (3, 18), (3, 19);
 
 -- 3. Popolamento Catalogo Stanze
-<<<<<<< HEAD
-INSERT INTO room_categories (id, name, description, base_price, capacity, image_url) VALUES
-(1, 'Deluxe Singola', 'Elegante stanza per viaggiatori singoli con finiture di pregio', 150.00, 1, 'deluxe_singola.jpg'),
-(2, 'Junior Suite', 'Ampia e raffinata con letto king size e area relax', 280.00, 2, 'doppia.jpg'),
-(3, 'Suite Vista Mare', 'Lussuosa suite con balcone panoramico e vasca idromassaggio', 450.00, 4, 'suite.jpg'),
-(4, 'Family Suite', 'Spaziosa suite per famiglie, due ambienti separati e comfort esclusivi', 550.00, 4, 'room3.jpg'),
-(5, 'Presidential Suite', 'La massima espressione del lusso, vista mozzafiato, maggiordomo e piscina privata', 1200.00, 6, 'room2.jpg');
-=======
 INSERT INTO room_categories (name, description, base_price, capacity, image_url) VALUES
 ('Deluxe Singola', 'Elegante stanza per viaggiatori singoli con finiture di pregio', 150.00, 1, 'deluxe_singola.jpg'),
 ('Junior Suite', 'Ampia e raffinata con letto king size e area relax', 280.00, 2, 'junior_suite.jpg'),
 ('Suite Vista Mare', 'Lussuosa suite con balcone panoramico e vasca idromassaggio', 450.00, 4, 'suite_vista_mare.jpg'),
 ('Family Suite', 'Spaziosa suite per famiglie, due ambienti separati e comfort esclusivi', 550.00, 4, 'family_suite.jpg'),
 ('Presidential Suite', 'La massima espressione del lusso, vista mozzafiato, maggiordomo e piscina privata', 1200.00, 6, 'presidential_suite.jpg');
->>>>>>> feature/elenco-stanze-rep
 
 INSERT INTO rooms (id, room_number, category_id, floor, status) VALUES
 (1, '101', 1, 1, 'available'),
