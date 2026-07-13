@@ -30,6 +30,29 @@ foreach ($categories as $cat) {
     $block->setContent('category_url',         $config['base'] . '/room-details.php?cat_id=' . $cat['id']);
 }
 
+//carica le recensioni
+$reviews = db()->query('SELECT * FROM reviews ORDER BY created_at DESC LIMIT 4')->fetchAll();
+foreach ($reviews as $review) {
+    //ottieni autore
+    $author = db()->prepare('SELECT first_name, last_name FROM users WHERE id = ?');
+    $author->execute([$review['id']]);
+    $author = $author->fetch();
+
+    //calcolo rating
+    $stars = '';
+    for($i = 0; $i < $review['rating']; $i++){
+        $stars .= '<i class="fas fa-star"></i>';
+    }
+
+    //ottengo la categoria cercandola tra quelle già fetchate
+    $block->setContent('recensione_autore_iniziali', strtoupper($author['first_name'][0] . $author['last_name'][0]));
+    $block->setContent('recensione_autore', htmlspecialchars($author['first_name'] . ' ' . $author['last_name']));
+    $block->setContent('recensione_testo', htmlspecialchars($review['comment']));
+    $block->setContent('recensione_stelle', $stars);
+    $block->setContent('recensione_data', preg_replace( '/(\d{4})-(\d{2})-(\d{2}).*/', '$3-$2-$1', $review['created_at']));
+}
+
+
 $skin->setContent('body', $block->get());
 $skin->close();
 

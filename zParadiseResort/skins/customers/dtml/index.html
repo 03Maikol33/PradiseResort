@@ -231,62 +231,34 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-9 col-lg-9 col-md-9">
-                    <div class="h1-testimonial-active">
-                        <!-- Single Testimonial -->
-                        <div class="single-testimonial pt-65">
-                            <!-- Testimonial tittle -->
-                            <div class="font-back-tittle mb-105">
-                                <div class="archivment-front">
-                                    <img src="<[base]>/skins/<[skin]>/assets/img/logo/testimonial.png" alt="">
+                    <div id="containerRecensioni" class="h1-testimonial-active">
+                        <[foreach]>
+                            <!-- Single Testimonial -->
+                            <div class="single-testimonial pt-65">
+                                <!-- Testimonial tittle -->
+                                <div class="font-back-tittle mb-105">
+                                    <div class="archivment-front" style="display: flex; justify-content: center; color: #0ABAB5;">
+                                        <!--circle with capital letters-->
+                                        <div class="circleProfile"><[recensione_autore_iniziali]></div>
+                                    </div>
+                                    <h3 class="archivment-back">Recensioni</h3>
                                 </div>
-                                <h3 class="archivment-back">Testimonial</h3>
-                            </div>
-                            <!-- Testimonial Content -->
-                            <div class="testimonial-caption text-center">
-                                <p>Yorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris nisi.
-                                </p>
-                                <!-- Rattion -->
-                                <div class="testimonial-ratting">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                </div>
-                                <div class="rattiong-caption">
-                                    <span>Clifford Frazier, <span>Regular Client</span> </span>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Single Testimonial -->
-                        <div class="single-testimonial  pt-65">
-                            <!-- Testimonial tittle -->
-                            <div class="font-back-tittle mb-105">
-                                <div class="archivment-front">
-                                    <img src="<[base]>/skins/<[skin]>/assets/img/logo/testimonial.png" alt="">
-                                </div>
-                                <h3 class="archivment-back">Testimonial</h3>
-                            </div>
-                            <!-- Testimonial Content -->
-                            <div class="testimonial-caption text-center">
-                                <p>Yorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
-                                    incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-                                    exercitation ullamco laboris nisi.
-                                </p>
-                                <div class="testimonial-ratting">
-                                    <a href="#"><i class="fas fa-star"></i></a>
-                                    <a href="#"><i class="fas fa-star"></i></a>
-                                    <a href="#"><i class="fas fa-star"></i></a>
-                                    <a href="#"><i class="fas fa-star"></i></a>
-                                    <a href="#"><i class="fas fa-star"></i></a>
-                                </div>
-                                <div class="rattiong-caption">
-                                    <span>Clifford Frazier, <span>Regular Client</span> </span>
+                                <!-- Testimonial Content -->
+                                <div class="testimonial-caption text-center">
+                                    <p><[recensione_testo]></p>
+                                    <!-- Rattion -->
+                                    <div class="testimonial-ratting">
+                                        <!--that's a single star-->
+                                        <!--<i class="fas fa-star"></i>-->
+                                        <[recensione_stelle]>
+                                    </div>
+                                    <div class="rattiong-caption">
+                                        <span><[recensione_autore]></span>
+                                        <i><small><[recensione_data]></small></i>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        <[/foreach]>
                     </div>
                 </div>
             </div>
