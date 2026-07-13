@@ -225,7 +225,7 @@ if (count($bookings) > 0) {
             foreach ($amenities as $am) {
                 $qtyText = $am['quantity'] > 1 ? ' (x' . $am['quantity'] . ')' : '';
                 $amenitiesHtml .= '
-                    <span class="badge text-bg-secondary p-1 d-inline-flex align-items-center gap-1 mb-1" style="font-size: 0.75rem; border: 1px solid #d1d5db; color: #374151; background-color: #f3f4f6 !important;">
+                    <span class="badge p-1 d-inline-flex align-items-center gap-1 mb-1" style="font-size: 0.75rem; border: 1px solid #d1d5db; color: #374151; background-color: #f3f4f6 !important;">
                       ' . htmlspecialchars($am['name']) . $qtyText . '
                       <form action="" method="POST" style="display:inline; margin:0;" onsubmit="return confirm(\'Rimuovere ' . htmlspecialchars($am['name']) . '?\');">
                         <input type="hidden" name="action" value="remove_amenity">

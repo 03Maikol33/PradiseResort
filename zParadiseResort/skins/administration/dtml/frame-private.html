@@ -157,21 +157,9 @@
           <span class="nav-icon"><i class="bi bi-lock" aria-hidden="true"></i></span>
           <span class="nav-text">Gestione permessi</span>
         </a>
-        <a class="nav-link" href="add-user.html">
-          <span class="nav-icon"><i class="bi bi-person-plus" aria-hidden="true"></i></span>
-          <span class="nav-text">Add User</span>
-        </a>
         <a class="nav-link" href="profile.html">
           <span class="nav-icon"><i class="bi bi-person-badge" aria-hidden="true"></i></span>
-          <span class="nav-text">Profile</span>
-        </a>
-        <a class="nav-link" href="charts.html">
-          <span class="nav-icon"><i class="bi bi-bar-chart-line" aria-hidden="true"></i></span>
-          <span class="nav-text">Charts</span>
-        </a>
-        <a class="nav-link" href="tables.html">
-          <span class="nav-icon"><i class="bi bi-table" aria-hidden="true"></i></span>
-          <span class="nav-text">Tables</span>
+          <span class="nav-text">Profilo</span>
         </a>
       </nav>
 
@@ -192,9 +180,6 @@
           </button>
 
           <div class="navbar-actions ms-auto">
-            <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Cambia tema" title="Cambia tema">
-              <i class="bi bi-moon-stars" data-theme-icon aria-hidden="true"></i>
-            </button>
             
             <div class="dropdown">
               <button class="icon-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Notifiche">
@@ -213,9 +198,10 @@
                 <span class="profile-name d-none d-sm-inline"><[user_name]></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="<[base]>/profile.php">Area Personale</a></li>
+                <li><a class="dropdown-item" href="<[base]>/profile.php">Profilo</a></li>
+                <li><a class="dropdown-item" href="<[base]>/index.php">Area Pubblica</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="<[base]>/logout.php"><i class="bi bi-box-arrow-right me-2"></i>Esci</a></li>
+                <li><a class="dropdown-item text-danger" href="<[base]>/logout.php">Esci</a></li>
               </ul>
             </div>
           </div>

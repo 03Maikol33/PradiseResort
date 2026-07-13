@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             //assegna automaticamente il truolo customer, ovvero il gruppo guest [id 3 nel db]
             $stmtGroup = db()->prepare('INSERT INTO user_gruppi (user_id, group_id) VALUES (?, ?)');
+            $stmtGroup->execute([$userId, 3]);
             $_SESSION['success_msg'] = 'Registrazione completata! Ora puoi effettuare il login.';
             header('Location: ' . $config['base'] . '/login.php');
             exit;

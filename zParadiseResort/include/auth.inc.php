@@ -66,15 +66,32 @@ function load_user_services(int $userId): array {
          WHERE ug.user_id = ?'
     );
     $stmt->execute([$userId]);
-    // Creiamo una mappa chiave-valore con i nomi degli script consentiti
-    return array_fill_keys(array_column($stmt->fetchAll(), 'script_name'), true);
+    $services = array_fill_keys(array_column($stmt->fetchAll(), 'script_name'), true);
+
+    // Auto-guarigione: se l'utente non ha alcun servizio / gruppo associato, assegna automaticamente il gruppo Guest (3)
+    if (empty($services) && $userId > 0) {
+        $chk = db()->prepare('SELECT 1 FROM user_gruppi WHERE user_id = ?');
+        $chk->execute([$userId]);
+        if (!$chk->fetch()) {
+            $ins = db()->prepare('INSERT INTO user_gruppi (user_id, group_id) VALUES (?, 3)');
+            $ins->execute([$userId]);
+            
+            $stmt->execute([$userId]);
+            $services = array_fill_keys(array_column($stmt->fetchAll(), 'script_name'), true);
+        }
+    }
+
+    return $services;
 }
 
 /*
  * Verifica se l'utente loggato ha accesso a un servizio.
- * I servizi vengono caricati in sessione al login (login.php).
+ * I servizi vengono caricati in sessione al login (login.php) e ricaricati in automatico se mancanti per auto-guarigione.
  */
 function has_service(string $service): bool {
+    if (!isset($_SESSION['user']['services'][$service]) && !empty($_SESSION['user']['id'])) {
+        $_SESSION['user']['services'] = load_user_services((int)$_SESSION['user']['id']);
+    }
     return isset($_SESSION['user']['services'][$service]);
 }
 

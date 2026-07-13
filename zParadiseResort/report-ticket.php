@@ -40,7 +40,7 @@ $skin->setContent('year',       date('Y'));
 $skin->setContent('base',       $config['base']);
 $skin->setContent('skin',       $config['skin']);
 $skin->setContent('is_logged',  !empty($_SESSION['user']) ? '1' : '');
-$skin->setContent('user.name',  $_SESSION['user']['name'] ?? '');
+$skin->setContent('user.name', !empty($_SESSION['user']['name']) ? explode(' ', $_SESSION['user']['name'])[0] : '');
 $cartCountVal = get_cart_count();
 $skin->setContent('cart_count', $cartCountVal > 0 ? '1' : '');
 $skin->setContent('cart_badge', $cartCountVal > 0 ? " ($cartCountVal)" : '');
