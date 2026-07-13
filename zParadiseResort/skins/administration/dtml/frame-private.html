@@ -137,6 +137,7 @@
         <a class="nav-link" href="staff.php">
           <span class="nav-icon"><i class="bi bi-person-badge-fill" aria-hidden="true"></i></span>
           <span class="nav-text">Gestione Staff</span>
+        </a>
         <a class="nav-link" href="categories.php">
           <span class="nav-icon"><i class="bi bi-tags" aria-hidden="true"></i></span>
           <span class="nav-text">Categorie Camere</span>
@@ -162,12 +163,6 @@
           <span class="nav-text">Profilo</span>
         </a>
       </nav>
-
-      <div class="sidebar-user">
-        <div class="avatar-initials avatar-md"><[user_initials]></div>
-        <strong><[user_name]></strong>
-        <small><[user_role]></small>
-      </div>
     </aside>
 
     <div class="admin-main">
@@ -198,7 +193,7 @@
                 <span class="profile-name d-none d-sm-inline"><[user_name]></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="<[base]>/profile.php">Profilo</a></li>
+                <li><a class="dropdown-item" href="<[base]>/<[role_path]>/profile.php">Profilo</a></li>
                 <li><a class="dropdown-item" href="<[base]>/index.php">Area Pubblica</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item text-danger" href="<[base]>/logout.php">Esci</a></li>

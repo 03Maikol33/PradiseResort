@@ -1,0 +1,1 @@
+<?php $m = new mysqli("localhost", "root", "", "paradiseresort"); $r = $m->query("SELECT name, image_url FROM amenities"); while($row=$r->fetch_assoc()) { echo $row["name"] . " -> " . $row["image_url"] . "\n"; }

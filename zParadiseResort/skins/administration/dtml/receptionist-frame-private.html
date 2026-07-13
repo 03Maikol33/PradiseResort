@@ -135,7 +135,7 @@
           <span class="nav-icon"><i class="bi bi-person-workspace" aria-hidden="true"></i></span>
           <span class="nav-text">Servizi Richiesti</span>
         </a>
-        <a class="nav-link" href="rooms.php">
+        <a class="nav-link" href="<[base]>/<[role_path]>/rooms.php">
           <span class="nav-icon"><i class="bi bi-door-open" aria-hidden="true"></i></span>
           <span class="nav-text">Gestione delle Camere</span>
         </a>
@@ -144,12 +144,6 @@
           <span class="nav-text">Profilo</span>
         </a>
       </nav>
-
-      <div class="sidebar-user">
-        <div class="avatar-initials avatar-md"><[user_initials]></div>
-        <strong><[user_name]></strong>
-        <small><[user_role]></small>
-      </div>
 
       <div class="sidebar-footer">
         <span class="status-dot"></span>
@@ -185,7 +179,7 @@
                 <span class="profile-name d-none d-sm-inline"><[user_name]></span>
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="<[base]>/profile.php">Profilo</a></li>
+                <li><a class="dropdown-item" href="<[base]>/<[role_path]>/profile.php">Profilo</a></li>
                 <li><a class="dropdown-item" href="<[base]>/index.php">Area Pubblica</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item text-danger" href="<[base]>/logout.php">Esci</a></li>
