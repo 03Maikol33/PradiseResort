@@ -5,18 +5,7 @@ require_once __DIR__ . '/include/bootstrap.inc.php';
 // Protezione pagina: richiede login ed esclude lo staff
 require_login();
 block_staff();
-
-// Migrazione autogestita (Self-Healing) del database
-try {
-    db()->query("SELECT phone FROM users LIMIT 1");
-} catch (Exception $e) {
-    db()->query("ALTER TABLE users ADD COLUMN phone VARCHAR(20) DEFAULT NULL");
-}
-try {
-    db()->query("SELECT image_url FROM users LIMIT 1");
-} catch (Exception $e) {
-    db()->query("ALTER TABLE users ADD COLUMN image_url VARCHAR(255) DEFAULT NULL");
-}
+require_service();
 
 $action = $_GET['action'] ?? '';
 $message = $_GET['msg'] ?? '';

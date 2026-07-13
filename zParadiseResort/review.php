@@ -11,31 +11,39 @@ $message = '';
 $error = '';
 
 // Gestione dei messaggi in sessione (Pattern Post-Redirect-Get)
-if (isset($_SESSION['report_success'])) {
+if (isset($_SESSION['review_success'])) {
+    $message = $_SESSION['review_success'];
+    unset($_SESSION['review_success']);
+} elseif (isset($_SESSION['report_success'])) {
     $message = $_SESSION['report_success'];
     unset($_SESSION['report_success']);
 }
-if (isset($_SESSION['report_error'])) {
+
+if (isset($_SESSION['review_error'])) {
+    $error = $_SESSION['review_error'];
+    unset($_SESSION['review_error']);
+} elseif (isset($_SESSION['report_error'])) {
     $error = $_SESSION['report_error'];
     unset($_SESSION['report_error']);
 }
 
-// Recupera le prenotazioni attive per l'utente loggato nel giorno corrente
+// Recupera le tipologie di camera dei soggiorni attivi o passati per l'utente loggato
 $today = date('Y-m-d');
 $stmt = db()->prepare('
-    SELECT b.id as booking_id, b.room_id, r.room_number
+    SELECT DISTINCT rc.id as room_category_id, rc.name as category_name
     FROM bookings b
     JOIN rooms r ON r.id = b.room_id
+    JOIN room_categories rc ON rc.id = r.category_id
     WHERE b.user_id = ?
-      AND b.status_id = 3
+      AND b.status_id IN (3, 5)
       AND b.check_in_date <= ?
-      AND b.check_out_date >= ?
+    ORDER BY rc.name ASC
 ');
-$stmt->execute([$_SESSION['user']['id'], $today, $today]);
-$active_bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt->execute([$_SESSION['user']['id'], $today]);
+$eligible_categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $skin = new_page($config['skin']);
-$skin->setContent('title',      'Invia Segnalazione');
+$skin->setContent('title',      'Invia Recensione');
 $skin->setContent('year',       date('Y'));
 $skin->setContent('base',       $config['base']);
 $skin->setContent('skin',       $config['skin']);
@@ -45,18 +53,18 @@ $cartCountVal = get_cart_count();
 $skin->setContent('cart_count', $cartCountVal > 0 ? '1' : '');
 $skin->setContent('cart_badge', $cartCountVal > 0 ? " ($cartCountVal)" : '');
 
-$block = new_block('report-ticket');
+$block = new_block('review');
 $block->setContent('base', $config['base']);
 $block->setContent('skin', $config['skin']);
 $block->setContent('message', $message);
 $block->setContent('error', $error);
 $block->setContent('dateNow', date('Y-m-d\TH:i'));
 
-if (!empty($active_bookings)) {
+if (!empty($eligible_categories)) {
     $block->setContent('has_active_bookings', '1');
-    foreach ($active_bookings as $booking) {
-        $block->setContent('room_id', $booking['room_id']);
-        $block->setContent('room_number', htmlspecialchars($booking['room_number']));
+    foreach ($eligible_categories as $cat) {
+        $block->setContent('room_category_id', $cat['room_category_id']);
+        $block->setContent('category_name', htmlspecialchars($cat['category_name']));
     }
 } else {
     $block->setContent('has_active_bookings', '');

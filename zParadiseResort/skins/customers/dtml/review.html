@@ -1,0 +1,157 @@
+<main>
+    <!-- slider Area Start-->
+    <div class="slider-area">
+        <div class="single-slider hero-overly slider-height2 d-flex align-items-center"
+            data-background="<[base]>/skins/<[skin]>/assets/img/hero/ristorante_paradiseresort.jpg">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-11 offset-xl-1 offset-lg-1 offset-md-1">
+                        <div class="hero-caption">
+                            <span>Recensioni</span>
+                            <h2>Lascia una Recensione</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- slider Area End-->
+
+    <!-- Ticket Form Section Start -->
+    <section class="contact-section" style="padding-top: 50px; padding-bottom: 80px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    
+                    <[if!empty message]>
+                    <div class="alert alert-success mt-4">
+                        <i class="fas fa-check-circle mr-2"></i> <[message]>
+                    </div>
+                    <[/if!empty]>
+
+                    <[if!empty error]>
+                    <div class="alert alert-danger mt-4">
+                        <i class="fas fa-exclamation-circle mr-2"></i> <[error]>
+                    </div>
+                    <[/if!empty]>
+
+                    <style>
+                        /* Sovrascriviamo il bordo arancione di default del plugin nice-select */
+                        .nice-select {
+                            border-color: #ced4da !important;
+                        }
+                        .nice-select .list {
+                            width: 100%;
+                            z-index: 99;
+                        }
+                        .nice-select.open, .nice-select:active, .nice-select:focus,
+                        .form-control:focus {
+                            border-color: #0abab5 !important;
+                        }
+
+                        /*ratings*/
+                        .rating {
+                            margin-top: 40px;
+                            border: none;
+                            float: left;
+                        }
+
+                        .rating > label {
+                            color: #90A0A3;
+                            float: right;
+                        }
+
+                        .rating > label:before {
+                            margin: 5px;
+                            font-size: 2em;
+                            content: "&#9733;";
+                            display: inline-block;
+                        }
+
+                        .rating > input {
+                            display: none;
+                        }
+
+                        .rating > input:checked ~ label,
+                        .rating:not(:checked) > label:hover,
+                        .rating:not(:checked) > label:hover ~ label {
+                            color: #0abab5;
+                        }
+
+                        .rating > input:checked + label:hover,
+                        .rating > input:checked ~ label:hover,
+                        .rating > label:hover ~ input:checked ~ label,
+                        .rating > input:checked ~ label:hover ~ label {
+                            color: #0abab48e;
+                        }
+                    </style>
+
+                    <div class="mt-5" id="reviewForm" style="background: #ffffff; padding: 40px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);">
+                        <[if!empty has_active_bookings]>
+                        <h4 style="color: #1a202c; font-weight: 700; margin-bottom: 25px; text-align: center;">Dettagli Recensione</h4>
+                        <form action="<[base]>/send-review.php" method="POST">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group mb-4">
+                                        <label for="review_date" style="font-weight: 600; display:block; margin-bottom: 8px;">Data e Ora Invio</label>
+                                        <input disabled class="form-control" name="review_date" id="review_date" type="datetime-local" value="<[dateNow]>">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group mb-4">
+                                        <label for="room_category_id" style="font-weight: 600; display:block; margin-bottom: 8px;">Tipologia di Camera di Riferimento</label>
+                                        <select class="form-control" name="room_category_id" id="room_category_id" required>
+                                            <option value="" disabled selected>Seleziona tipologia di camera...</option>
+                                            <[foreach]>
+                                            <option value="<[room_category_id]>"><[category_name]></option>
+                                            <[/foreach]>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-group mb-4" style="overflow: hidden;">
+                                        <label style="font-weight: 600; display:block; margin-bottom: 8px;">Valutazione (Stelle)</label>
+                                        <div class="rating" style="margin-top: 5px;">
+                                            <input type="radio" id="star5" name="rating" value="5" required />
+                                            <label class="star" for="star5" title="Fantastico (5 stelle)" aria-hidden="true"></label>
+                                            <input type="radio" id="star4" name="rating" value="4" />
+                                            <label class="star" for="star4" title="Ottimo (4 stelle)" aria-hidden="true"></label>
+                                            <input type="radio" id="star3" name="rating" value="3" />
+                                            <label class="star" for="star3" title="Buono (3 stelle)" aria-hidden="true"></label>
+                                            <input type="radio" id="star2" name="rating" value="2" />
+                                            <label class="star" for="star2" title="Male (2 stelle)" aria-hidden="true"></label>
+                                            <input type="radio" id="star1" name="rating" value="1" />
+                                            <label class="star" for="star1" title="Molto male (1 stella)" aria-hidden="true"></label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-4">
+                                        <label for="comment" style="font-weight: 600; display:block; margin-bottom: 8px;">La tua recensione</label>
+                                        <textarea required class="form-control" name="comment" id="comment" rows="5" placeholder="Condividi la tua esperienza presso il resort, la qualità della camera e dei servizi..." style="min-height: 130px;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-3 text-center">
+                                <button type="submit" class="button button-contactForm boxed-btn">Invia Recensione</button>
+                            </div>
+                        </form>
+                        <[/if!empty]>
+
+                        <[ifempty has_active_bookings]>
+                        <div class="text-center py-4">
+                            <div style="font-size: 3.2rem; color: #d97706; margin-bottom: 20px;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3 style="color: #1a202c; font-weight: 700; margin-bottom: 15px;">Funzione Riservata agli Ospiti che hanno un soggiorno recente o in corso</h3>
+                            <p style="font-size: 1rem; color: #4a5568; max-width: 600px; margin: 0 auto 20px; line-height: 1.6;">
+                                L'invio di recensioni online è disponibile esclusivamente per i clienti che hanno un soggiorno recente o in corso presso il nostro resort.
+                            </p>
+                        </div>
+                        <[/ifempty]>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Ticket Form Section End -->
+</main>

@@ -19,12 +19,6 @@ if (!is_receptionist()) {
 
 $db = db();
 
-// Assicura idempontenza e registrazione del servizio nel DB per i controlli ACL di gruppo
-try {
-    $db->exec("INSERT IGNORE INTO services (id, script_name, description) VALUES (11, 'segnalazioni.php', 'Gestione Segnalazioni')");
-    $db->exec("INSERT IGNORE INTO group_services (group_id, service_id) VALUES (1, 11), (2, 11)");
-} catch (Exception $e) {}
-
 $successMsg = $_SESSION['success_msg'] ?? '';
 $errorMsg = $_SESSION['error_msg'] ?? '';
 unset($_SESSION['success_msg'], $_SESSION['error_msg']);

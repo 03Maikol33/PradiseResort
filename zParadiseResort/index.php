@@ -8,7 +8,7 @@ $skin->setContent('year',      date('Y'));
 $skin->setContent('base',      $config['base']);
 $skin->setContent('skin',      $config['skin']);
 $skin->setContent('is_logged', !empty($_SESSION['user']) ? '1' : '');
-$skin->setContent('user.name', $_SESSION['user']['name'] ?? '');
+$skin->setContent('user.name', !empty($_SESSION['user']['name']) ? explode(' ', $_SESSION['user']['name'])[0] : '');
 $cartCountVal = get_cart_count();
 $skin->setContent('cart_count', $cartCountVal > 0 ? '1' : '');
 $skin->setContent('cart_badge', $cartCountVal > 0 ? " ($cartCountVal)" : '');
@@ -35,7 +35,7 @@ $reviews = db()->query('SELECT * FROM reviews ORDER BY created_at DESC LIMIT 4')
 foreach ($reviews as $review) {
     //ottieni autore
     $author = db()->prepare('SELECT first_name, last_name FROM users WHERE id = ?');
-    $author->execute([$review['id']]);
+    $author->execute([$review['user_id']]);
     $author = $author->fetch();
 
     //calcolo rating

@@ -1,18 +1,6 @@
 <?php
 require_once __DIR__ . '/../include/bootstrap.inc.php';
 
-require_login();
-
-// Assicura idempontenza e registrazione del servizio nel DB per i controlli ACL
-try {
-    $db = db();
-    $db->exec("INSERT IGNORE INTO services (id, script_name, description) VALUES (11, 'segnalazioni.php', 'Gestione Segnalazioni')");
-    $db->exec("INSERT IGNORE INTO group_services (group_id, service_id) VALUES (1, 11), (2, 11)");
-    if (is_admin() || is_receptionist()) {
-        $_SESSION['user']['services']['segnalazioni.php'] = true;
-    }
-} catch (Exception $e) {}
-
 require_admin();
 
 $db = db();
