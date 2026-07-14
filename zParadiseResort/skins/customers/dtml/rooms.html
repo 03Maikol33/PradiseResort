@@ -80,13 +80,13 @@
 
             <div class="row">
                 <[foreach]>
-                    <div class="col-xl-4 col-lg-6 col-md-6">
+                    <div class="col-xl-4 col-lg-6 col-md-6 mb-50">
                         <!-- Single Room -->
-                        <div class="single-room mb-50">
+                        <div class="single-room h-100 d-flex flex-column" style="background: #fff;">
                             <div class="room-img">
                                 <a href="<[category_url]>"><img src="<[room_image]>" alt="<[room_name]>"></a>
                             </div>
-                            <div class="room-caption">
+                            <div class="room-caption d-flex flex-column flex-grow-1">
                                 <h3 style="min-height: 70px;"><a href="<[category_url]>">
                                         <[room_name]>
                                     </a></h3>
@@ -95,7 +95,7 @@
                                         <[room_price]> <span>/ a notte</span>
                                     </span>
                                 </div>
-                                <p style="margin-top: 10px; color: #777;">
+                                <p style="margin-top: 10px; color: #777; flex-grow: 1;">
                                     <[room_desc]>
                                 </p>
                             </div>
