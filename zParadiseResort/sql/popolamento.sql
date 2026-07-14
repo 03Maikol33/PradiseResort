@@ -47,7 +47,7 @@ INSERT INTO group_services (group_id, service_id) VALUES
 (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (1, 11), (1, 12), (1, 13), (1, 14), (1, 15), (1, 16), (1, 17), (1, 18), (1, 19),
 
 -- Receptionist (id 2) vede dashboard, camere, prenotazioni, attività, profilo, prenotazioni ristorante, segnalazioni, servizi richiesti e servizi cliente (MA NON reviews.php che è esclusivo admin)
-(2, 1), (2, 2), (2, 3), (2, 8), (2, 9), (2, 10), (2, 11), (2, 14), (2, 15), (2, 16), (2, 17), (2, 18), (2, 19),
+(2, 1), (2, 2), (2, 3), (2, 4), (2, 8), (2, 9), (2, 10), (2, 11), (2, 14), (2, 15), (2, 16), (2, 17), (2, 18), (2, 19),
 
 -- Guest (id 3) vede il proprio profilo e le pagine di servizio cliente (recensioni, segnalazioni, prenotazione ristorante)
 (3, 9), (3, 15), (3, 16), (3, 17), (3, 18), (3, 19);
