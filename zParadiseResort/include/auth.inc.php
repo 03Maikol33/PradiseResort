@@ -101,11 +101,35 @@ function has_service(string $service): bool {
  */
 function require_service(?string $service = null): void {
     require_login();
+    $script_path = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? $_SERVER['PHP_SELF'] ?? '');
+    if (strpos($script_path, '/admin/') !== false && !is_admin()) {
+        if (is_receptionist()) {
+            $script = basename($script_path);
+            $receptionist_scripts = ['activity.php', 'bookings.php', 'index.php', 'profile.php', 'requested_services.php', 'restaurant_bookings.php', 'rooms.php', 'segnalazioni.php', 'users.php'];
+            if (in_array($script, $receptionist_scripts, true)) {
+                header('Location: ' . $GLOBALS['config']['base'] . '/receptionist/' . $script);
+                exit;
+            }
+            header('Location: ' . $GLOBALS['config']['base'] . '/receptionist/index.php');
+            exit;
+        }
+        header('Location: ' . $GLOBALS['config']['base'] . '/index.php');
+        exit;
+    }
+    if (strpos($script_path, '/receptionist/') !== false && !is_receptionist()) {
+        if (is_admin()) {
+            $script = basename($script_path);
+            header('Location: ' . $GLOBALS['config']['base'] . '/admin/' . $script);
+            exit;
+        }
+        header('Location: ' . $GLOBALS['config']['base'] . '/index.php');
+        exit;
+    }
+
     $service = $service ?? basename($_SERVER['SCRIPT_NAME']);
     if (!has_service($service)) {
         http_response_code(403);
         die('Accesso negato: servizio non autorizzato.');
-
     }
 }
 
@@ -117,6 +141,14 @@ function require_service(?string $service = null): void {
  */
 function require_admin(): void {
     require_service();
+    if (!is_admin()) {
+        if (is_receptionist()) {
+            header('Location: ' . $GLOBALS['config']['base'] . '/receptionist/index.php');
+            exit;
+        }
+        header('Location: ' . $GLOBALS['config']['base'] . '/index.php');
+        exit;
+    }
 }
 function block_admin(): void {
     global $config;
