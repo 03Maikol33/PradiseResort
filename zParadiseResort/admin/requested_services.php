@@ -45,7 +45,7 @@ foreach ($statuses as $st) {
 // Costruiamo la query
 $query = "SELECT ba.booking_id, ba.quantity, a.name AS amenity_name, a.price AS amenity_price,
                  b.check_in_date, b.check_out_date, b.status_id,
-                 u.first_name, u.last_name, u.email,
+                 u.first_name, u.last_name, u.email, u.phone,
                  r.room_number, rc.name AS category_name, bs.name AS status_name
           FROM booking_amenities ba
           JOIN amenities a ON ba.amenity_id = a.id
@@ -69,8 +69,9 @@ if ($statusFilter > 0) {
 }
 
 if ($search !== '') {
-    $query .= " AND (u.first_name LIKE ? OR u.last_name LIKE ? OR u.email LIKE ? OR r.room_number LIKE ?)";
+    $query .= " AND (u.first_name LIKE ? OR u.last_name LIKE ? OR u.email LIKE ? OR u.phone LIKE ? OR r.room_number LIKE ?)";
     $like = '%' . $search . '%';
+    $params[] = $like;
     $params[] = $like;
     $params[] = $like;
     $params[] = $like;
@@ -89,6 +90,12 @@ if (count($requests) > 0) {
         $block->setContent('booking_id', $req['booking_id']);
         $block->setContent('guest_name', htmlspecialchars($req['first_name'] . ' ' . $req['last_name']));
         $block->setContent('guest_email', htmlspecialchars($req['email']));
+        
+        $phoneHtml = '';
+        if (!empty($req['phone'])) {
+            $phoneHtml = '<p class="text-muted small mb-0"><i class="bi bi-telephone me-1"></i>' . htmlspecialchars($req['phone']) . '</p>';
+        }
+        $block->setContent('guest_phone_html', $phoneHtml);
         $block->setContent('room_number', htmlspecialchars($req['room_number']));
         $block->setContent('room_category', htmlspecialchars($req['category_name']));
         $block->setContent('service_name', htmlspecialchars($req['amenity_name']));

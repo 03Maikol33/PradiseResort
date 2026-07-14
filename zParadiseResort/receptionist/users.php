@@ -15,7 +15,7 @@ $db = db();
 
 // Query per estrarre solo i clienti registrati (Guest) e calcolare le loro prenotazioni attive
 // Le prenotazioni attive sono definite con status_id IN (2, 3) (Pending = 2, Confirmed = 3)
-$query = "SELECT u.id, u.first_name, u.last_name, u.email, u.created_at,
+$query = "SELECT u.id, u.first_name, u.last_name, u.email, u.phone, u.created_at,
                  (SELECT COUNT(*) FROM bookings b WHERE b.user_id = u.id AND b.status_id IN (2, 3)) AS active_bookings
           FROM users u
           JOIN user_gruppi ug ON u.id = ug.user_id
@@ -25,8 +25,9 @@ $query = "SELECT u.id, u.first_name, u.last_name, u.email, u.created_at,
 $params = [];
 
 if ($search !== '') {
-    $query .= " AND (u.first_name LIKE ? OR u.last_name LIKE ? OR u.email LIKE ?)";
+    $query .= " AND (u.first_name LIKE ? OR u.last_name LIKE ? OR u.email LIKE ? OR u.phone LIKE ?)";
     $like = '%' . $search . '%';
+    $params[] = $like;
     $params[] = $like;
     $params[] = $like;
     $params[] = $like;
@@ -44,6 +45,12 @@ if (count($users) > 0) {
         $fullName = $user['first_name'] . ' ' . $user['last_name'];
         $block->setContent('user_name', htmlspecialchars($fullName));
         $block->setContent('user_email', htmlspecialchars($user['email']));
+        
+        $phoneHtml = '';
+        if (!empty($user['phone'])) {
+            $phoneHtml = '<p class="text-muted small mb-0"><i class="bi bi-telephone me-1"></i>' . htmlspecialchars($user['phone']) . '</p>';
+        }
+        $block->setContent('user_phone_html', $phoneHtml);
         
         $activeBookings = (int)$user['active_bookings'];
         $block->setContent('active_bookings', $activeBookings);

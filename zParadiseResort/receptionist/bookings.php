@@ -172,7 +172,7 @@ foreach ($statuses as $st) {
 
 // Costruiamo la query di elenco prenotazioni (selezionando staff_notes)
 $query = "SELECT b.id, b.check_in_date, b.check_out_date, b.total_price, b.created_at, b.status_id, b.staff_notes,
-                 u.first_name, u.last_name, u.email,
+                 u.first_name, u.last_name, u.email, u.phone,
                  r.room_number, rc.name AS category_name, bs.name AS status_name
           FROM bookings b
           JOIN users u ON b.user_id = u.id
@@ -184,8 +184,9 @@ $query = "SELECT b.id, b.check_in_date, b.check_out_date, b.total_price, b.creat
 $params = [];
 
 if ($search !== '') {
-    $query .= " AND (u.first_name LIKE ? OR u.last_name LIKE ? OR u.email LIKE ? OR r.room_number LIKE ?)";
+    $query .= " AND (u.first_name LIKE ? OR u.last_name LIKE ? OR u.email LIKE ? OR u.phone LIKE ? OR r.room_number LIKE ?)";
     $like = '%' . $search . '%';
+    $params[] = $like;
     $params[] = $like;
     $params[] = $like;
     $params[] = $like;
@@ -210,6 +211,12 @@ if (count($bookings) > 0) {
         $block->setContent('booking_created', date('d/m/Y H:i', strtotime($b['created_at'])));
         $block->setContent('guest_name', htmlspecialchars($b['first_name'] . ' ' . $b['last_name']));
         $block->setContent('guest_email', htmlspecialchars($b['email']));
+        
+        $phoneHtml = '';
+        if (!empty($b['phone'])) {
+            $phoneHtml = '<div class="text-muted small"><i class="bi bi-telephone me-1"></i>' . htmlspecialchars($b['phone']) . '</div>';
+        }
+        $block->setContent('guest_phone_html', $phoneHtml);
         $block->setContent('room_number', htmlspecialchars($b['room_number']));
         $block->setContent('room_category', htmlspecialchars($b['category_name']));
         $block->setContent('check_in', date('d/m/Y', strtotime($b['check_in_date'])));
