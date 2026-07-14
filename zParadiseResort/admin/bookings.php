@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../include/bootstrap.inc.php';
 
-// Controlliamo che l'utente sia loggato e sia Admin
 require_admin();
 
 $db = db();
@@ -9,10 +8,9 @@ $successMsg = $_SESSION['success_msg'] ?? '';
 $errorMsg = $_SESSION['error_msg'] ?? '';
 unset($_SESSION['success_msg'], $_SESSION['error_msg']);
 
-// Gestione dell'aggiornamento dello stato, delle note o rimozione dei servizi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
-    
+
     if ($action === 'update_status') {
         $bookingId = (int)($_POST['booking_id'] ?? 0);
         $statusId = (int)($_POST['status_id'] ?? 0);
@@ -45,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'update_notes') {
         $bookingId = (int)($_POST['booking_id'] ?? 0);
         $staffNotes = trim($_POST['staff_notes'] ?? '');
-        
+
         if ($bookingId > 0) {
             try {
                 $updateStmt = $db->prepare("UPDATE bookings SET staff_notes = ? WHERE id = ?");
@@ -60,17 +58,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($action === 'remove_amenity') {
         $bookingId = (int)($_POST['booking_id'] ?? 0);
         $amenityId = (int)($_POST['amenity_id'] ?? 0);
-        
+
         if ($bookingId > 0 && $amenityId > 0) {
             try {
                 $db->beginTransaction();
-                
-                // 1. Rimuovi il servizio dalla prenotazione
+
                 $delStmt = $db->prepare("DELETE FROM booking_amenities WHERE booking_id = ? AND amenity_id = ?");
                 $delStmt->execute([$bookingId, $amenityId]);
-                
-                // 2. Ricalcola il prezzo totale della prenotazione
-                // Ottieni le date del soggiorno e il prezzo della camera
+
                 $stmtDetails = $db->prepare("
                     SELECT b.check_in_date, b.check_out_date, rc.base_price
                     FROM bookings b
@@ -80,35 +75,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ");
                 $stmtDetails->execute([$bookingId]);
                 $bDetails = $stmtDetails->fetch();
-                
+
                 if ($bDetails) {
                     $start = new DateTime($bDetails['check_in_date']);
                     $end = new DateTime($bDetails['check_out_date']);
                     $nights = $start->diff($end)->days;
                     if ($nights <= 0) $nights = 1;
-                    
+
                     $roomTotal = (float)$bDetails['base_price'] * $nights;
-                    
-                    // Somma i prezzi dei servizi extra rimanenti
+
                     $stmtSum = $db->prepare("
-                        SELECT SUM(a.price * ba.quantity) as total 
-                        FROM booking_amenities ba 
-                        JOIN amenities a ON a.id = ba.amenity_id 
+                        SELECT SUM(a.price * ba.quantity) as total
+                        FROM booking_amenities ba
+                        JOIN amenities a ON a.id = ba.amenity_id
                         WHERE ba.booking_id = ?
                     ");
                     $stmtSum->execute([$bookingId]);
                     $amenitiesTotal = (float)($stmtSum->fetch(PDO::FETCH_COLUMN) ?? 0.00);
-                    
+
                     $newTotalPrice = $roomTotal + $amenitiesTotal;
-                    
-                    // Aggiorna bookings
+
                     $updBook = $db->prepare("UPDATE bookings SET total_price = ? WHERE id = ?");
                     $updBook->execute([$newTotalPrice, $bookingId]);
-                    
-                    // Aggiorna invoices (se esiste una fattura associata)
+
                     $updInv = $db->prepare("UPDATE invoices SET total_amount = ? WHERE booking_id = ?");
                     $updInv->execute([$newTotalPrice, $bookingId]);
-                    
+
                     $db->commit();
                     $_SESSION['success_msg'] = "Servizio extra rimosso e prezzo ricalcolato con successo.";
                 } else {
@@ -124,13 +116,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Reindirizzamento per evitare reinvio form
     $queryString = $_SERVER['QUERY_STRING'] ? '?' . $_SERVER['QUERY_STRING'] : '';
     header("Location: " . $_SERVER['PHP_SELF'] . $queryString);
     exit;
 }
 
-// Inizializza la pagina usando il frame privato dell'amministrazione
 $page = new_page('administration', 'frame-private');
 $block = new_block('bookings');
 
@@ -139,7 +129,6 @@ $statusFilter = isset($_GET['status']) ? (int)$_GET['status'] : 0;
 
 $block->setContent('search_query', htmlspecialchars($search));
 
-// Traduzioni degli stati per l'interfaccia italiana
 $statusTranslations = [
     'In Cart' => 'Nel Carrello',
     'Pending' => 'In attesa',
@@ -148,7 +137,6 @@ $statusTranslations = [
     'Completed' => 'Completata'
 ];
 
-// Popola il menu dei filtri di stato
 $stmtStatuses = $db->query("SELECT id, name FROM booking_statuses WHERE name != 'Cancelled' ORDER BY id ASC");
 $statuses = $stmtStatuses->fetchAll();
 foreach ($statuses as $st) {
@@ -158,7 +146,6 @@ foreach ($statuses as $st) {
     $block->setContent('filter_status_selected', ($st['id'] == $statusFilter) ? 'selected' : '');
 }
 
-// Costruiamo la query di elenco prenotazioni (selezionando staff_notes)
 $query = "SELECT b.id, b.check_in_date, b.check_out_date, b.total_price, b.created_at, b.status_id, b.staff_notes,
                  u.first_name, u.last_name, u.email, u.phone,
                  r.room_number, rc.name AS category_name, bs.name AS status_name
@@ -193,13 +180,13 @@ $stmt->execute($params);
 $bookings = $stmt->fetchAll();
 
 if (count($bookings) > 0) {
-    $block->setContent('bookings_list', '1'); // For ifempty logic
+    $block->setContent('bookings_list', '1');
     foreach ($bookings as $b) {
         $block->setContent('booking_id', $b['id']);
         $block->setContent('booking_created', date('d/m/Y H:i', strtotime($b['created_at'])));
         $block->setContent('guest_name', htmlspecialchars($b['first_name'] . ' ' . $b['last_name']));
         $block->setContent('guest_email', htmlspecialchars($b['email']));
-        
+
         $phoneHtml = '';
         if (!empty($b['phone'])) {
             $phoneHtml = '<div class="text-muted small"><i class="bi bi-telephone me-1"></i>' . htmlspecialchars($b['phone']) . '</div>';
@@ -211,11 +198,10 @@ if (count($bookings) > 0) {
         $block->setContent('check_out', date('d/m/Y', strtotime($b['check_out_date'])));
         $block->setContent('total_price', number_format($b['total_price'], 2, ',', '.'));
         $block->setContent('booking_staff_notes', htmlspecialchars($b['staff_notes'] ?? ''));
-        
+
         $translatedStatus = $statusTranslations[$b['status_name']] ?? $b['status_name'];
         $block->setContent('status_name', htmlspecialchars($translatedStatus));
 
-        // Query per i servizi extra (amenities) di questa prenotazione (con opzione rimozione)
         $amenitiesStmt = $db->prepare("
             SELECT a.id, a.name, ba.quantity
             FROM booking_amenities ba
@@ -224,7 +210,7 @@ if (count($bookings) > 0) {
         ");
         $amenitiesStmt->execute([$b['id']]);
         $amenities = $amenitiesStmt->fetchAll();
-        
+
         $amenitiesHtml = '';
         if (empty($amenities)) {
             $amenitiesHtml = '<span class="text-muted small" style="font-style: italic;">Nessuno</span>';
@@ -245,21 +231,19 @@ if (count($bookings) > 0) {
         }
         $block->setContent('booking_amenities', $amenitiesHtml);
 
-        // Badge class in base allo stato
         $badgeClass = 'text-bg-secondary';
         $statusId = (int)$b['status_id'];
         if ($statusId === 2) {
-            $badgeClass = 'text-bg-warning'; // Pending
+            $badgeClass = 'text-bg-warning';
         } elseif ($statusId === 3) {
-            $badgeClass = 'text-bg-success'; // Confirmed
+            $badgeClass = 'text-bg-success';
         } elseif ($statusId === 4) {
-            $badgeClass = 'text-bg-danger'; // Cancelled
+            $badgeClass = 'text-bg-danger';
         } elseif ($statusId === 5) {
-            $badgeClass = 'text-bg-info text-white'; // Completed
+            $badgeClass = 'text-bg-info text-white';
         }
         $block->setContent('status_badge_class', $badgeClass);
 
-        // Determinazione azioni disponibili
         $canConfirm = ($statusId === 2);
         $canComplete = ($statusId === 3);
         $canCancel = ($statusId === 2 || $statusId === 3);
@@ -306,13 +290,12 @@ if (count($bookings) > 0) {
         $block->setContent('booking_actions', $actionsHtml);
     }
 } else {
-    $block->setContent('bookings_list', ''); 
+    $block->setContent('bookings_list', '');
 }
 
 $block->setContent('success_msg', htmlspecialchars($successMsg));
 $block->setContent('error_msg', htmlspecialchars($errorMsg));
 
-// Popoliamo le variabili comuni del frame privato e notifiche
 setup_backoffice_page($page, 'Amministratore', 'admin');
 
 $page->setContent('body', $block->get());

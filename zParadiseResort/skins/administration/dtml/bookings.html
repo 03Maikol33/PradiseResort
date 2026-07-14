@@ -24,7 +24,6 @@
   </div>
   <[/if!empty]>
 
-  <!-- Barra dei Filtri di Ricerca -->
   <div class="card border-0 shadow-sm mt-3 mb-4" style="border-radius: 12px; background: #ffffff;">
     <div class="card-body p-3 d-flex flex-wrap align-items-center justify-content-between gap-3">
       <div>
@@ -44,7 +43,6 @@
     </div>
   </div>
 
-  <!-- Lista Prenotazioni come Tessere (Card Grid) -->
   <div class="row g-3">
     <[foreach]>
     <div class="col-12 col-xxl-6">
@@ -56,10 +54,9 @@
           </div>
           <span class="badge <[status_badge_class]> px-2.5 py-1.5" style="border-radius: 6px; font-size: 0.78rem;"><[status_name]></span>
         </div>
-        
+
         <div class="card-body p-3">
           <div class="row g-3">
-            <!-- Ospite -->
             <div class="col-12 col-md-6 border-end-md">
               <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.72rem; letter-spacing: 0.5px;">Ospite</h6>
               <div class="d-flex align-items-center gap-2 mb-3">
@@ -72,8 +69,7 @@
                   <[guest_phone_html]>
                 </div>
               </div>
-              
-              <!-- Avviso per il cliente -->
+
               <form action="" method="POST" class="mt-2">
                 <input type="hidden" name="action" value="update_notes">
                 <input type="hidden" name="booking_id" value="<[booking_id]>">
@@ -84,8 +80,7 @@
                 </div>
               </form>
             </div>
-            
-            <!-- Soggiorno e Servizi -->
+
             <div class="col-12 col-md-6">
               <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.72rem; letter-spacing: 0.5px;">Soggiorno & Servizi</h6>
               <div class="mb-2">
@@ -95,7 +90,7 @@
               <div class="small text-dark mb-3">
                 <i class="bi bi-calendar-range me-1 text-primary"></i> <[check_in]> &rarr; <[check_out]>
               </div>
-              
+
               <div class="mt-2">
                 <div class="text-muted mb-1" style="font-size: 0.72rem; font-weight: bold; text-transform: uppercase;">Servizi Aggiuntivi</div>
                 <div class="d-flex flex-wrap gap-1">
@@ -104,10 +99,9 @@
               </div>
             </div>
           </div>
-          
+
           <hr class="my-3 text-muted" style="opacity: 0.1;">
-          
-          <!-- Prezzo e Azioni -->
+
           <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
             <div>
               <span class="text-muted d-block" style="font-size: 0.72rem; font-weight: bold; text-transform: uppercase;">Importo Totale</span>
@@ -121,7 +115,7 @@
       </div>
     </div>
     <[/foreach]>
-    
+
     <[ifempty bookings_list]>
     <div class="col-12 text-center py-5">
       <div class="card border-0 shadow-sm py-5" style="border-radius: 12px; background: #ffffff;">

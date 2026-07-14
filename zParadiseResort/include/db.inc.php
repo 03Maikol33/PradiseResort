@@ -14,18 +14,14 @@ function db(): PDO {
         return $pdo;
     }
 
-    //prendo configurazione db da config.php
     global $config;
     $c = $config['db'];
 
     $dsn = "mysql:host={$c['host']};port={$c['port']};dbname={$c['name']};charset={$c['charset']}";
 
     $pdo = new PDO($dsn, $c['user'], $c['pass'], [
-        //mappa errori query in eccezioni.
         PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-        //uso il nome della colonna come chiave dell'array associativo restituito da fetch() e fetchAll().
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        //contro sql injection
         PDO::ATTR_EMULATE_PREPARES   => false,
     ]);
 

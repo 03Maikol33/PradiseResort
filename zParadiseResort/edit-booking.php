@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
-// Protezione pagina: richiede login ed esclude lo staff
 require_login();
 block_staff();
 
@@ -16,7 +15,6 @@ if ($bookingId <= 0) {
     exit;
 }
 
-// 1. Carica la prenotazione e controlla proprietà e fattibilità modifica
 $stmt = db()->prepare(
     'SELECT b.*, r.room_number, rc.name AS category_name, rc.base_price
      FROM bookings b
@@ -32,19 +30,16 @@ if (!$booking) {
     exit;
 }
 
-// Controllo: non è possibile modificare prenotazioni passate, completate o cancellate
 if ($booking['status_id'] == 4 || $booking['status_id'] == 5 || $booking['check_in_date'] <= $today) {
     header('Location: ' . $config['base'] . '/profile.php');
     exit;
 }
 
-// 2. Gestione POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $checkIn = $_POST['check_in'] ?? '';
     $checkOut = $_POST['check_out'] ?? '';
-    $selectedAmenities = $_POST['amenities'] ?? []; // Array di IDs
+    $selectedAmenities = $_POST['amenities'] ?? [];
 
-    // Validazione base date
     if (empty($checkIn) || empty($checkOut)) {
         $error = 'Le date di check-in e check-out sono obbligatorie.';
     } elseif ($checkIn <= $today) {
@@ -55,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             db()->beginTransaction();
 
-            // Controllo disponibilità camera con blocco FOR UPDATE (escludendo questa prenotazione)
+            // Lock FOR UPDATE per evitare sovrapposizioni
             $chk = db()->prepare(
                 'SELECT 1 FROM bookings b
                  WHERE b.room_id = ? AND b.id <> ? AND b.status_id <> 4
@@ -74,7 +69,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'La camera non è disponibile per le date selezionate.';
                 db()->rollBack();
             } else {
-                // Calcola il prezzo totale
                 $start = new DateTime($checkIn);
                 $end = new DateTime($checkOut);
                 $nights = $start->diff($end)->days;
@@ -84,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $amenitiesTotal = 0;
 
                 if (!empty($selectedAmenities)) {
-                    // Recupera i prezzi delle amenities scelte
                     $inPlaceholders = implode(',', array_fill(0, count($selectedAmenities), '?'));
                     $stmtPrices = db()->prepare("SELECT price FROM amenities WHERE id IN ($inPlaceholders)");
                     $stmtPrices->execute($selectedAmenities);
@@ -96,15 +89,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $newTotalPrice = $roomTotal + $amenitiesTotal;
 
-                // Aggiorna la prenotazione
                 $update = db()->prepare(
-                    'UPDATE bookings 
-                     SET check_in_date = ?, check_out_date = ?, total_price = ? 
+                    'UPDATE bookings
+                     SET check_in_date = ?, check_out_date = ?, total_price = ?
                      WHERE id = ?'
                 );
                 $update->execute([$checkIn, $checkOut, $newTotalPrice, $bookingId]);
 
-                // Sincronizza i servizi extra in booking_amenities
                 $delete = db()->prepare('DELETE FROM booking_amenities WHERE booking_id = ?');
                 $delete->execute([$bookingId]);
 
@@ -115,13 +106,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
 
-                // Aggiorna l'importo della fattura associata
                 $updateInvoice = db()->prepare('UPDATE invoices SET total_amount = ? WHERE booking_id = ?');
                 $updateInvoice->execute([$newTotalPrice, $bookingId]);
 
                 db()->commit();
 
-                // Reindirizza con messaggio di successo
                 header('Location: ' . $config['base'] . '/profile.php?action=update_profile&msg=' . urlencode('Soggiorno modificato con successo.'));
                 exit;
             }
@@ -133,8 +122,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// 3. Gestione GET (Popolamento del form)
-// Recupera tutti i servizi extra e indica quelli attualmente scelti
 $stmtSelected = db()->prepare('SELECT amenity_id FROM booking_amenities WHERE booking_id = ?');
 $stmtSelected->execute([$bookingId]);
 $selectedAmenityIds = $stmtSelected->fetchAll(PDO::FETCH_COLUMN);
@@ -164,7 +151,6 @@ $block->setContent('check_out',               $booking['check_out_date']);
 $block->setContent('total_price',             number_format($booking['total_price'], 2, ',', '.'));
 $block->setContent('error',                   $error);
 
-// Loop dei servizi aggiuntivi
 foreach ($allAmenities as $a) {
     $isChecked = in_array($a['id'], $selectedAmenityIds);
     $block->setContent('amenity_id',             $a['id']);

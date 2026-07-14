@@ -2,7 +2,6 @@ DROP DATABASE IF EXISTS ParadiseResort;
 CREATE DATABASE ParadiseResort;
 USE ParadiseResort;
 
--- Tabelle indipendenti
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
@@ -22,11 +21,10 @@ CREATE TABLE gruppi (
 
 CREATE TABLE services (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    script_name VARCHAR(100) NOT NULL, -- Es: 'index.php', 'reviews.php'
+    script_name VARCHAR(100) NOT NULL,
     description TEXT
 );
 
--- Tabelle di giunzione (Normalizzazione)
 CREATE TABLE user_gruppi (
     user_id INT,
     group_id INT,
@@ -45,7 +43,7 @@ CREATE TABLE group_services (
 
 CREATE TABLE room_categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL, -- Es: Singola, Suite, ecc.
+    name VARCHAR(100) NOT NULL,
     description TEXT,
     base_price DECIMAL(10,2) NOT NULL,
     capacity INT NOT NULL,
@@ -63,7 +61,7 @@ CREATE TABLE rooms (
 
 CREATE TABLE booking_statuses (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL -- Es: 'In Cart', 'Pending', 'Confirmed', 'Cancelled', 'Completed'
+    name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE bookings (
@@ -90,7 +88,6 @@ CREATE TABLE amenities (
     is_suspended TINYINT DEFAULT 0
 );
 
--- Tabella di giunzione tra prenotazioni e servizi extra
 CREATE TABLE booking_amenities (
     booking_id INT,
     amenity_id INT,
@@ -122,7 +119,7 @@ CREATE TABLE reviews (
 
 CREATE TABLE ticket_statuses (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL -- Es: 'Open', 'In Progress', 'Resolved'
+    name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE maintenance_tickets (

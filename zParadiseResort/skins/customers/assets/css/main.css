@@ -3673,7 +3673,7 @@ label {
 
 /* line 176, C:/Users/SPN Graphics/Desktop/hotel_up/Hotel_HTML/assets/scss/_customer.scss */
 .service-experience {
-  background: #262626;
+  background: #f3f3f3;
   position: absolute;
   right: 38px;
   border-radius: 10px;
@@ -3744,7 +3744,7 @@ label {
 
 /* line 218, C:/Users/SPN Graphics/Desktop/hotel_up/Hotel_HTML/assets/scss/_customer.scss */
 .service-experience h3 {
-  color: #ffffff;
+  color: #000000;
   font-size: 35px;
 }
 

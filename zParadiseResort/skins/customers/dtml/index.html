@@ -1,8 +1,6 @@
 <main>
 
-    <!-- slider Area Start-->
     <div class="slider-area ">
-        <!-- Mobile Menu -->
         <div class="slider-active">
             <div class="single-slider  hero-overly slider-height d-flex align-items-center"
                 data-background="<[base]>/skins/<[skin]>/assets/img/hero/paradiseresort_banner.jpg" style="min-height: 600px;">
@@ -20,9 +18,7 @@
 
         </div>
     </div>
-    <!-- slider Area End-->
 
-    <!-- Booking Room Start-->
     <div class="booking-area">
         <div class="container">
             <div class="row ">
@@ -30,9 +26,7 @@
                     <form action="<[base]>/rooms-search.php" method="GET">
                         <div class="booking-wrap d-flex justify-content-between align-items-center">
 
-                            <!-- select in date -->
                             <div class="single-select-box mb-30">
-                                <!-- select out date -->
                                 <div class="boking-tittle">
                                     <span> Data Check-In:</span>
                                 </div>
@@ -40,9 +34,7 @@
                                     <input id="datepicker1" name="check_in" placeholder="Seleziona data" required />
                                 </div>
                             </div>
-                            <!-- Single Select Box -->
                             <div class="single-select-box mb-30">
-                                <!-- select out date -->
                                 <div class="boking-tittle">
                                     <span>Data Check-Out:</span>
                                 </div>
@@ -50,7 +42,6 @@
                                     <input id="datepicker2" name="check_out" placeholder="Seleziona data" required />
                                 </div>
                             </div>
-                            <!-- Single Select Box -->
                             <div class="single-select-box mb-30">
                                 <div class="boking-tittle">
                                     <span>Adulti:</span>
@@ -66,7 +57,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Single Select Box -->
                             <div class="single-select-box mb-30">
                                 <div class="boking-tittle">
                                     <span>Bambini:</span>
@@ -82,12 +72,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Single Select Box -->
                             <div class="single-select-box pt-45 mb-30">
                                 <button type="submit" class="btn select-btn"
                                     style="border: none; cursor: pointer; display: block; width: 100%;">Cerca Camere</button>
                             </div>
-
 
                         </div>
                     </form>
@@ -95,18 +83,15 @@
             </div>
         </div>
     </div>
-    <!-- Booking Room End-->
 
-    <!-- Make customer Start-->
     <section class="make-customer-area customar-padding fix" id="about">
         <div class="container-fluid p-0">
             <div class="row">
                 <div class="col-xl-5 col-lg-6">
                     <div class="customer-img mb-120">
-                        <img src="<[base]>/skins/<[skin]>/assets/img/customer/customar1.png" class="customar-img1"
+                        <img src="<[base]>/skins/<[skin]>/assets/img/customer/customar1.png" class="left-img"
                             alt="">
-                        <img src="<[base]>/skins/<[skin]>/assets/img/customer/customar2.png" class="customar-img2"
-                            alt="">
+
                         <div class="service-experience heartbeat">
                             <h3>25 Anni di Esperienza<br>nel Resort</h3>
                         </div>
@@ -128,14 +113,11 @@
             </div>
         </div>
     </section>
-    <!-- Make customer End-->
 
-    <!-- Room Start -->
     <section class="room-area" id="rooms">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-8">
-                    <!--font-back-tittle  -->
                     <div class="font-back-tittle mb-45">
                         <div class="archivment-front">
                             <h3>Le Nostre Camere</h3>
@@ -147,7 +129,6 @@
             <div class="row">
                 <[foreach]>
                     <div class="col-xl-4 col-lg-6 col-md-6">
-                        <!-- Single Room -->
                         <div class="single-room mb-50">
                             <div class="room-img">
                                 <a href="<[category_url]>">
@@ -177,11 +158,8 @@
         </div>
 
     </section>
-    <!-- Room End -->
 
-    <!-- Dining Start -->
     <div class="dining-area dining-padding-top">
-        <!-- Single Left img -->
         <div class="single-dining-area left-img">
             <div class="container">
                 <div class="row justify-content-end">
@@ -189,7 +167,7 @@
                         <div class="dining-caption">
                             <span>Il Nostro Ristorante</span>
                             <h3>Cucina & Degustazioni</h3>
-                            <p>Scopri i sapori unici della nostra terra, preparati dai migliori chef.<br> 
+                            <p>Scopri i sapori unici della nostra terra, preparati dai migliori chef.<br>
                                Ingredienti freschi, ricette tradizionali e un tocco di innovazione<br>
                                per deliziare il tuo palato ogni singolo giorno.
                             </p>
@@ -199,7 +177,6 @@
                 </div>
             </div>
         </div>
-        <!-- single Right img -->
         <style>
             .index-spa-img::before {
                 background-image: url('<[base]>/skins/<[skin]>/assets/img/swimmingpoolandspa/piscine_resort.jpg') !important;
@@ -223,32 +200,23 @@
             </div>
         </div>
     </div>
-    <!-- Dining End -->
 
-    <!-- Testimonial Start -->
     <div class="testimonial-area testimonial-padding">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xl-9 col-lg-9 col-md-9">
                     <div id="containerRecensioni" class="h1-testimonial-active">
                         <[foreach]>
-                            <!-- Single Testimonial -->
                             <div class="single-testimonial pt-65">
-                                <!-- Testimonial tittle -->
                                 <div class="font-back-tittle mb-105">
                                     <div class="archivment-front" style="display: flex; justify-content: center; color: #0ABAB5;">
-                                        <!--circle with capital letters-->
                                         <div class="circleProfile"><[recensione_autore_iniziali]></div>
                                     </div>
                                     <h3 class="archivment-back">Recensioni</h3>
                                 </div>
-                                <!-- Testimonial Content -->
                                 <div class="testimonial-caption text-center">
                                     <p><[recensione_testo]></p>
-                                    <!-- Rattion -->
                                     <div class="testimonial-ratting">
-                                        <!--that's a single star-->
-                                        <!--<i class="fas fa-star"></i>-->
                                         <[recensione_stelle]>
                                     </div>
                                     <div class="rattiong-caption">
@@ -259,7 +227,6 @@
                             </div>
                         <[/foreach]>
                     </div>
-                    <!--pulsante recensisci-->
                     <div class="row justify-content-center">
                         <div class="col-xl-9 col-lg-9 col-md-9">
                             <div class="testimonial-caption text-center">
@@ -271,9 +238,7 @@
             </div>
         </div>
     </div>
-    <!-- Testimonial End -->
 
-    <!-- Gallery img Start-->
     <div class="gallery-area fix">
         <div class="container-fluid p-0">
             <div class="row">
@@ -293,5 +258,4 @@
             </div>
         </div>
     </div>
-    <!-- Gallery img End-->
 </main>

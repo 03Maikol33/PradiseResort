@@ -1,4 +1,3 @@
-<!-- Google Fonts per il look premium -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
@@ -12,7 +11,7 @@
         overflow: hidden;
         font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    
+
     /* Cerchi sfocati decorativi per effetto Premium Glass */
     .blur-decor {
         position: absolute;
@@ -122,7 +121,7 @@
         position: relative;
         overflow: hidden;
     }
-    
+
     .card-head-success {
         background: linear-gradient(135deg, #0abab5 0%, #089c97 100%);
         padding: 30px;
@@ -130,7 +129,7 @@
         color: #ffffff;
         position: relative;
     }
-    
+
     .card-head-success::after {
         content: '';
         position: absolute;
@@ -149,7 +148,7 @@
         margin-top: 10px;
         margin-bottom: 5px;
     }
-    
+
     .card-head-success p {
         color: #e6f7f6;
         font-size: 0.9rem;
@@ -221,20 +220,20 @@
         padding: 20px;
         margin-bottom: 20px;
     }
-    
+
     .price-total-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-    
+
     .price-total-row strong {
         font-family: 'Playfair Display', serif;
         font-size: 1.25rem;
         color: #1f2b37;
         font-weight: 800;
     }
-    
+
     .price-total-value {
         font-size: 1.6rem;
         color: #0abab5;
@@ -259,7 +258,7 @@
         text-align: center;
         text-decoration: none;
     }
-    
+
     .btn-elite-home:hover {
         transform: translateY(-2px);
         box-shadow: 0 15px 25px rgba(31, 43, 55, 0.3);
@@ -274,13 +273,11 @@
 
 <main>
     <div class="success-wrapper-premium">
-        <!-- Elementi di sfondo sfocati -->
         <div class="blur-decor blur-1"></div>
         <div class="blur-decor blur-2"></div>
 
         <div class="container" style="position: relative; z-index: 10;">
-            
-            <!-- Stepper del percorso -->
+
             <div class="booking-stepper">
                 <div class="step-item completed">
                     <div class="step-icon"><i class="fas fa-search"></i></div>
@@ -299,18 +296,17 @@
             <div class="row justify-content-center">
                 <div class="col-lg-8">
                     <div class="premium-glass-card">
-                        
+
                         <div class="card-head-success">
                             <span class="success-icon-anim"><i class="fas fa-check-circle"></i></span>
                             <h3>Prenotazione Confermata</h3>
                             <p>Il tuo soggiorno da sogno è registrato con successo nel nostro sistema</p>
                         </div>
-                        
+
                         <div class="row no-gutters">
-                            <!-- Colonna Sinistra: Dettagli Prenotazione -->
                             <div class="col-md-7 p-4 p-md-5" style="background-color: #ffffff; border-right: 1px solid #edf2f7;">
                                 <h5 class="summary-title" style="font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #1f2b37; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #0abab5; padding-bottom: 8px; display: inline-block;">Riepilogo Soggiorno</h5>
-                                
+
                                 <div class="premium-details-list" style="margin-bottom: 25px;">
                                     <div class="premium-detail-row">
                                         <div class="premium-label"><i class="fas fa-bed"></i> Sistemazione</div>
@@ -330,7 +326,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Visualizzazione Servizi Extra -->
                                 <[if!empty has_booking_amenities]>
                                 <div class="mt-4 pt-3 border-top" style="border-top-color: #e2e8f0 !important; margin-bottom: 25px;">
                                     <h6 style="font-weight: 700; color: #1f2b37; margin-bottom: 12px; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px;">Servizi Aggiuntivi:</h6>
@@ -344,7 +339,7 @@
                                     </ul>
                                 </div>
                                 <[/if!empty]>
-                                
+
                                 <div class="p-3 rounded text-center" style="background-color: #e6f7f6; border: 1px solid #81d8d0; border-radius: 12px;">
                                     <p style="color: #089c97; font-size: 0.9rem; margin: 0; line-height: 1.5;">
                                         <i class="fas fa-receipt mr-1"></i> Abbiamo generato la tua fattura pro-forma. Potrai pagare al tuo arrivo in reception.
@@ -352,14 +347,13 @@
                                 </div>
                             </div>
 
-                            <!-- Colonna Destra: Riferimento & Azioni -->
                             <div class="col-md-5 p-4 p-md-5 d-flex flex-column justify-content-between" style="background-color: #fbfcfe;">
                                 <div>
                                     <div class="premium-ref-box">
                                         <span>Codice Riferimento</span>
                                         <h4>#<[booking_id]></h4>
                                     </div>
-                                    
+
                                     <div class="premium-price-box">
                                         <div class="price-total-row">
                                             <strong>Totale</strong>
@@ -367,13 +361,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="actions-container">
                                     <a href="<[base]>/index.php" class="btn-elite-home">Torna alla Home</a>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

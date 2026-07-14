@@ -16,7 +16,6 @@ $block = new_block('services');
 $block->setContent('base', $config['base']);
 $block->setContent('skin', $config['skin']);
 
-// Fetch all services/amenities
 $db = db();
 $stmt = $db->query("SELECT id, name, description, price, image_url FROM amenities WHERE is_suspended = 0 ORDER BY price ASC");
 $amenities = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,7 +31,7 @@ if (count($amenities) > 0) {
     foreach ($amenities as $am) {
         $key = strtolower(trim($am['name']));
         $iconClass = $icon_map[$key] ?? 'fa-concierge-bell';
-        
+
         $img = $am['image_url'] ?? '';
         if ($img !== '') {
             if (strpos($img, 'http') !== 0 && strpos($img, '/') !== 0) {
@@ -42,15 +41,13 @@ if (count($amenities) > 0) {
                     $img = $config['base'] . '/skins/' . $config['skin'] . '/assets/img/' . $img;
                 }
             }
-            // Image is set: prepare background style and no icon
             $serviceImageStyle = 'style="background-image: url(\'' . htmlspecialchars($img) . '\'); background-size: cover; background-position: center; height: 200px;"';
             $serviceIconHtml = '';
         } else {
-            // Image is empty: default height and display fallback icon
             $serviceImageStyle = 'style="height: 200px;"';
             $serviceIconHtml = '<i class="fas ' . htmlspecialchars($iconClass) . '" style="font-size: 3.5rem;"></i>';
         }
-        
+
         $block->setContent('service_id', $am['id']);
         $block->setContent('service_name', htmlspecialchars($am['name']));
         $block->setContent('service_desc', htmlspecialchars($am['description'] ?? ''));

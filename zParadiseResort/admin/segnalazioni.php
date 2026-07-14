@@ -8,7 +8,6 @@ $successMsg = $_SESSION['success_msg'] ?? '';
 $errorMsg = $_SESSION['error_msg'] ?? '';
 unset($_SESSION['success_msg'], $_SESSION['error_msg']);
 
-// Gestione (solo chiusura -> eliminazione dal db, niente storico)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
@@ -19,7 +18,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $checkStmt = $db->prepare("SELECT 1 FROM maintenance_tickets WHERE id = ?");
                 $checkStmt->execute([$ticketId]);
                 if ($checkStmt->fetch()) {
-                    // Chiusura completata: eliminazione definitiva dal db, niente storico
                     $deleteStmt = $db->prepare("DELETE FROM maintenance_tickets WHERE id = ?");
                     $deleteStmt->execute([$ticketId]);
                     $_SESSION['success_msg'] = "Segnalazione #{$ticketId} chiusa con successo ed eliminata dal database (nessuno storico archiviato).";
@@ -43,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $row = $checkStmt->fetch();
                 if ($row) {
                     $currStatus = (int)$row['status_id'];
-                    // Verifica transizione che rispetti il flusso degli stati prestabiliti (1: Open -> 2: In Progress -> 3: Resolved)
                     if ($newStatusId > $currStatus && $newStatusId <= 3) {
                         $updateStmt = $db->prepare("UPDATE maintenance_tickets SET status_id = ? WHERE id = ?");
                         $updateStmt->execute([$newStatusId, $ticketId]);
@@ -71,15 +68,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Inizializza la pagina usando il frame privato dell'amministrazione (frame-private)
 $page = new_page('administration', 'frame-private');
 $block = new_block('segnalazioni');
 
 $block->setContent('success_msg', htmlspecialchars($successMsg));
 $block->setContent('error_msg', htmlspecialchars($errorMsg));
-$block->setContent('can_create', ''); // Nessun tasto o modale di invio per Admin
-$block->setContent('can_close', '1'); // Modale di conferma chiusura per Admin
-
+$block->setContent('can_create', '');
+$block->setContent('can_close', '1');
 
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
 $statusFilter = isset($_GET['status']) ? (int)$_GET['status'] : 0;
@@ -87,14 +82,12 @@ $roomFilter = isset($_GET['room_id']) ? (int)$_GET['room_id'] : 0;
 
 $block->setContent('search_query', htmlspecialchars($search));
 
-// Traduzioni degli stati in italiano per l'interfaccia
 $statusTranslations = [
     'Open' => 'Aperta',
     'In Progress' => 'In Lavorazione',
     'Resolved' => 'Risolta'
 ];
 
-// 1. Popola i filtri per lo stato
 $stmtStatuses = $db->query("SELECT id, name FROM ticket_statuses ORDER BY id ASC");
 $statuses = $stmtStatuses->fetchAll();
 foreach ($statuses as $st) {
@@ -104,11 +97,10 @@ foreach ($statuses as $st) {
     $block->setContent('filter_status_selected', ($st['id'] == $statusFilter) ? 'selected' : '');
 }
 
-// 2. Popola i filtri per le camere (ricerca) e ottieni elenco completo stanze
 $stmtRooms = $db->query("
-    SELECT r.id, r.room_number, rc.name AS category_name 
-    FROM rooms r 
-    JOIN room_categories rc ON r.category_id = rc.id 
+    SELECT r.id, r.room_number, rc.name AS category_name
+    FROM rooms r
+    JOIN room_categories rc ON r.category_id = rc.id
     ORDER BY r.room_number ASC
 ");
 $allRooms = $stmtRooms->fetchAll();
@@ -119,9 +111,8 @@ foreach ($allRooms as $room) {
     $block->setContent('filter_room_selected', ($room['id'] == $roomFilter) ? 'selected' : '');
 }
 
-// 3. Popola le schede e metriche riepilogative in alto
 $stmtStats = $db->query("
-    SELECT 
+    SELECT
         COUNT(*) as total_cnt,
         SUM(CASE WHEN status_id = 1 THEN 1 ELSE 0 END) as open_cnt,
         SUM(CASE WHEN status_id = 2 THEN 1 ELSE 0 END) as in_progress_cnt,
@@ -134,7 +125,6 @@ $block->setContent('open_tickets', $stats['open_cnt'] ?? 0);
 $block->setContent('in_progress_tickets', $stats['in_progress_cnt'] ?? 0);
 $block->setContent('resolved_tickets', $stats['resolved_cnt'] ?? 0);
 
-// 4. Query per consultare tutte le segnalazioni inviate da clienti, receptionist o staff
 $query = "
     SELECT mt.id, mt.issue_description, mt.created_at, mt.status_id,
            r.room_number, rc.name AS category_name,
@@ -182,11 +172,9 @@ if (count($tickets) > 0) {
         $block->setContent('ticket_created', date('d/m/Y H:i', strtotime($t['created_at'])));
         $block->setContent('issue_description', nl2br(htmlspecialchars($t['issue_description'])));
 
-        // Dettagli Segnalatore (Ospite o Receptionist)
         $block->setContent('reporter_name', htmlspecialchars($t['first_name'] . ' ' . $t['last_name']));
         $block->setContent('reporter_email', htmlspecialchars($t['email']));
 
-        // Camera
         if (!empty($t['room_number'])) {
             $block->setContent('room_label', 'Camera ' . htmlspecialchars($t['room_number']));
             $block->setContent('room_category_label', htmlspecialchars($t['category_name']));
@@ -197,7 +185,6 @@ if (count($tickets) > 0) {
             $block->setContent('has_room', '');
         }
 
-        // Badge stato
         $statusId = (int)$t['status_id'];
         $statusNameIt = $statusTranslations[$t['status_name']] ?? $t['status_name'];
         $badgeClass = 'bg-secondary text-white';
@@ -236,7 +223,6 @@ if (count($tickets) > 0) {
               </form>';
         }
 
-        // Pulsanti di gestione (Avanzamento Stato e Chiusura -> eliminazione dal db, niente storico)
         $actionsHtml = '
             <hr class="my-2 text-muted" style="opacity: 0.1;">
             <div class="d-flex justify-content-between align-items-center w-100 pt-1 flex-wrap gap-2">
@@ -253,14 +239,12 @@ if (count($tickets) > 0) {
     $block->setContent('has_tickets', '');
 }
 
-// 5. Popola le camere per la modale (nel caso venga analizzata dal motore di template anche se can_create è vuoto)
 foreach ($allRooms as $room) {
     $block->setContent('modal_room_id', $room['id']);
     $block->setContent('modal_room_number', htmlspecialchars($room['room_number']));
     $block->setContent('modal_room_category', htmlspecialchars($room['category_name']));
 }
 
-// Popoliamo le variabili comuni del frame privato e notifiche del backoffice per Admin
 setup_backoffice_page($page, 'Amministratore', 'admin');
 
 $page->setContent('body', $block->get());

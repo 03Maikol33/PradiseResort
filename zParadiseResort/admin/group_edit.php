@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_msg = 'Il nome del gruppo è obbligatorio.';
     } else {
         if ($id > 0) {
-            // Check if editing Admin group and changing its name
             if ($id === 1 && strtolower($name) !== 'admin') {
                 $error_msg = 'Impossibile modificare il nome del gruppo Admin principale.';
             } else {
@@ -43,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Pre-fill per Edit
 if ($id > 0 && empty($error_msg)) {
     $stmt = $db->prepare("SELECT * FROM gruppi WHERE id = ?");
     $stmt->execute([$id]);
@@ -59,7 +57,6 @@ if ($id > 0 && empty($error_msg)) {
         exit;
     }
 } else {
-    // Add mode o errore form
     $block->setContent('group_id', $id);
     $block->setContent('group_name', htmlspecialchars($_POST['name'] ?? ''));
     $block->setContent('group_description', htmlspecialchars($_POST['description'] ?? ''));

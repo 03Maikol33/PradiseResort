@@ -9,11 +9,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($group_id > 0 && $service_id > 0) {
         $db = db();
-        
-        // Verifica se esiste già
+
         $stmtCheck = $db->prepare("SELECT 1 FROM group_services WHERE group_id = ? AND service_id = ?");
         $stmtCheck->execute([$group_id, $service_id]);
-        
+
         if (!$stmtCheck->fetch()) {
             $stmtInsert = $db->prepare("INSERT INTO group_services (group_id, service_id) VALUES (?, ?)");
             if ($stmtInsert->execute([$group_id, $service_id])) {

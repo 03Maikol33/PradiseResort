@@ -25,14 +25,14 @@
     <div class="panel-body">
       <form action="room_edit.php" method="POST">
         <input type="hidden" name="id" value="<[room_id]>">
-        
+
         <div class="row mb-3">
           <div class="col-md-4">
             <label for="room_number" class="form-label">Numero Stanza <span class="text-danger">*</span></label>
             <input type="text" class="form-control" id="room_number" name="room_number" value="<[room_number]>" required>
             <div class="form-text">Es. 101, 102A, Suite-1. Deve essere unico.</div>
           </div>
-          
+
           <div class="col-md-4">
             <label for="category_id" class="form-label">Categoria <span class="text-danger">*</span></label>
             <select class="form-select" id="category_id" name="category_id" required>
@@ -47,7 +47,7 @@
             <label for="floor" class="form-label">Piano <span class="text-danger">*</span></label>
             <input type="number" class="form-control" id="floor" name="floor" value="<[room_floor]>" required>
           </div>
-          
+
           <div class="col-md-2">
             <label for="status" class="form-label">Stato <span class="text-danger">*</span></label>
             <select class="form-select" id="status" name="status" required>

@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../include/bootstrap.inc.php';
 
-// Controlliamo i permessi per il servizio
 require_service('restaurant_bookings.php');
 
 $db = db();
@@ -11,10 +10,10 @@ unset($_SESSION['success_msg'], $_SESSION['error_msg']);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
-    
+
     if ($action === 'update_status') {
         $bookingId = (int)($_POST['booking_id'] ?? 0);
-        $status = $_POST['status'] ?? ''; // Pending, Confirmed, Cancelled
+        $status = $_POST['status'] ?? '';
 
         if ($bookingId > 0 && in_array($status, ['Pending', 'Confirmed', 'Cancelled'])) {
             try {
@@ -143,7 +142,7 @@ if (count($bookings) > 0) {
         $block->setContent('booking_actions', $actionsHtml);
     }
 } else {
-    $block->setContent('bookings_list', ''); 
+    $block->setContent('bookings_list', '');
 }
 
 if ($successMsg !== '') {

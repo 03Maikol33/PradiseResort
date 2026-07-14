@@ -8,16 +8,15 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($id > 0) {
     try {
-        // Controlla se il servizio è presente in prenotazioni attive (Pending = 2, Confirmed = 3)
         $stmtCheck = $db->prepare("
-            SELECT COUNT(*) 
+            SELECT COUNT(*)
             FROM booking_amenities ba
             JOIN bookings b ON ba.booking_id = b.id
             WHERE ba.amenity_id = ? AND b.status_id IN (2, 3)
         ");
         $stmtCheck->execute([$id]);
         $activeBookingsCount = (int)$stmtCheck->fetchColumn();
-        
+
         if ($activeBookingsCount > 0) {
             header("Location: amenities.php?error=" . urlencode("Impossibile eliminare il servizio poiché è richiesto da " . $activeBookingsCount . " prenotazioni attive. Sospendilo per disattivarlo."));
             exit;

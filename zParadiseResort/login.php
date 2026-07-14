@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
-// Helper for redirection
 function get_dashboard_url($user_id) {
     global $config;
     $roleStmt = db()->prepare(
@@ -19,11 +18,10 @@ function get_dashboard_url($user_id) {
     } elseif ($role === 'receptionist') {
         return $config['base'] . '/receptionist/rooms.php';
     } else {
-        return $config['base'] . '/profile.php'; // Dashboard for customer
+        return $config['base'] . '/profile.php';
     }
 }
 
-//reindirizzamento utente loggato
 if (!empty($_SESSION['user'])) {
     if (is_admin()) {
         header('Location: ' . $config['base'] . '/admin/index.php');
@@ -60,11 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'name'     => $row['name'],
             ];
 
-            // Carica in sessione le pagine protette a cui l'utente ha
-            // accesso tramite i suoi gruppi
             $_SESSION['user']['services'] = load_user_services((int)$row['id']);
 
-            // Controlla il ruolo dell'utente e reindirizza di conseguenza
             $roleStmt = db()->prepare(
                 'SELECT g.name FROM user_gruppi ug
                  JOIN gruppi g ON g.id = ug.group_id

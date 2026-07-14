@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
-// Protezione pagina: richiede login ed esclude lo staff
 require_login();
 block_staff();
 require_service();
@@ -12,13 +11,11 @@ $message = $_GET['msg'] ?? '';
 $error = '';
 $today = date('Y-m-d');
 
-// Gestione Aggiornamento Profilo
 if ($action === 'update_profile' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $firstName = trim($_POST['first_name'] ?? '');
     $lastName = trim($_POST['last_name'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
-    
-    // Recupera i dati correnti dal DB per fallback
+
     try {
         $stmtUser = db()->prepare('SELECT first_name, last_name FROM users WHERE id = ?');
         $stmtUser->execute([$_SESSION['user']['id']]);
@@ -26,14 +23,14 @@ if ($action === 'update_profile' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (Exception $e) {
         $currUser = null;
     }
-    
+
     if (empty($firstName) && $currUser) {
         $firstName = $currUser['first_name'];
     }
     if (empty($lastName) && $currUser) {
         $lastName = $currUser['last_name'];
     }
-    
+
     try {
         $stmtUpdateUser = db()->prepare('UPDATE users SET first_name = ?, last_name = ?, phone = ? WHERE id = ?');
         $stmtUpdateUser->execute([$firstName, $lastName, $phone, $_SESSION['user']['id']]);
@@ -43,7 +40,6 @@ if ($action === 'update_profile' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Sincronizza sessione utente con database
 try {
     $stmtUser = db()->prepare('SELECT * FROM users WHERE id = ?');
     $stmtUser->execute([$_SESSION['user']['id']]);
@@ -58,17 +54,14 @@ try {
         $_SESSION['user']['email'] = $userData['email'];
     }
 } catch (Exception $e) {
-    // Silente
 }
 
-// Gestione Annullamento Prenotazione Futura
 if ($action === 'cancel') {
     $bookingId = (int)($_GET['id'] ?? 0);
     if ($bookingId > 0) {
         try {
             db()->beginTransaction();
 
-            // Recupera la prenotazione per verificarne proprietario e data
             $stmt = db()->prepare(
                 'SELECT user_id, check_in_date, status_id FROM bookings WHERE id = ? FOR UPDATE'
             );
@@ -88,10 +81,9 @@ if ($action === 'cancel') {
                 $error = 'Non è possibile annullare prenotazioni passate o in corso.';
                 db()->rollBack();
             } else {
-                // Esegui la cancellazione (status_id = 4 per 'Cancelled')
                 $update = db()->prepare('UPDATE bookings SET status_id = 4 WHERE id = ?');
                 $update->execute([$bookingId]);
-                
+
                 db()->commit();
                 $message = 'Prenotazione annullata con successo.';
             }
@@ -104,7 +96,6 @@ if ($action === 'cancel') {
     }
 }
 
-// Caricamento storico delle prenotazioni dell'utente (escludendo quelle in stato 'In Cart')
 $stmt = db()->prepare(
     'SELECT b.id, b.check_in_date, b.check_out_date, b.total_price, b.status_id, b.staff_notes,
             bs.name AS status_name, rc.name AS category_name, r.room_number
@@ -133,7 +124,6 @@ $block = new_block('profile');
 $block->setContent('message', $message);
 $block->setContent('error',   $error);
 
-// Informazioni Utente (caricate direttamente dal DB per massima robustezza)
 try {
     $stmtUser = db()->prepare('SELECT first_name, last_name, email, phone FROM users WHERE id = ?');
     $stmtUser->execute([$_SESSION['user']['id']]);
@@ -163,7 +153,6 @@ foreach ($bookings as $b) {
     $nights = $start->diff($end)->days;
     if ($nights <= 0) $nights = 1;
 
-    // Recupera servizi extra associati a questa specifica prenotazione
     $stmtAmenities = db()->prepare(
         'SELECT a.name
          FROM booking_amenities ba
@@ -172,13 +161,11 @@ foreach ($bookings as $b) {
     );
     $stmtAmenities->execute([$b['id']]);
     $amenities = $stmtAmenities->fetchAll(PDO::FETCH_COLUMN);
-    
+
     $amenitiesText = !empty($amenities) ? implode(', ', $amenities) : 'Nessuno';
 
-    // Calcola se la prenotazione è annullabile (futura e non già annullata)
     $isCancellable = ($b['check_in_date'] > $today && $b['status_id'] != 4 && $b['status_id'] != 5);
 
-    // Genera il badge di stato con classe CSS elegante
     $badgeClass = '';
     switch ($b['status_id']) {
         case 3: // Confirmed
@@ -193,10 +180,9 @@ foreach ($bookings as $b) {
         default:
             $badgeClass = 'badge-pending';
     }
-    
+
     $statusHtml = '<span class="premium-status-badge ' . $badgeClass . '">' . htmlspecialchars($b['status_name']) . '</span>';
 
-    // Genera i pulsanti di azione HTML
     $actionsHtml = '';
     if ($isCancellable) {
         $editUrl = $config['base'] . '/edit-booking.php?id=' . $b['id'];
@@ -223,7 +209,7 @@ foreach ($bookings as $b) {
             <div>' . $statusHtml . '</div>
         </div>
         ' . $notesHtml . '
-        
+
         <div class="booking-grid">
             <div class="booking-meta-item">
                 <span class="booking-meta-label">Sistemazione</span>
@@ -238,7 +224,7 @@ foreach ($bookings as $b) {
                 <span class="booking-meta-value"><i class="fas fa-moon"></i> ' . $nights . ' Notti</span>
             </div>
         </div>
-        
+
         <div class="booking-grid border-top pt-3 mt-3">
             <div class="booking-meta-item" style="grid-column: span 2;">
                 <span class="booking-meta-label">Servizi Extra Inclusi</span>
@@ -256,7 +242,6 @@ foreach ($bookings as $b) {
         </div>
     </div>';
 
-    // Seleziona la colonna corretta (active = 2, 3; past = 4, 5)
     if ($b['status_id'] == 3 || $b['status_id'] == 2) {
         $activeBookingsHtml .= $cardHtml;
     } else {
@@ -264,7 +249,6 @@ foreach ($bookings as $b) {
     }
 }
 
-// Messaggi di fallback se vuoti
 if (empty($activeBookingsHtml)) {
     $activeBookingsHtml = '
     <div class="text-center p-4" style="background: rgba(255, 255, 255, 0.4); border: 1px dashed #cbd5e0; border-radius: 16px;">
@@ -284,7 +268,6 @@ if (empty($pastBookingsHtml)) {
 $block->setContent('active_bookings_html', $activeBookingsHtml);
 $block->setContent('past_bookings_html',   $pastBookingsHtml);
 
-// Caricamento prenotazioni Ristorante
 $stmtRest = db()->prepare(
     'SELECT id, reservation_date, meal_type, reservation_time, guests, status
      FROM restaurant_reservations
@@ -299,7 +282,7 @@ foreach ($restBookings as $rb) {
     $rDate = new DateTime($rb['reservation_date']);
     $statusClass = '';
     $statusName = $rb['status'];
-    
+
     if ($statusName === 'Confirmed') {
         $statusClass = 'badge-confirmed';
         $statusName = 'Confermata';
@@ -310,16 +293,16 @@ foreach ($restBookings as $rb) {
         $statusClass = 'badge-pending';
         $statusName = 'In Attesa';
     }
-    
+
     $statusHtml = '<span class="premium-status-badge ' . $statusClass . '">' . htmlspecialchars($statusName) . '</span>';
-    
+
     $restBookingsHtml .= '
     <div class="booking-history-card">
         <div class="booking-header">
             <h5 class="booking-title">Tavolo #' . $rb['id'] . '</h5>
             <div>' . $statusHtml . '</div>
         </div>
-        
+
         <div class="booking-grid">
             <div class="booking-meta-item">
                 <span class="booking-meta-label">Servizio</span>

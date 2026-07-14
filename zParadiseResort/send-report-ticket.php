@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
-// Protezione pagina: richiede login ed esclude lo staff
 require_login();
 block_staff();
 require_service();
@@ -20,7 +19,6 @@ if (empty($descrizione)) {
     exit;
 }
 
-// Verifica data attuale / intervallo check-in e check-out per le prenotazioni attive
 $today = date('Y-m-d');
 $stmtCheck = db()->prepare('
     SELECT b.room_id
@@ -41,7 +39,6 @@ if (empty($active_bookings)) {
 
 $room_to_save = null;
 
-// Se viene selezionata una camera specifica, verifica che appartenga alle prenotazioni attive
 if ($room_id_raw !== '' && $room_id_raw !== 'nessuna') {
     $selected_room_id = (int)$room_id_raw;
     $is_valid_room = false;
@@ -51,7 +48,7 @@ if ($room_id_raw !== '' && $room_id_raw !== 'nessuna') {
             break;
         }
     }
-    
+
     if (!$is_valid_room) {
         $_SESSION['report_error'] = 'La camera selezionata non corrisponde a nessuna delle tue prenotazioni attive.';
         header('Location: report-ticket.php');
@@ -61,7 +58,6 @@ if ($room_id_raw !== '' && $room_id_raw !== 'nessuna') {
 }
 
 try {
-    // Inserisci la segnalazione nella tabella maintenance_tickets
     $stmtInsert = db()->prepare('
         INSERT INTO maintenance_tickets (room_id, reported_by_user_id, status_id, issue_description)
         VALUES (?, ?, ?, ?)

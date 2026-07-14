@@ -6,7 +6,7 @@ require_service('profile.php');
 
 $db = db();
 
-// Migrazione autogestita (Self-Healing) del database
+        // Auto-migrazione schema DB se colonna mancante
 try {
     $db->query("SELECT phone FROM users LIMIT 1");
 } catch (Exception $e) {
@@ -26,20 +26,20 @@ if ($action === 'update_profile' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     $firstName = trim($_POST['first_name'] ?? '');
     $lastName = trim($_POST['last_name'] ?? '');
     $phone = trim($_POST['phone'] ?? '');
-    
+
     if (empty($firstName) || empty($lastName)) {
         $error_msg = "Nome e Cognome sono obbligatori.";
     } else {
         try {
             $stmtUpdateUser = db()->prepare('UPDATE users SET first_name = ?, last_name = ?, phone = ? WHERE id = ?');
             $stmtUpdateUser->execute([$firstName, $lastName, $phone, $_SESSION['user']['id']]);
-            
+
             $_SESSION['user']['name'] = $firstName . ' ' . $lastName;
             $_SESSION['user']['surname'] = $lastName;
             $_SESSION['user']['first_name'] = $firstName;
             $_SESSION['user']['last_name'] = $lastName;
             $_SESSION['user']['phone'] = $phone;
-            
+
             $success_msg = "Profilo aggiornato con successo.";
         } catch (Exception $e) {
             $error_msg = "Errore durante l'aggiornamento del profilo.";

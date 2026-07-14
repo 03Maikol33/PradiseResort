@@ -1,18 +1,15 @@
 <?php
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
-// Helper per convertire i vari formati data (HTML5 o Gijgo Datepicker) in YYYY-MM-DD
 function parse_date_custom(string $dateStr): ?string {
     $dateStr = trim($dateStr);
     if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $dateStr)) {
         return $dateStr;
     }
-    // Gijgo / formato con slash: MM/DD/YYYY o DD/MM/YYYY
     if (preg_match('/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/', $dateStr, $matches)) {
         $val1 = (int)$matches[1];
         $val2 = (int)$matches[2];
         $year = (int)$matches[3];
-        // Determina se il formato è DD/MM/YYYY o MM/DD/YYYY
         if ($val1 > 12) {
             $day = $val1;
             $month = $val2;
@@ -20,7 +17,6 @@ function parse_date_custom(string $dateStr): ?string {
             $day = $val2;
             $month = $val1;
         } else {
-            // Default di Gijgo è solitamente MM/DD/YYYY
             $day = $val2;
             $month = $val1;
         }
@@ -31,9 +27,7 @@ function parse_date_custom(string $dateStr): ?string {
 
 $action = $_GET['action'] ?? '';
 
-// Gestione Azione: Aggiungi al Carrello
 if ($action === 'add') {
-    // Richiede login
     if (empty($_SESSION['user'])) {
         $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
         header('Location: ' . $config['base'] . '/login.php');
@@ -48,7 +42,6 @@ if ($action === 'add') {
     $checkOut = parse_date_custom($checkOutStr);
 
     if ($roomId && $checkIn && $checkOut) {
-        // Recuperiamo i dettagli della camera e della categoria
         $stmt = db()->prepare(
             'SELECT r.id AS room_id, r.room_number, c.id AS category_id, c.name AS category_name, c.base_price
              FROM rooms r
@@ -59,7 +52,6 @@ if ($action === 'add') {
         $room = $stmt->fetch();
 
         if ($room) {
-            // Ricontrolliamo la disponibilità effettiva prima di mettere nel carrello
             $chk = db()->prepare(
                 'SELECT 1 FROM bookings b
                  WHERE b.room_id = ? AND b.status_id <> 4
@@ -69,7 +61,6 @@ if ($action === 'add') {
             $isBooked = (bool)$chk->fetch();
 
             if (!$isBooked) {
-                // Calcola notti e prezzo totale
                 $start = new DateTime($checkIn);
                 $end = new DateTime($checkOut);
                 $nights = $start->diff($end)->days;
@@ -78,10 +69,9 @@ if ($action === 'add') {
                 }
                 $totalPrice = $nights * $room['base_price'];
 
-                // Inserimento booking nel database in stato 'In Cart' (status_id = 1)
                 try {
                     db()->beginTransaction();
-                    
+
                     $ins = db()->prepare(
                         'INSERT INTO bookings (user_id, room_id, status_id, check_in_date, check_out_date, total_price)
                          VALUES (?, ?, 1, ?, ?, ?)'
@@ -95,7 +85,6 @@ if ($action === 'add') {
                     ]);
                     $bookingId = db()->lastInsertId();
 
-                    // Creazione fattura (invoice) associata in stato unpaid
                     $insInvoice = db()->prepare(
                         'INSERT INTO invoices (booking_id, total_amount, payment_status) VALUES (?, ?, \'unpaid\')'
                     );
@@ -116,7 +105,6 @@ if ($action === 'add') {
     }
 }
 
-// Parametri di Ricerca
 $checkInRaw = $_GET['check_in'] ?? $_SESSION['search']['check_in'] ?? '';
 $checkOutRaw = $_GET['check_out'] ?? $_SESSION['search']['check_out'] ?? '';
 $selectedCatId = (int)($_GET['category_id'] ?? 0);
@@ -127,7 +115,6 @@ $checkOut = $checkOutRaw ? parse_date_custom($checkOutRaw) : null;
 $error = '';
 $hasResults = '';
 
-// Se abbiamo inserito delle date, validiamole
 if ($checkInRaw || $checkOutRaw) {
     if (!$checkIn || !$checkOut) {
         $error = 'Formato delle date non valido.';
@@ -138,7 +125,6 @@ if ($checkInRaw || $checkOutRaw) {
         } elseif ($checkIn >= $checkOut) {
             $error = 'La data di check-out deve essere successiva alla data di check-in.';
         } else {
-            // Date valide! Salviamole in sessione per comodità
             $_SESSION['search'] = [
                 'check_in'  => $checkIn,
                 'check_out' => $checkOut
@@ -148,7 +134,6 @@ if ($checkInRaw || $checkOutRaw) {
     }
 }
 
-// Carica categorie di stanze
 $catQuery = 'SELECT * FROM room_categories';
 if ($selectedCatId > 0) {
     $catQuery .= ' WHERE id = :cat_id';
@@ -174,13 +159,12 @@ $cartCountVal = get_cart_count();
 $skin->setContent('cart_count', $cartCountVal > 0 ? '1' : '');
 $skin->setContent('cart_badge', $cartCountVal > 0 ? " ($cartCountVal)" : '');
 
-$block = new_block('rooms-search');//** */
+$block = new_block('rooms-search');
 $block->setContent('error', $error);
 $block->setContent('check_in_val', htmlspecialchars($checkInRaw));
 $block->setContent('check_out_val', htmlspecialchars($checkOutRaw));
 $block->setContent('has_results', $hasResults);
 
-// Se abbiamo risultati validi, verifichiamo la disponibilità reale per ciascuna categoria
 $nights = 1;
 if ($hasResults && $checkIn && $checkOut) {
     $start = new DateTime($checkIn);
@@ -195,7 +179,7 @@ foreach ($categories as $cat) {
     $block->setContent('category_description', htmlspecialchars($cat['description']));
     $block->setContent('category_capacity',    $cat['capacity']);
     $block->setContent('category_price',       number_format($cat['base_price'], 2, ',', '.'));
-    
+
     $img = $cat['image_url'] ? $cat['image_url'] : 'room1.jpg';
     $block->setContent('category_image_path',  $config['base'] . '/skins/' . $config['skin'] . '/assets/img/rooms/' . htmlspecialchars($img));
     $block->setContent('category_url',         $config['base'] . '/room-details.php?cat_id=' . $cat['id']);
@@ -205,7 +189,6 @@ foreach ($categories as $cat) {
     $roomNum = '';
 
     if ($hasResults && $checkIn && $checkOut) {
-        // Cerca una camera fisica libera di questa categoria
         $stmtRoom = db()->prepare(
             'SELECT r.id, r.room_number FROM rooms r
              WHERE r.category_id = ? AND r.status = \'available\'
@@ -253,10 +236,9 @@ foreach ($categories as $cat) {
         $availabilityHtml .= '  <span class="text-muted" style="font-size: 0.85rem; display: block;">Non ci sono camere libere in questo periodo</span>';
         $availabilityHtml .= '</div>';
     }
-    
+
     $block->setContent('category_availability_html', $availabilityHtml);
 }
-
 
 $skin->setContent('body', $block->get());
 $skin->close();

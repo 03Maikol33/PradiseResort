@@ -13,7 +13,6 @@ $id = isset($_REQUEST['id']) ? (int)$_REQUEST['id'] : 0;
 $error = '';
 $success = '';
 
-// Default values
 $category = [
     'id' => 0,
     'name' => '',
@@ -30,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $capacity = $_POST['capacity'] ?? '';
     $image_url = trim($_POST['image_url'] ?? '');
 
-    // Validation
     if (empty($name) || empty($base_price) || empty($capacity)) {
         $error = "Nome, Prezzo Base e Capacità sono obbligatori.";
     } elseif (!is_numeric($base_price) || $base_price < 0) {
@@ -39,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "La capacità deve essere un numero intero positivo.";
     } else {
         if ($id > 0) {
-            // Update
             $stmt = $db->prepare("UPDATE room_categories SET name = ?, description = ?, base_price = ?, capacity = ?, image_url = ? WHERE id = ?");
             if ($stmt->execute([$name, $description, $base_price, $capacity, $image_url, $id])) {
                 header("Location: categories.php?success=" . urlencode("Categoria aggiornata con successo."));
@@ -48,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = "Errore durante l'aggiornamento della categoria.";
             }
         } else {
-            // Insert
             $stmt = $db->prepare("INSERT INTO room_categories (name, description, base_price, capacity, image_url) VALUES (?, ?, ?, ?, ?)");
             if ($stmt->execute([$name, $description, $base_price, $capacity, $image_url])) {
                 header("Location: categories.php?success=" . urlencode("Categoria creata con successo."));
@@ -58,8 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
-    
-    // Repopulate form with submitted data on error
+
     $category = [
         'id' => $id,
         'name' => $name,
@@ -69,11 +64,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'image_url' => $image_url
     ];
 } elseif ($id > 0) {
-    // Fetch existing data
     $stmt = $db->prepare("SELECT * FROM room_categories WHERE id = ?");
     $stmt->execute([$id]);
     $existing = $stmt->fetch();
-    
+
     if ($existing) {
         $category = $existing;
     } else {

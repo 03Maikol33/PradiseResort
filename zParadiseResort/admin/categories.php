@@ -8,7 +8,6 @@ $block = new_block('categories');
 
 $db = db();
 
-// Check for success or error messages
 $success_msg = isset($_GET['success']) ? trim($_GET['success']) : '';
 $error_msg = isset($_GET['error']) ? trim($_GET['error']) : '';
 
@@ -30,8 +29,7 @@ if (count($categories) > 0) {
         $block->setContent('cat_price', number_format($category['base_price'], 2));
         $block->setContent('cat_capacity', htmlspecialchars($category['capacity']));
         $block->setContent('cat_image', htmlspecialchars($category['image_url'] ? $category['image_url'] : ''));
-        
-        // Shorten description for table view
+
         $desc = htmlspecialchars($category['description']);
         if (strlen($desc) > 50) {
             $desc = substr($desc, 0, 47) . '...';
@@ -39,7 +37,7 @@ if (count($categories) > 0) {
         $block->setContent('cat_desc', $desc);
     }
 } else {
-    $block->setContent('categories_list', ''); 
+    $block->setContent('categories_list', '');
 }
 
 $page->setContent('body', $block->get());

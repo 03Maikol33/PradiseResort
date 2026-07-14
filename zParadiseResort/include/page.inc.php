@@ -10,7 +10,6 @@
  * passando il path SENZA estensione: il Template aggiunge .html da solo.
  */
 
-
 /**
  * Crea il "frame" della pagina (header + footer + buco <[body]>).
  * Equivalente a `new Skin($skinName)`, ma senza il bug.
@@ -27,11 +26,9 @@ function new_page(string $skinName, string $frame = 'frame-public'): Template {
     $GLOBALS['current_skin']     = $skinName;
     $GLOBALS['config']['skin']   = $skinName;
 
-    // Funziona sia dalla root che da sottocartelle (es. admin/).
     $root = __DIR__ . '/..';
     return new Template("{$root}/skins/{$skinName}/dtml/{$frame}");
 }
-
 
 /**
  * Crea un "blocco" di contenuto da inserire dentro un placeholder del frame.
@@ -46,9 +43,9 @@ function new_block(string $template): Template {
 
 function setup_backoffice_page(Template $page, string $roleName, string $rolePath): void {
     global $config;
-    
-    $_SESSION['user']['role_path'] = $rolePath; // Salva il path in sessione per i link delle notifiche
-    
+
+    $_SESSION['user']['role_path'] = $rolePath;
+
     $name = $_SESSION['user']['name'] ?? '';
     $words = explode(' ', trim($name));
     $initials = '';
@@ -59,7 +56,7 @@ function setup_backoffice_page(Template $page, string $roleName, string $rolePat
     if ($initials === '') {
         $initials = 'U';
     }
-    
+
     $page->setContent('base', $config['base']);
     $page->setContent('skin', 'administration');
     $page->setContent('user_name', htmlspecialchars($name));
@@ -78,8 +75,7 @@ function get_backoffice_notifications_html(): array {
     $db = db();
     $items = [];
     $count = 0;
-    
-    // 1. Prenotazioni in attesa
+
     try {
         $stmt = $db->query("
             SELECT b.id, u.first_name, u.last_name, b.created_at
@@ -94,7 +90,6 @@ function get_backoffice_notifications_html(): array {
             $count++;
             $timeStr = date('d/m H:i', strtotime($p['created_at']));
             $guest = htmlspecialchars($p['first_name'] . ' ' . $p['last_name']);
-            // Link to bookings page filtered by pending
             $url = $GLOBALS['config']['base'] . '/' . ($_SESSION['user']['role_path'] ?? 'receptionist') . '/bookings.php?status=2';
             $items[] = '
                 <a class="dropdown-item" href="' . $url . '">
@@ -104,7 +99,6 @@ function get_backoffice_notifications_html(): array {
         }
     } catch (Exception $e) {}
 
-    // 2. Ticket manutenzione attivi (Open=1, In Progress=2)
     try {
         $stmt = $db->query("
             SELECT mt.id, r.room_number, mt.issue_description, mt.created_at
@@ -129,7 +123,6 @@ function get_backoffice_notifications_html(): array {
         }
     } catch (Exception $e) {}
 
-    // 3. Servizi aggiuntivi sospesi ma richiesti da prenotazioni attive
     try {
         $stmt = $db->query("
             SELECT b.id as booking_id, a.name as amenity_name, u.first_name, u.last_name
@@ -146,7 +139,6 @@ function get_backoffice_notifications_html(): array {
             $count++;
             $guest = htmlspecialchars($sa['first_name'] . ' ' . $sa['last_name']);
             $srvName = htmlspecialchars($sa['amenity_name']);
-            // Link to bookings page search by booking id
             $url = $GLOBALS['config']['base'] . '/' . ($_SESSION['user']['role_path'] ?? 'receptionist') . '/bookings.php?search=' . $sa['booking_id'];
             $items[] = '
                 <a class="dropdown-item" href="' . $url . '">

@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
-// Protezione pagina: richiede login ed esclude lo staff
 require_login();
 block_staff();
 
@@ -12,26 +11,21 @@ $message = '';
 $today = date('Y-m-d');
 $userId = $_SESSION['user']['id'];
 
-// 1. Azione: Rimuovi prenotazione "In Cart" dal carrello
 if ($action === 'remove') {
     $bookingId = (int)($_GET['id'] ?? 0);
     if ($bookingId > 0) {
         try {
             db()->beginTransaction();
 
-            // Verifica che la prenotazione appartenga all'utente loggato ed sia "In Cart"
             $stmt = db()->prepare('SELECT 1 FROM bookings WHERE id = ? AND user_id = ? AND status_id = 1');
             $stmt->execute([$bookingId, $userId]);
             if ($stmt->fetch()) {
-                // Elimina fattura
                 $delInvoice = db()->prepare('DELETE FROM invoices WHERE booking_id = ?');
                 $delInvoice->execute([$bookingId]);
 
-                // Elimina associazione amenities
                 $delAmenities = db()->prepare('DELETE FROM booking_amenities WHERE booking_id = ?');
                 $delAmenities->execute([$bookingId]);
 
-                // Elimina prenotazione
                 $delBooking = db()->prepare('DELETE FROM bookings WHERE id = ?');
                 $delBooking->execute([$bookingId]);
 
@@ -48,7 +42,6 @@ if ($action === 'remove') {
     exit;
 }
 
-// 2. Azione AJAX: Toggle dei servizi extra
 if ($action === 'toggle_amenity') {
     header('Content-Type: application/json');
     $bookingId = (int)($_GET['booking_id'] ?? 0);
@@ -62,7 +55,6 @@ if ($action === 'toggle_amenity') {
     try {
         db()->beginTransaction();
 
-        // Verifica proprietà e stato 'In Cart'
         $stmtChk = db()->prepare('SELECT b.*, rc.base_price FROM bookings b JOIN rooms r ON r.id = b.room_id JOIN room_categories rc ON rc.id = r.category_id WHERE b.id = ? AND b.user_id = ? AND b.status_id = 1 FOR UPDATE');
         $stmtChk->execute([$bookingId, $userId]);
         $booking = $stmtChk->fetch();
@@ -73,7 +65,6 @@ if ($action === 'toggle_amenity') {
             exit;
         }
 
-        // Controlla se l'amenity è già associata
         $stmtAmenity = db()->prepare('SELECT 1 FROM booking_amenities WHERE booking_id = ? AND amenity_id = ?');
         $stmtAmenity->execute([$bookingId, $amenityId]);
         $hasAmenity = (bool)$stmtAmenity->fetch();
@@ -86,7 +77,6 @@ if ($action === 'toggle_amenity') {
             $ins->execute([$bookingId, $amenityId]);
         }
 
-        // Ricalcola il totale della singola prenotazione
         $start = new DateTime($booking['check_in_date']);
         $end = new DateTime($booking['check_out_date']);
         $nights = $start->diff($end)->days;
@@ -100,7 +90,6 @@ if ($action === 'toggle_amenity') {
 
         $newTotalPrice = $roomCost + $amenitiesTotal;
 
-        // Aggiorna tabella bookings ed invoices
         $update = db()->prepare('UPDATE bookings SET total_price = ? WHERE id = ?');
         $update->execute([$newTotalPrice, $bookingId]);
 
@@ -109,7 +98,6 @@ if ($action === 'toggle_amenity') {
 
         db()->commit();
 
-        // Ricalcola il totale complessivo di tutto il carrello
         $stmtGrandTotal = db()->prepare('SELECT SUM(total_price) as grand FROM bookings WHERE user_id = ? AND status_id = 1');
         $stmtGrandTotal->execute([$userId]);
         $cartGrandTotal = (float)($stmtGrandTotal->fetch()['grand'] ?? 0);
@@ -129,12 +117,10 @@ if ($action === 'toggle_amenity') {
     }
 }
 
-// 3. Azione: Conferma tutte le prenotazioni del carrello
 if ($action === 'confirm') {
     try {
         db()->beginTransaction();
 
-        // Seleziona tutte le prenotazioni correntemente "In Cart" dell'utente
         $stmt = db()->prepare('SELECT * FROM bookings WHERE user_id = ? AND status_id = 1 FOR UPDATE');
         $stmt->execute([$userId]);
         $cartBookings = $stmt->fetchAll();
@@ -144,7 +130,6 @@ if ($action === 'confirm') {
             exit;
         }
 
-        // Ricontrolla sovrapposizioni reali con prenotazioni confermate/completate
         foreach ($cartBookings as $cb) {
             $chk = db()->prepare(
                 'SELECT 1 FROM bookings b
@@ -163,7 +148,6 @@ if ($action === 'confirm') {
             }
         }
 
-        // Aggiorna lo stato in "Confirmed" (status_id = 3)
         $update = db()->prepare('UPDATE bookings SET status_id = 3 WHERE user_id = ? AND status_id = 1');
         $update->execute([$userId]);
 
@@ -178,13 +162,10 @@ if ($action === 'confirm') {
     }
 }
 
-// 4. Caricamento ordinario (GET)
-// Conta quante stanze ci sono nel carrello per l'utente corrente
 $stmtCount = db()->prepare('SELECT COUNT(*) as count FROM bookings WHERE user_id = ? AND status_id = 1');
 $stmtCount->execute([$userId]);
 $cartCountVal = (int)($stmtCount->fetch()['count'] ?? 0);
 
-// Carica tutte le prenotazioni in carrello
 $stmt = db()->prepare(
     'SELECT b.*, r.room_number, rc.name AS category_name, rc.base_price
      FROM bookings b
@@ -215,7 +196,6 @@ $block->setContent('is_cart_empty', $isCartEmpty);
 $grandTotal = 0.0;
 
 if (!$isCartEmpty) {
-    // Carica tutti i servizi extra
     $stmtAmenities = db()->query("SELECT id, name, description, price FROM amenities ORDER BY price ASC");
     $allAmenities = $stmtAmenities->fetchAll();
 
@@ -227,19 +207,18 @@ if (!$isCartEmpty) {
         $nights = $start->diff($end)->days;
         if ($nights <= 0) $nights = 1;
 
-        // Recupera gli ID delle amenities scelte per questa prenotazione
         $stmtSel = db()->prepare('SELECT amenity_id FROM booking_amenities WHERE booking_id = ?');
         $stmtSel->execute([$b['id']]);
         $selectedAmenityIds = $stmtSel->fetchAll(PDO::FETCH_COLUMN);
 
-        // Genera l'HTML dei servizi extra per questa prenotazione in PHP per evitare loop DTML annidati
+        // Pre-generazione HTML servizi extra
         $amenitiesHtml = '';
         foreach ($allAmenities as $a) {
             $isChecked = in_array($a['id'], $selectedAmenityIds);
             $selectedClass = $isChecked ? 'selected' : '';
             $checkedAttr = $isChecked ? 'checked' : '';
             $priceFormatted = number_format($a['price'], 2, ',', '.');
-            
+
             $amenitiesHtml .= '
             <label class="amenity-card-item ' . $selectedClass . '" for="amenity_' . $b['id'] . '_' . $a['id'] . '" id="card_amenity_' . $b['id'] . '_' . $a['id'] . '">
                 <div style="display: flex; align-items: center; gap: 15px; flex: 1;">

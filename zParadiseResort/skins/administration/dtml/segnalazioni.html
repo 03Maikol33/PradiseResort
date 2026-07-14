@@ -31,7 +31,6 @@
   </div>
   <[/if!empty]>
 
-  <!-- Metriche e Schede Statistiche -->
   <section class="row g-3 mt-1" aria-label="Metriche Segnalazioni">
     <div class="col-12 col-sm-6 col-xl-3">
       <article class="metric-card metric-primary shadow-sm">
@@ -86,7 +85,6 @@
     </div>
   </section>
 
-  <!-- Barra dei Filtri di Ricerca -->
   <div class="card border-0 shadow-sm mt-3 mb-4" style="border-radius: 12px; background: #ffffff;">
     <div class="card-body p-3 d-flex flex-wrap align-items-center justify-content-between gap-3">
       <div>
@@ -94,7 +92,6 @@
         <p class="text-muted mb-0 small">Consulta e filtra l'archivio delle segnalazioni per stato o camera.</p>
       </div>
       <form action="" method="GET" class="d-flex flex-wrap gap-2 align-items-center">
-        <!-- 1. Filtro Stato -->
         <select name="status" class="form-select form-select-sm" style="width: auto; min-width: 150px; border-color: #cbd5e1; border-radius: 6px;">
           <option value="">Tutti gli stati</option>
           <[foreach]>
@@ -102,7 +99,6 @@
           <[/foreach]>
         </select>
 
-        <!-- 2. Filtro Camera -->
         <select name="room_id" class="form-select form-select-sm" style="width: auto; min-width: 150px; border-color: #cbd5e1; border-radius: 6px;">
           <option value="">Tutte le camere</option>
           <[foreach]>
@@ -119,10 +115,7 @@
     </div>
   </div>
 
-
-  <!-- Lista Segnalazioni (Grid di Card) -->
   <div class="row g-3">
-    <!-- 3. Loop Segnalazioni -->
     <[foreach]>
     <div class="col-12 col-xxl-6">
       <div class="card h-100 border-0 shadow-sm" style="border-radius: 12px; background: #ffffff; transition: transform 0.2s, box-shadow 0.2s; border: 1px solid #f1f5f9 !important;">
@@ -136,7 +129,6 @@
 
         <div class="card-body p-3 d-flex flex-column justify-content-between">
           <div class="row g-3 mb-2">
-            <!-- Colonna Sinistra: Segnalato Da e Camera -->
             <div class="col-12 col-md-4 border-end-md">
               <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.72rem; letter-spacing: 0.5px;">Segnalato Da</h6>
               <div class="d-flex align-items-center gap-2 mb-3">
@@ -155,7 +147,6 @@
               </div>
             </div>
 
-            <!-- Colonna Destra: Descrizione Problema -->
             <div class="col-12 col-md-8">
               <h6 class="text-uppercase text-muted fw-bold mb-2" style="font-size: 0.72rem; letter-spacing: 0.5px;">Descrizione del Problema</h6>
               <div class="p-3 rounded bg-light text-dark mb-2" style="background-color: #f8fafc !important; font-size: 0.9rem; line-height: 1.5; min-height: 90px; border: 1px solid #e2e8f0; border-radius: 8px;">
@@ -184,7 +175,6 @@
 </div>
 
 <[if!empty can_create]>
-<!-- Modal Nuova Segnalazione -->
 <div class="modal fade" id="newTicketModal" tabindex="-1" aria-labelledby="newTicketModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content border-0 shadow" style="border-radius: 12px;">
@@ -204,7 +194,6 @@
             </label>
             <select name="room_id" id="modal_room_id" class="form-select" required style="border-radius: 8px; border-color: #cbd5e1; padding: 0.6rem 0.8rem;">
               <option value="nessuna" selected>Nessuna camera specifica</option>
-              <!-- 4. Loop Camere Modale -->
               <[foreach]>
               <option value="<[modal_room_id]>">Camera <[modal_room_number]> &mdash; <[modal_room_category]></option>
               <[/foreach]>
@@ -230,7 +219,6 @@
 <[/if!empty]>
 
 <[if!empty can_close]>
-<!-- Modal Conferma Chiusura ed Eliminazione -->
 <div class="modal fade" id="confirmCloseModal" tabindex="-1" aria-labelledby="confirmCloseModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow" style="border-radius: 12px;">

@@ -16,7 +16,6 @@ $statusTranslations = [
     'Completed' => 'Completata'
 ];
 
-// --- 1. Query Arrivi di Oggi ---
 $stmtArr = $db->prepare("
     SELECT b.id, b.check_in_date, b.check_out_date, b.total_price, b.status_id,
            u.first_name, u.last_name, u.email, r.room_number, rc.name AS category_name, bs.name AS status_name
@@ -44,10 +43,10 @@ if ($cntArrivals > 0) {
         $block->setContent('arr_check_in', date('d/m/Y', strtotime($a['check_in_date'])));
         $block->setContent('arr_check_out', date('d/m/Y', strtotime($a['check_out_date'])));
         $block->setContent('arr_total_price', number_format($a['total_price'], 2, ',', '.'));
-        
+
         $trStatus = $statusTranslations[$a['status_name']] ?? $a['status_name'];
         $block->setContent('arr_status_name', htmlspecialchars($trStatus));
-        
+
         $badgeClass = 'text-bg-secondary';
         $sid = (int)$a['status_id'];
         if ($sid === 2) $badgeClass = 'text-bg-warning';
@@ -58,7 +57,6 @@ if ($cntArrivals > 0) {
     $block->setContent('arr_list_empty', '');
 }
 
-// --- 2. Query Partenze di Oggi ---
 $stmtDep = $db->prepare("
     SELECT b.id, b.check_in_date, b.check_out_date, b.total_price, b.status_id,
            u.first_name, u.last_name, u.email, r.room_number, rc.name AS category_name, bs.name AS status_name
@@ -86,10 +84,10 @@ if ($cntDepartures > 0) {
         $block->setContent('dep_check_in', date('d/m/Y', strtotime($d['check_in_date'])));
         $block->setContent('dep_check_out', date('d/m/Y', strtotime($d['check_out_date'])));
         $block->setContent('dep_total_price', number_format($d['total_price'], 2, ',', '.'));
-        
+
         $trStatus = $statusTranslations[$d['status_name']] ?? $d['status_name'];
         $block->setContent('dep_status_name', htmlspecialchars($trStatus));
-        
+
         $badgeClass = 'text-bg-secondary';
         $sid = (int)$d['status_id'];
         if ($sid === 3) $badgeClass = 'text-bg-success';
@@ -100,7 +98,6 @@ if ($cntDepartures > 0) {
     $block->setContent('dep_list_empty', '1');
 }
 
-// --- 3. Query Ospiti Attivi (In Casa) ---
 $stmtInH = $db->prepare("
     SELECT b.id, b.check_in_date, b.check_out_date, b.total_price, b.status_id,
            u.first_name, u.last_name, u.email, r.room_number, rc.name AS category_name, bs.name AS status_name
@@ -128,10 +125,10 @@ if ($cntInHouse > 0) {
         $block->setContent('inh_check_in', date('d/m/Y', strtotime($ih['check_in_date'])));
         $block->setContent('inh_check_out', date('d/m/Y', strtotime($ih['check_out_date'])));
         $block->setContent('inh_total_price', number_format($ih['total_price'], 2, ',', '.'));
-        
+
         $trStatus = $statusTranslations[$ih['status_name']] ?? $ih['status_name'];
         $block->setContent('inh_status_name', htmlspecialchars($trStatus));
-        
+
         $badgeClass = 'text-bg-success';
         $block->setContent('inh_badge_class', $badgeClass);
     }
@@ -142,7 +139,6 @@ if ($cntInHouse > 0) {
 $block->setContent('base', $GLOBALS['config']['base']);
 $block->setContent('role_path', 'admin');
 
-// --- 4. Query Prenotazioni Ristorante di Oggi ---
 $stmtRest = $db->prepare("
     SELECT r.id, r.reservation_date, r.reservation_time, r.guests, r.meal_type, r.status,
            u.first_name, u.last_name, u.email
@@ -165,10 +161,10 @@ if ($cntRest > 0) {
         $block->setContent('rest_time', htmlspecialchars(substr($rt['reservation_time'], 0, 5)));
         $block->setContent('rest_guests', (int)$rt['guests']);
         $block->setContent('rest_meal', htmlspecialchars($rt['meal_type']));
-        
+
         $status_it = $rt['status'] === 'Confirmed' ? 'Confermata' : 'In Attesa';
         $badgeClass = $rt['status'] === 'Confirmed' ? 'text-bg-success' : 'text-bg-warning';
-        
+
         $block->setContent('rest_status_name', $status_it);
         $block->setContent('rest_badge_class', $badgeClass);
     }

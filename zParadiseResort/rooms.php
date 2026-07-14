@@ -11,7 +11,6 @@ $skin->setContent('user.name', !empty($_SESSION['user']['name']) ? explode(' ', 
 
 $block = new_block('rooms');
 
-// Recupera le categorie per i filtri
 $stmtCat = $db->query("SELECT id, name FROM room_categories ORDER BY base_price ASC");
 $categories = $stmtCat->fetchAll(PDO::FETCH_ASSOC);
 
@@ -30,7 +29,6 @@ $block->setContent('filter_all_class', $isAllActive ? 'active-filter' : '');
 $block->setContent('filter_all_style', $isAllActive ? 'background-color: #0abab5; color: #fff;' : 'background-color: #f0f0f0; color: #333;');
 $block->setContent('filter_all_url', $config['base'] . '/rooms.php');
 
-// Query per recuperare le stanze disponibili
 $query = "
     SELECT r.id as room_id, r.category_id, r.room_number, c.name, c.base_price, c.image_url, c.description
     FROM rooms r
@@ -48,7 +46,6 @@ $stmt->execute($params);
 $rooms = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 foreach ($rooms as $room) {
-    // Mappatura immagini db a immagini reali del template
     $img_map = [
         'singola.jpg' => 'room1.jpg',
         'doppia.jpg'  => 'room2.jpg',
@@ -58,18 +55,17 @@ foreach ($rooms as $room) {
     if (isset($img_map[$db_img])) {
         $room['image_url'] = $img_map[$db_img];
     }
-    
-    // Normalizzazione URL immagine
+
     if (empty($room['image_url'])) {
-        $room['image_url'] = $config['base'] . '/skins/' . $config['skin'] . '/assets/img/rooms/room1.jpg'; // fallback
+        $room['image_url'] = $config['base'] . '/skins/' . $config['skin'] . '/assets/img/rooms/room1.jpg';
     } else {
         if (strpos($room['image_url'], 'http') !== 0 && strpos($room['image_url'], '/') !== 0) {
             $room['image_url'] = $config['base'] . '/skins/' . $config['skin'] . '/assets/img/rooms/' . $room['image_url'];
         }
     }
-    
+
     $room['name'] .= " (Camera " . $room['room_number'] . ")";
-    
+
     $block->setContent('room_image', $room['image_url']);
     $block->setContent('room_name', $room['name']);
     $block->setContent('room_price', $room['base_price']);

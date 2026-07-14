@@ -24,7 +24,6 @@ $block->setContent('status_Available_selected', strcasecmp($status_filter, 'Avai
 $block->setContent('status_Maintenance_selected', strcasecmp($status_filter, 'Maintenance') === 0 ? 'selected' : '');
 $block->setContent('status_Cleaning_selected', strcasecmp($status_filter, 'Cleaning') === 0 ? 'selected' : '');
 
-// Fetch categories for the filter dropdown
 $stmt_cats = $db->query("SELECT id, name FROM room_categories ORDER BY name ASC");
 $categories = $stmt_cats->fetchAll();
 
@@ -34,7 +33,6 @@ foreach ($categories as $cat) {
     $block->setContent('filter_cat_selected', ($cat['id'] == $category_id) ? 'selected' : '');
 }
 
-// Fetch distinct floors for the filter dropdown
 $stmt_floors = $db->query("SELECT DISTINCT floor FROM rooms ORDER BY floor ASC");
 $floors = $stmt_floors->fetchAll();
 
@@ -43,8 +41,7 @@ foreach ($floors as $fl) {
     $block->setContent('filter_floor_selected', (strval($fl['floor']) === $floor) ? 'selected' : '');
 }
 
-// Build query
-$query = "SELECT r.id, r.room_number, r.floor, r.status, c.name AS category_name 
+$query = "SELECT r.id, r.room_number, r.floor, r.status, c.name AS category_name
           FROM rooms r
           LEFT JOIN room_categories c ON r.category_id = c.id
           WHERE 1=1";
@@ -78,12 +75,11 @@ if (count($rooms) > 0) {
         $block->setContent('room_number', htmlspecialchars($room['room_number']));
         $block->setContent('room_category', htmlspecialchars($room['category_name']));
         $block->setContent('room_floor', htmlspecialchars($room['floor']));
-        
-        // Translate status and assign badge color
+
         $status = strtolower($room['status']);
         $status_label = $status;
         $badge_class = 'bg-secondary';
-        
+
         if ($status === 'available') {
             $status_label = 'Disponibile';
             $badge_class = 'bg-success';
@@ -94,12 +90,12 @@ if (count($rooms) > 0) {
             $status_label = 'In Pulizia';
             $badge_class = 'bg-warning text-dark';
         }
-        
+
         $block->setContent('room_status_label', $status_label);
         $block->setContent('room_status_badge', $badge_class);
     }
 } else {
-    $block->setContent('rooms_list', ''); 
+    $block->setContent('rooms_list', '');
 }
 
 $page->setContent('body', $block->get());

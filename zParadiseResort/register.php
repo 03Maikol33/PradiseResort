@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
-// reindirizzamento se già loggato
 if (!empty($_SESSION['user'])) {
     if (is_admin()) {
         header('Location: ' . $config['base'] . '/admin/index.php');
@@ -27,20 +26,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($firstName === '' || $lastName === '' || $email === '' || $password === '') {
         $error = 'Compila tutti i campi.';
     } else {
-        // Controllo se l'email esiste già
         $stmt = db()->prepare('SELECT id FROM users WHERE email = ?');
         $stmt->execute([$email]);
         if ($stmt->fetch()) {
             $error = 'Email già registrata.';
         } else {
-            // Hash della password e inserimento
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
             $stmt = db()->prepare('INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)');
             $stmt->execute([$firstName, $lastName, $email, $hashedPassword]);
-            
+
             $userId = db()->lastInsertId();
-            
-            //assegna automaticamente il truolo customer, ovvero il gruppo guest [id 3 nel db]
+
             $stmtGroup = db()->prepare('INSERT INTO user_gruppi (user_id, group_id) VALUES (?, ?)');
             $stmtGroup->execute([$userId, 3]);
             $_SESSION['success_msg'] = 'Registrazione completata! Ora puoi effettuare il login.';

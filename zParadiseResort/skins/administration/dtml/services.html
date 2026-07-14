@@ -55,7 +55,7 @@
             </td>
           </tr>
           <[/foreach]>
-          
+
           <[ifempty categories_list]>
           <tr><td colspan="6" class="text-center py-4"> Errore: Nessun gruppo trovato</td></tr>
           <[/ifempty]>
@@ -64,10 +64,9 @@
     </div>
   </section>
   <[groups_tables_html]>
-  
+
 </div>
 
-<!-- Assign Modal -->
 <div class="modal fade" id="assignModal" tabindex="-1" aria-labelledby="assignModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <form action="service_assign.php" method="POST">
@@ -98,7 +97,6 @@
   </div>
 </div>
 
-<!-- Remove Modal -->
 <div class="modal fade" id="removeModal" tabindex="-1" aria-labelledby="removeModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <form action="service_remove.php" method="POST">

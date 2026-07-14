@@ -2253,7 +2253,7 @@ label {
       .customer-img .customar-img2 {
         display: none; } }
   .customer-img::before {
-    background-image: url(../img/customer/customar_bg.png);
+    /*background-image: url(../img/customer/customar_bg.png);*/
     position: absolute;
     content: "";
     top: -59px;
@@ -2280,15 +2280,14 @@ label {
   position: relative; }
 
 .service-experience {
-  background: #262626;
+  background: #112e41;
   position: absolute;
   right: 38px;
-  border-radius: 10px;
   box-shadow: 0.907px 12.968px 20px 0px rgba(85, 85, 85, 0.2);
   bottom: 0;
   width: 418px;
   bottom: -27px;
-  padding: 28px 0;
+  padding: 15px 0;
   text-align: center; }
   @media only screen and (min-width: 1200px) and (max-width: 1600px) {
     .service-experience {
@@ -2317,6 +2316,7 @@ label {
       padding: 18px 0; } }
   .service-experience h3 {
     color: #ffffff;
+    font-family: 'Noto Serif', serif;
     font-size: 35px; }
     @media only screen and (min-width: 992px) and (max-width: 1200px) {
       .service-experience h3 {

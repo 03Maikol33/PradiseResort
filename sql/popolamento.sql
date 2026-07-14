@@ -1,12 +1,11 @@
 USE ParadiseResort;
 
--- 1. Popolamento Tabelle Indipendenti Base
 INSERT INTO users (first_name, last_name, email, password, phone, image_url) VALUES
-('Marco', 'Rossi', 'admin@paradise.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG', '+39 340 1234567', NULL), -- Id 1 (Admin) Password: password
-('Giulia', 'Bianchi', 'reception@paradise.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG', '+39 349 9876543', NULL), -- Id 2 (Receptionist)
-('Alessandro', 'Verdi', 'alessandro.v@email.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG', '+39 333 1122334', NULL), -- Id 3 (Guest)
-('Sofia', 'Neri', 'sofia.n@email.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG', '+39 338 5566778', NULL), -- Id 4 (Guest)
-('Lorenzo', 'Gialli', 'lorenzo.g@email.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG', '+39 320 4455667', NULL); -- Id 5 (Guest)
+('Marco', 'Rossi', 'admin@paradise.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG', '+39 340 1234567', NULL),
+('Giulia', 'Bianchi', 'reception@paradise.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG', '+39 349 9876543', NULL),
+('Alessandro', 'Verdi', 'alessandro.v@email.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG', '+39 333 1122334', NULL),
+('Sofia', 'Neri', 'sofia.n@email.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG', '+39 338 5566778', NULL),
+('Lorenzo', 'Gialli', 'lorenzo.g@email.com', '$2y$10$hnQP0q4um.IHuS9IX8BiM.nitA0x.aZTb882dD1kWOVy.ecxGS9yG', '+39 320 4455667', NULL);
 
 INSERT INTO gruppi (id, name, description) VALUES
 (1, 'Admin', 'Amministratore di sistema con accesso totale'),
@@ -34,25 +33,21 @@ INSERT INTO services (id, script_name, description) VALUES
 (18, 'send-report-ticket.php', 'Invio Segnalazione Guasti (Cliente)'),
 (19, 'restaurant_book.php', 'Prenotazione Ristorante (Cliente)');
 
--- 2. Popolamento Tabelle di Giunzione ACL
 INSERT INTO user_gruppi (user_id, group_id) VALUES
-(1, 1), -- Marco Rossi -> Admin
-(2, 2), -- Giulia Bianchi -> Receptionist
-(3, 3), -- Alessandro Verdi -> Guest
-(4, 3), -- Sofia Neri -> Guest
-(5, 3); -- Lorenzo Gialli -> Guest
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 3),
+(5, 3);
 
 INSERT INTO group_services (group_id, service_id) VALUES
--- Admin (id 1) vede ed accede a tutto
+-- Ruoli base: 1=Admin, 2=Receptionist, 3=Guest
 (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (1, 11), (1, 12), (1, 13), (1, 14), (1, 15), (1, 16), (1, 17), (1, 18), (1, 19),
 
--- Receptionist (id 2) vede dashboard, camere, prenotazioni, attività, profilo, prenotazioni ristorante, segnalazioni, servizi richiesti e servizi cliente (MA NON reviews.php che è esclusivo admin)
 (2, 1), (2, 2), (2, 3), (2, 4), (2, 8), (2, 9), (2, 10), (2, 11), (2, 14), (2, 15), (2, 16), (2, 17), (2, 18), (2, 19),
 
--- Guest (id 3) vede il proprio profilo e le pagine di servizio cliente (recensioni, segnalazioni, prenotazione ristorante)
 (3, 9), (3, 15), (3, 16), (3, 17), (3, 18), (3, 19);
 
--- 3. Popolamento Catalogo Stanze
 INSERT INTO room_categories (name, description, base_price, capacity, image_url) VALUES
 ('Deluxe Singola', 'Elegante stanza per viaggiatori singoli con finiture di pregio', 150.00, 1, 'deluxe_singola.jpg'),
 ('Junior Suite', 'Ampia e raffinata con letto king size e area relax', 280.00, 2, 'junior_suite.jpg'),
@@ -71,7 +66,6 @@ INSERT INTO rooms (id, room_number, category_id, floor, status) VALUES
 (8, '402', 4, 4, 'available'),
 (9, '501', 5, 5, 'available');
 
--- 4. Popolamento Stati e Servizi Extra (Amenities)
 INSERT INTO booking_statuses (id, name) VALUES
 (1, 'In Cart'),
 (2, 'Pending'),
@@ -89,15 +83,14 @@ INSERT INTO amenities (id, name, description, price, image_url, is_suspended) VA
 (2, 'Colazione in Camera', 'Servizio premium in camera per la colazione continentale o all\'americana', 15.00, 'https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?auto=format&fit=crop&w=800&q=80', 0),
 (3, 'Navetta Aeroporto', 'Trasferimento privato di lusso da e per l\'aeroporto', 50.00, 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=800&q=80', 0);
 
--- 5. Popolamento Prenotazioni e Dati Dipendenti
 INSERT INTO bookings (id, user_id, room_id, status_id, check_in_date, check_out_date, total_price, staff_notes) VALUES
-(1, 3, 3, 5, '2026-06-10', '2026-06-15', 600.00, 'Ospite regolare, richiesto cuscino aggiuntivo'), -- Prenotazione passata (Completata)
-(2, 4, 5, 3, '2026-08-01', '2026-08-07', 1570.00, 'Arrivo previsto nel tardo pomeriggio'), -- Prenotazione futura (Confermata)
-(3, 5, 1, 1, '2026-07-20', '2026-07-22', 150.00, NULL); -- Prenotazione non completata (Nel Carrello)
+(1, 3, 3, 5, '2026-06-10', '2026-06-15', 600.00, 'Ospite regolare, richiesto cuscino aggiuntivo'),
+(2, 4, 5, 3, '2026-08-01', '2026-08-07', 1570.00, 'Arrivo previsto nel tardo pomeriggio'),
+(3, 5, 1, 1, '2026-07-20', '2026-07-22', 150.00, NULL);
 
 INSERT INTO booking_amenities (booking_id, amenity_id, quantity) VALUES
-(2, 1, 2), -- Sofia ha prenotato 2 accessi SPA
-(2, 3, 1); -- Sofia ha prenotato 1 navetta
+(2, 1, 2),
+(2, 3, 1);
 
 INSERT INTO invoices (booking_id, total_amount, payment_status) VALUES
 (1, 600.00, 'paid'),
@@ -110,7 +103,6 @@ INSERT INTO maintenance_tickets (room_id, reported_by_user_id, status_id, issue_
 (6, 2, 2, 'Il condizionatore perde gocce d\'acqua, contattato il tecnico di turno.'),
 (2, 2, 3, 'Sostituzione lampadina fulminata in bagno completata con successo.');
 
--- 6. Popolamento Prenotazioni Ristorante
 INSERT INTO restaurant_reservations (user_id, reservation_date, meal_type, reservation_time, guests, status) VALUES
 (3, '2026-08-01', 'Cena', '20:30', 2, 'Confirmed'),
 (4, '2026-08-02', 'Pranzo', '13:00', 4, 'Pending');

@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
-// Protezione pagina: richiede login ed esclude lo staff
 require_login();
 block_staff();
 require_service();
@@ -33,7 +32,6 @@ if (empty($room_category_id_raw) || !is_numeric($room_category_id_raw)) {
     exit;
 }
 
-// Verifica data attuale e soggiorni (attivi o completati) per le prenotazioni dell'utente
 $today = date('Y-m-d');
 $stmtCheck = db()->prepare('
     SELECT DISTINCT rc.id as room_category_id
@@ -61,7 +59,6 @@ if (!in_array($selected_category_id, $valid_categories)) {
 }
 
 try {
-    // Inserisci la recensione nella tabella reviews
     $stmtInsert = db()->prepare('
         INSERT INTO reviews (user_id, room_category_id, rating, comment, created_at)
         VALUES (?, ?, ?, ?, NOW())

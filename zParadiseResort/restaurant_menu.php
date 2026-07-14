@@ -13,8 +13,6 @@ $skin->setContent('cart_count', $cartCountVal > 0 ? '1' : '');
 $skin->setContent('cart_badge', $cartCountVal > 0 ? " ($cartCountVal)" : '');
 
 $block = new_block('restaurant_menu');
-// Non c'è un ciclo php complesso qui perché il menù è statico, 
-// ma potremmo passargli l'URL base e della skin per le immagini
 $block->setContent('base', $config['base']);
 $block->setContent('skin', $config['skin']);
 

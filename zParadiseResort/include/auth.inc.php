@@ -68,14 +68,14 @@ function load_user_services(int $userId): array {
     $stmt->execute([$userId]);
     $services = array_fill_keys(array_column($stmt->fetchAll(), 'script_name'), true);
 
-    // Auto-guarigione: se l'utente non ha alcun servizio / gruppo associato, assegna automaticamente il gruppo Guest (3)
+// Controllo permessi e ruoli ACL
     if (empty($services) && $userId > 0) {
         $chk = db()->prepare('SELECT 1 FROM user_gruppi WHERE user_id = ?');
         $chk->execute([$userId]);
         if (!$chk->fetch()) {
             $ins = db()->prepare('INSERT INTO user_gruppi (user_id, group_id) VALUES (?, 3)');
             $ins->execute([$userId]);
-            
+
             $stmt->execute([$userId]);
             $services = array_fill_keys(array_column($stmt->fetchAll(), 'script_name'), true);
         }

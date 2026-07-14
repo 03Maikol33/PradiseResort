@@ -8,7 +8,6 @@ $block = new_block('requested_services');
 
 $db = db();
 
-// Fetch filter options
 $stmtAmenities = $db->query("SELECT id, name FROM amenities ORDER BY name ASC");
 $allAmenitiesList = $stmtAmenities->fetchAll();
 
@@ -18,14 +17,12 @@ $statusFilter = isset($_GET['status']) ? (int)$_GET['status'] : 0;
 
 $block->setContent('search_query', htmlspecialchars($search));
 
-// Popoliamo il filtro dei servizi
 foreach ($allAmenitiesList as $am) {
     $block->setContent('filter_am_id', $am['id']);
     $block->setContent('filter_am_name', htmlspecialchars($am['name']));
     $block->setContent('filter_am_selected', ($am['id'] == $filterAmenity) ? 'selected' : '');
 }
 
-// Popoliamo il filtro degli stati
 $statusTranslations = [
     'In Cart' => 'Nel Carrello',
     'Pending' => 'In attesa',
@@ -42,7 +39,6 @@ foreach ($statuses as $st) {
     $block->setContent('filter_status_selected', ($st['id'] == $statusFilter) ? 'selected' : '');
 }
 
-// Costruiamo la query
 $query = "SELECT ba.booking_id, ba.quantity, a.name AS amenity_name, a.price AS amenity_price,
                  b.check_in_date, b.check_out_date, b.status_id,
                  u.first_name, u.last_name, u.email, u.phone,
@@ -90,7 +86,7 @@ if (count($requests) > 0) {
         $block->setContent('booking_id', $req['booking_id']);
         $block->setContent('guest_name', htmlspecialchars($req['first_name'] . ' ' . $req['last_name']));
         $block->setContent('guest_email', htmlspecialchars($req['email']));
-        
+
         $phoneHtml = '';
         if (!empty($req['phone'])) {
             $phoneHtml = '<p class="text-muted small mb-0"><i class="bi bi-telephone me-1"></i>' . htmlspecialchars($req['phone']) . '</p>';
@@ -102,26 +98,25 @@ if (count($requests) > 0) {
         $block->setContent('quantity', $req['quantity']);
         $block->setContent('check_in', date('d/m/Y', strtotime($req['check_in_date'])));
         $block->setContent('check_out', date('d/m/Y', strtotime($req['check_out_date'])));
-        
+
         $totalVal = (float)$req['amenity_price'] * (int)$req['quantity'];
         $block->setContent('service_total', number_format($totalVal, 2, ',', '.'));
-        
+
         $translatedStatus = $statusTranslations[$req['status_name']] ?? $req['status_name'];
         $block->setContent('status_name', htmlspecialchars($translatedStatus));
-        
-        // Badge class per lo stato
+
         $badgeClass = 'text-bg-secondary';
         $statusId = (int)$req['status_id'];
         if ($statusId === 1) {
-            $badgeClass = 'text-bg-secondary'; // In Cart
+            $badgeClass = 'text-bg-secondary';
         } elseif ($statusId === 2) {
-            $badgeClass = 'text-bg-warning'; // Pending
+            $badgeClass = 'text-bg-warning';
         } elseif ($statusId === 3) {
-            $badgeClass = 'text-bg-success'; // Confirmed
+            $badgeClass = 'text-bg-success';
         } elseif ($statusId === 4) {
-            $badgeClass = 'text-bg-danger'; // Cancelled
+            $badgeClass = 'text-bg-danger';
         } elseif ($statusId === 5) {
-            $badgeClass = 'text-bg-info text-white'; // Completed
+            $badgeClass = 'text-bg-info text-white';
         }
         $block->setContent('status_badge_class', $badgeClass);
     }

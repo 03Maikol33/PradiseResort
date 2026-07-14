@@ -1,5 +1,4 @@
 <main>
-    <!-- slider Area Start-->
     <div class="slider-area">
         <div class="single-slider hero-overly slider-height2 d-flex align-items-center"
             data-background="<[base]>/skins/<[skin]>/assets/img/hero/ristorante_paradiseresort.jpg">
@@ -15,14 +14,12 @@
             </div>
         </div>
     </div>
-    <!-- slider Area End-->
 
-    <!-- Booking Form Start -->
     <section class="contact-section" style="padding-top: 50px;">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    
+
                     <[if!empty message]>
                     <div class="alert alert-success mt-4">
                         <[message]>
@@ -91,7 +88,6 @@
             </div>
         </div>
     </section>
-    <!-- Booking Form End -->
 </main>
 
 <script>
@@ -103,9 +99,9 @@ window.addEventListener('load', function() {
         var mealType = $('#meal_type').val();
         var selectedDate = $('#reservation_date').val();
         var $timeSelect = $('#reservation_time');
-        
+
         $timeSelect.empty();
-        
+
         var times = [];
         if (mealType === "Pranzo") {
             times = ["12:30", "13:00", "13:30", "14:00"];
@@ -116,7 +112,7 @@ window.addEventListener('load', function() {
         if (selectedDate === todayDate) {
             times = times.filter(function(t) { return t >= minTimeToday; });
         }
-        
+
         if (times.length > 0) {
             for(var i=0; i<times.length; i++){
                 $timeSelect.append('<option value="' + times[i] + '">' + times[i] + '</option>');
@@ -124,7 +120,7 @@ window.addEventListener('load', function() {
         } else {
             $timeSelect.append('<option value="">Nessun orario disponibile...</option>');
         }
-        
+
         if($.fn.niceSelect) {
             $timeSelect.niceSelect('update');
         }

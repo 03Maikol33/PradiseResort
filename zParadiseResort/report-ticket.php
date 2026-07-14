@@ -1,16 +1,13 @@
 <?php
 require_once __DIR__ . '/include/bootstrap.inc.php';
 
-// Protezione pagina: richiede login ed esclude lo staff
 require_login();
 block_staff();
 require_service();
 
-
 $message = '';
 $error = '';
 
-// Gestione dei messaggi in sessione (Pattern Post-Redirect-Get)
 if (isset($_SESSION['report_success'])) {
     $message = $_SESSION['report_success'];
     unset($_SESSION['report_success']);
@@ -20,7 +17,6 @@ if (isset($_SESSION['report_error'])) {
     unset($_SESSION['report_error']);
 }
 
-// Recupera le prenotazioni attive per l'utente loggato nel giorno corrente
 $today = date('Y-m-d');
 $stmt = db()->prepare('
     SELECT b.id as booking_id, b.room_id, r.room_number

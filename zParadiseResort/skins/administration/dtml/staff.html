@@ -25,7 +25,6 @@
   <[/if!empty]>
 
   <div class="row g-3">
-    <!-- Lista Staff -->
     <div class="col-12 col-xl-7">
       <section class="panel h-100">
         <div class="panel-header">
@@ -61,7 +60,7 @@
                 </td>
               </tr>
               <[/foreach]>
-              
+
               <[ifempty staff_list]>
               <tr><td colspan="4" class="text-center py-4">Nessun membro dello staff trovato</td></tr>
               <[/ifempty]>
@@ -71,7 +70,6 @@
       </section>
     </div>
 
-    <!-- Modulo Creazione -->
     <div class="col-12 col-xl-5">
       <section class="panel">
         <div class="panel-header">
@@ -123,7 +121,6 @@
     </div>
   </div>
 
-  <!-- Modal di Conferma Creazione -->
   <div class="modal fade" id="createConfirmModal" tabindex="-1" aria-labelledby="createConfirmModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -142,7 +139,6 @@
     </div>
   </div>
 
-  <!-- Modal di Conferma Eliminazione -->
   <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">

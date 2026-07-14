@@ -1,13 +1,11 @@
 <?php
 require_once __DIR__ . '/../include/bootstrap.inc.php';
 
-// Controlliamo che l'utente sia loggato
 if (empty($_SESSION['user'])) {
     header("Location: {$config['base']}/login.php");
     exit;
 }
 
-// Verifica ruolo Receptionist (se Admin, reindirizza o consenti in base alla logica del backoffice)
 if (!is_receptionist()) {
     if (is_admin()) {
         header("Location: {$config['base']}/admin/index.php");
@@ -23,7 +21,6 @@ $successMsg = $_SESSION['success_msg'] ?? '';
 $errorMsg = $_SESSION['error_msg'] ?? '';
 unset($_SESSION['success_msg'], $_SESSION['error_msg']);
 
-// Gestione invio nuova segnalazione e blocco eliminazione/chiusura
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'] ?? '';
 
@@ -41,7 +38,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($roomIdRaw !== '' && $roomIdRaw !== 'nessuna') {
             $selectedRoomId = (int)$roomIdRaw;
             if ($selectedRoomId > 0) {
-                // Verifica che la stanza esista all'interno del resort
                 $checkRoom = $db->prepare("SELECT 1 FROM rooms WHERE id = ?");
                 $checkRoom->execute([$selectedRoomId]);
                 if ($checkRoom->fetch()) {
@@ -55,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         try {
-            // Inseriamo la segnalazione (Status Open = 1)
             $stmtInsert = $db->prepare("
                 INSERT INTO maintenance_tickets (room_id, reported_by_user_id, status_id, issue_description)
                 VALUES (?, ?, 1, ?)
@@ -71,7 +66,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['error_msg'] = "Si è verificato un errore durante l'inserimento della segnalazione: " . $e->getMessage();
         }
     } elseif (in_array($action, ['delete_ticket', 'close_ticket', 'update_status', 'resolve_ticket'])) {
-        // Blocco di sicurezza rigoroso: il receptionist non ha i permessi per eliminare o chiudere i ticket
         $_SESSION['error_msg'] = "Operazione non consentita: come receptionist puoi solo consultare le segnalazioni o inviarne di nuove. Non è permesso eliminarle o chiuderle.";
     } else {
         $_SESSION['error_msg'] = "Azione non riconosciuta o non autorizzata per il ruolo di receptionist.";
@@ -81,7 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-// Inizializza la pagina usando il frame privato dell'amministrazione (receptionist-frame-private)
 $page = new_page('administration', 'receptionist-frame-private');
 $block = new_block('segnalazioni');
 
@@ -96,14 +89,12 @@ $roomFilter = isset($_GET['room_id']) ? (int)$_GET['room_id'] : 0;
 
 $block->setContent('search_query', htmlspecialchars($search));
 
-// Traduzioni degli stati in italiano per l'interfaccia
 $statusTranslations = [
     'Open' => 'Aperta',
     'In Progress' => 'In Lavorazione',
     'Resolved' => 'Risolta'
 ];
 
-// 1. Popola i filtri per lo stato
 $stmtStatuses = $db->query("SELECT id, name FROM ticket_statuses ORDER BY id ASC");
 $statuses = $stmtStatuses->fetchAll();
 foreach ($statuses as $st) {
@@ -113,25 +104,22 @@ foreach ($statuses as $st) {
     $block->setContent('filter_status_selected', ($st['id'] == $statusFilter) ? 'selected' : '');
 }
 
-// 2. Popola i filtri per le camere (ricerca) e ottieni elenco completo stanze
 $stmtRooms = $db->query("
-    SELECT r.id, r.room_number, rc.name AS category_name 
-    FROM rooms r 
-    JOIN room_categories rc ON r.category_id = rc.id 
+    SELECT r.id, r.room_number, rc.name AS category_name
+    FROM rooms r
+    JOIN room_categories rc ON r.category_id = rc.id
     ORDER BY r.room_number ASC
 ");
 $allRooms = $stmtRooms->fetchAll();
 
 foreach ($allRooms as $room) {
-    // Tese separatamente per il filtro di ricerca
     $block->setContent('filter_room_id', $room['id']);
     $block->setContent('filter_room_number', htmlspecialchars($room['room_number']));
     $block->setContent('filter_room_selected', ($room['id'] == $roomFilter) ? 'selected' : '');
 }
 
-// 3. Popola le schede e metriche riepilogative in alto
 $stmtStats = $db->query("
-    SELECT 
+    SELECT
         COUNT(*) as total_cnt,
         SUM(CASE WHEN status_id = 1 THEN 1 ELSE 0 END) as open_cnt,
         SUM(CASE WHEN status_id = 2 THEN 1 ELSE 0 END) as in_progress_cnt,
@@ -144,7 +132,6 @@ $block->setContent('open_tickets', $stats['open_cnt'] ?? 0);
 $block->setContent('in_progress_tickets', $stats['in_progress_cnt'] ?? 0);
 $block->setContent('resolved_tickets', $stats['resolved_cnt'] ?? 0);
 
-// 4. Costruzione ed esecuzione query per consultare tutte le segnalazioni
 $query = "
     SELECT mt.id, mt.issue_description, mt.created_at, mt.status_id,
            r.room_number, rc.name AS category_name,
@@ -192,11 +179,9 @@ if (count($tickets) > 0) {
         $block->setContent('ticket_created', date('d/m/Y H:i', strtotime($t['created_at'])));
         $block->setContent('issue_description', nl2br(htmlspecialchars($t['issue_description'])));
 
-        // Dettagli Segnalatore
         $block->setContent('reporter_name', htmlspecialchars($t['first_name'] . ' ' . $t['last_name']));
         $block->setContent('reporter_email', htmlspecialchars($t['email']));
 
-        // Camera
         if (!empty($t['room_number'])) {
             $block->setContent('room_label', 'Camera ' . htmlspecialchars($t['room_number']));
             $block->setContent('room_category_label', htmlspecialchars($t['category_name']));
@@ -207,7 +192,6 @@ if (count($tickets) > 0) {
             $block->setContent('has_room', '');
         }
 
-        // Badge stato
         $statusId = (int)$t['status_id'];
         $statusNameIt = $statusTranslations[$t['status_name']] ?? $t['status_name'];
         $badgeClass = 'bg-secondary text-white';
@@ -236,14 +220,12 @@ if (count($tickets) > 0) {
     $block->setContent('has_tickets', '');
 }
 
-// 5. Popola le camere per la modale di inserimento nuova segnalazione
 foreach ($allRooms as $room) {
     $block->setContent('modal_room_id', $room['id']);
     $block->setContent('modal_room_number', htmlspecialchars($room['room_number']));
     $block->setContent('modal_room_category', htmlspecialchars($room['category_name']));
 }
 
-// Popoliamo le variabili comuni del frame privato e notifiche del backoffice
 setup_backoffice_page($page, 'Receptionist', 'receptionist');
 
 $page->setContent('body', $block->get());
