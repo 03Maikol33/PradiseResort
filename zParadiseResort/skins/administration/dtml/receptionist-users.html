@@ -1,0 +1,75 @@
+<div class="container-fluid px-3 px-lg-4 py-4">
+  <div class="page-heading">
+    <div class="page-heading-copy">
+      <span class="page-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+      <div>
+        <p class="eyebrow mb-1">Gestione</p>
+        <h1 class="h3 mb-1">Ricerca Clienti</h1>
+        <p class="text-muted mb-0">Cerca i clienti registrati e vedi il numero di prenotazioni attive.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="panel mt-3">
+    <div class="panel-header flex-column flex-md-row align-items-md-start align-items-md-center justify-content-between gap-3">
+      <div>
+        <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>Elenco Clienti</span></h2>
+        <p class="text-muted small mb-0">Lista di tutti gli ospiti registrati nel resort.</p>
+      </div>
+      <div class="d-flex flex-wrap gap-2 w-100 w-md-auto">
+        <form action="users.php" method="GET" class="d-flex gap-2 w-100">
+            <input class="form-control form-control-sm table-search" type="search" name="search" value="<[search_query]>" placeholder="Cerca per nome, cognome o email" aria-label="Cerca cliente">
+            <button type="submit" class="btn btn-primary btn-sm px-3">Cerca</button>
+            <[if!empty search_query]>
+            <a href="users.php" class="btn btn-outline-secondary btn-sm">Resetta</a>
+            <[/if!empty]>
+        </form>
+      </div>
+    </div>
+    
+    <div class="table-responsive">
+      <table class="table align-middle mb-0" id="usersTable">
+        <thead>
+          <tr>
+            <th scope="col">Cliente</th>
+            <th scope="col">Email</th>
+            <th scope="col" class="text-center">Prenotazioni Attive</th>
+            <th scope="col">Iscritto il</th>
+          </tr>
+        </thead>
+        <tbody>
+          <[foreach]>
+          <tr>
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="avatar-initials avatar-sm" style="width: 32px; height: 32px; font-size: 0.8rem; font-weight: bold; border-radius: 50%; border: none;">
+                  <[user_initials]>
+                </div>
+                <div>
+                  <p class="fw-semibold mb-0"><[user_name]></p>
+                </div>
+              </div>
+            </td>
+            <td><p class="text-muted small mb-0"><[user_email]></p></td>
+            <td class="text-center">
+              <span class="badge rounded-pill px-3 py-2 fw-bold <[active_bookings_badge_class]>" style="font-size: 0.85rem;">
+                <[active_bookings]>
+              </span>
+            </td>
+            <td><[user_joined]></td>
+          </tr>
+          <[/foreach]>
+          
+          <[ifempty users_list]>
+          <tr>
+            <td colspan="4" class="text-center py-5">
+              <i class="bi bi-person-x text-muted" style="font-size: 2.5rem; display: block; margin-bottom: 10px;"></i>
+              <span class="text-muted">Nessun cliente registrato corrisponde ai criteri di ricerca.</span>
+            </td>
+          </tr>
+          <[/ifempty]>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
