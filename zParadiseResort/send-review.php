@@ -4,15 +4,35 @@ require_once __DIR__ . '/include/bootstrap.inc.php';
 // Protezione pagina: richiede login ed esclude lo staff
 require_login();
 block_staff();
+require_service();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: review.php');
     exit;
 }
 
-$room_id_raw = trim($_POST['room_id'] ?? '');
-$rating = trim($_POST['rating'] ?? '');
+$room_category_id_raw = trim($_POST['room_category_id'] ?? '');
+$rating_raw = trim($_POST['rating'] ?? '');
 $comment = trim($_POST['comment'] ?? '');
+
+if (empty($room_category_id_raw) || !is_numeric($room_category_id_raw)) {
+    $_SESSION['review_error'] = 'La tipologia di camera è obbligatoria.';
+    header('Location: review.php');
+    exit;
+}
+
+if (empty($rating_raw) || !is_numeric($rating_raw)) {
+    $_SESSION['review_error'] = 'La valutazione è obbligatoria.';
+    header('Location: review.php');
+    exit;
+}
+
+$rating = (int)$rating_raw;
+if ($rating < 1 || $rating > 5) {
+    $_SESSION['review_error'] = 'La valutazione deve essere compresa tra 1 e 5 stelle.';
+    header('Location: review.php');
+    exit;
+}
 
 if (empty($comment)) {
     $_SESSION['review_error'] = 'Il commento è obbligatorio.';
@@ -20,69 +40,44 @@ if (empty($comment)) {
     exit;
 }
 
-if (empty($rating)) {
-    $_SESSION['review_error'] = 'La valutazione è obbligatoria.';
-    header('Location: review.php');
-    exit;
-}
+$room_category_id = (int)$room_category_id_raw;
 
-// Verifica data attuale / intervallo check-in e check-out per le prenotazioni attive
+// Verifica che l'utente abbia almeno un soggiorno attivo o concluso (status 3=Confirmed o 5=Completed) per la tipologia selezionata
 $today = date('Y-m-d');
 $stmtCheck = db()->prepare('
-    SELECT b.room_id
+    SELECT 1
     FROM bookings b
+    JOIN rooms r ON r.id = b.room_id
     WHERE b.user_id = ?
-      AND b.status_id = 3 -- Confirmed
+      AND b.status_id IN (3, 5)
       AND b.check_in_date <= ?
-      AND b.check_out_date >= ?
+      AND r.category_id = ?
+    LIMIT 1
 ');
-$stmtCheck->execute([$_SESSION['user']['id'], $today, $today]);
-$active_bookings = $stmtCheck->fetchAll(PDO::FETCH_ASSOC);
+$stmtCheck->execute([$_SESSION['user']['id'], $today, $room_category_id]);
 
-if (empty($active_bookings)) {
-    $_SESSION['review_error'] = 'Non hai camere prenotate attive in questo momento o soggiorni recenti. Non puoi inviare recensioni.';
+if (!$stmtCheck->fetch()) {
+    $_SESSION['review_error'] = 'Non puoi inviare una recensione per una tipologia di camera per cui non hai soggiorni attivi o passati.';
     header('Location: review.php');
     exit;
-}
-
-$room_to_save = null;
-
-// Se viene selezionata una camera specifica, verifica che appartenga alle prenotazioni attive
-if ($room_id_raw !== '' && $room_id_raw !== 'nessuna') {
-    $selected_room_id = (int)$room_id_raw;
-    $is_valid_room = false;
-    foreach ($active_bookings as $booking) {
-        if ($booking['room_id'] == $selected_room_id) {
-            $is_valid_room = true;
-            break;
-        }
-    }
-    
-    if (!$is_valid_room) {
-        $_SESSION['review_error'] = 'La camera selezionata non corrisponde a nessuna delle tue prenotazioni attive.';
-        header('Location: review.php');
-        exit;
-    }
-    $room_to_save = $selected_room_id;
 }
 
 try {
-    // Inserisci la segnalazione nella tabella maintenance_tickets
     $stmtInsert = db()->prepare('
-        INSERT INTO maintenance_tickets (room_id, reported_by_user_id, status_id, issue_description )
+        INSERT INTO reviews (user_id, room_category_id, rating, comment)
         VALUES (?, ?, ?, ?)
     ');
     $stmtInsert->execute([
-        $room_to_save,
         $_SESSION['user']['id'],
-        1, // Status 'Open'
-        $descrizione
+        $room_category_id,
+        $rating,
+        $comment
     ]);
 
-    $_SESSION['report_success'] = 'Segnalazione inviata con successo. Lo staff prenderà in carico la richiesta al più presto.';
+    $_SESSION['review_success'] = 'Recensione inviata con successo. Grazie per aver condiviso la tua esperienza!';
 } catch (Exception $e) {
-    $_SESSION['report_error'] = 'Si è verificato un errore durante l\'invio della segnalazione. Riprova più tardi.';
+    $_SESSION['review_error'] = 'Si è verificato un errore durante l\'invio della recensione. Riprova più tardi.';
 }
 
-header('Location: report-ticket.php');
+header('Location: review.php');
 exit;

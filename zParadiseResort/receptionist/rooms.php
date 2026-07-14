@@ -1,6 +1,20 @@
 <?php
 require_once __DIR__ . '/../include/bootstrap.inc.php';
 
+if (empty($_SESSION['user'])) {
+    header("Location: {$config['base']}/login.php");
+    exit;
+}
+
+if (!is_receptionist()) {
+    if (is_admin()) {
+        header("Location: {$config['base']}/admin/rooms.php");
+        exit;
+    }
+    header("Location: {$config['base']}/index.php");
+    exit;
+}
+
 require_service('rooms.php');
 
 $page = new_page('administration', 'receptionist-frame-private');
