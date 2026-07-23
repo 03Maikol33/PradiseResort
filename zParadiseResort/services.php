@@ -26,6 +26,12 @@ $icon_map = [
     'navetta aeroporto' => 'fa-plane-departure'
 ];
 
+$img_map = [
+    'accesso spa' => 'services/spa.jpg',
+    'colazione in camera' => 'services/colazione.jpg',
+    'navetta aeroporto' => 'services/navetta.jpg'
+];
+
 if (count($amenities) > 0) {
     $block->setContent('services_list', '1');
     foreach ($amenities as $am) {
@@ -33,6 +39,10 @@ if (count($amenities) > 0) {
         $iconClass = $icon_map[$key] ?? 'fa-concierge-bell';
 
         $img = $am['image_url'] ?? '';
+        if (isset($img_map[$key])) {
+            $img = $img_map[$key];
+        }
+        
         if ($img !== '') {
             if (strpos($img, 'http') !== 0 && strpos($img, '/') !== 0) {
                 if ($img === 'spa_paradiseresort.jpg') {
